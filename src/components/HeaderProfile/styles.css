@@ -281,3 +281,13 @@ html.backdropfilter #header.profile-header .braytech {
     height: 7px;
   }
 }
+
+
+
+#header.profile-header.dark-mode .background {
+  background-color: #1a1a1a;
+}
+
+#header.profile-header.dark-mode .characters .list li .progress-bar .bar {
+  background-color: rgba(255, 255, 255, 0.1);
+}

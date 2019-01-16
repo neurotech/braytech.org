@@ -4,8 +4,7 @@ const defaultState = ls.get('setting.refresh') ? ls.get('setting.refresh') : {
   config: {
     enabled: false,
     frequency: 20
-  },
-  active: false
+  }
 };
 
 export default function profileReducer(state = defaultState, action) {
@@ -15,11 +14,6 @@ export default function profileReducer(state = defaultState, action) {
         ...state,
         ...action.payload
       });
-      return {
-        ...state,
-        ...action.payload
-      }
-    case 'SET_REFRESH_STATE':
       return {
         ...state,
         ...action.payload

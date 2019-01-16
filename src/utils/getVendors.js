@@ -11,7 +11,7 @@ async function apiRequest() {
       hash: '863940356',
     },
     {
-      slug: 'benedict',
+      slug: 'banshee',
       hash: '1265988377',
     },
     {

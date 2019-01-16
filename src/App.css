@@ -1,5 +1,5 @@
 #root .main {
-  min-height: calc(100vh - 7rem);
+  min-height: calc(100vh - 5rem);
 }
 
 .view {
@@ -23,7 +23,6 @@
 }
 
 .wrapper.light-mode:not(.profile-route) #footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -41,12 +40,15 @@
 }
 
 .wrapper.dark-mode #footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.6);
 }
 
 .wrapper.dark-mode #footer ul li:last-child a {
   color: rgba(255, 255, 255, 0.8);
+}
+
+.wrapper.profile-route #footer {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 h3 {

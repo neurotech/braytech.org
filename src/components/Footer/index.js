@@ -19,12 +19,14 @@ class Footer extends React.Component {
       return (
         <div id='footer' className={cx({ dark: darkPaths.includes(this.props.route.location.pathname) })}>
           <div>
-            <Link to='/pride' className='pride'>
-              {t('Pride')}
-            </Link>
             © 2018 Tom Chapman
           </div>
           <ul>
+            <li>
+              <Link to='/pride' className='pride'>
+                {t('Pride')}
+              </Link>
+            </li>
             <li>
               <Link to='/credits'>
                 {t('Credits')}

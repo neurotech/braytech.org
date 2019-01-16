@@ -1,11 +1,15 @@
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
-import ObservedImage from '../ObservedImage';
+import ObservedImage from '../../components/ObservedImage';
+import { enumerateCollectibleState } from '../../utils/destinyEnums';
 
 import './styles.css';
 
-class InventoryItems extends React.Component {
+class Items extends React.Component {
   render() {
     let manifest = this.props.manifest;
 
@@ -40,4 +44,12 @@ class InventoryItems extends React.Component {
   }
 }
 
-export default InventoryItems;
+function mapStateToProps(state, ownProps) {
+  return {
+    profile: state.profile
+  };
+}
+
+export default compose(
+  connect(mapStateToProps)
+)(Items);

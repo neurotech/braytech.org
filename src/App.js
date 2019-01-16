@@ -29,10 +29,9 @@ import Collections from './views/Collections';
 import Triumphs from './views/Triumphs';
 import Checklists from './views/Checklists';
 import Account from './views/Account';
-import Character from './views/Character';
+// import Character from './views/Character';
 import ThisWeek from './views/ThisWeek';
 import Vendors from './views/Vendors';
-import VendorsOld from './views/VendorsOld';
 import Settings from './views/Settings';
 import Pride from './views/Pride';
 import Credits from './views/Credits';
@@ -259,7 +258,7 @@ class App extends React.Component {
                         )}
                       />
                       <Route path='/clan/:view?/:subView?' exact render={route => <Clan manifest={this.manifest} view={route.match.params.view} subView={route.match.params.subView} />} />
-                      <Route path='/character' exact render={() => <Character viewport={this.state.viewport} manifest={this.manifest} />} />
+                      {/* <Route path='/character' exact render={() => <Character viewport={this.state.viewport} manifest={this.manifest} />} /> */}
                       <Route path='/checklists' exact render={() => <Checklists viewport={this.state.viewport} manifest={this.manifest} />} />
                       <Route
                         path='/collections/:primary?/:secondary?/:tertiary?/:quaternary?'
@@ -282,7 +281,6 @@ class App extends React.Component {
                         )}
                       />
                       <Route path='/vendors/:hash?' exact render={route => <Vendors vendorHash={route.match.params.hash} manifest={this.manifest} />} />
-                      <Route path='/vendors-old/:hash?' exact render={route => <VendorsOld vendorHash={route.match.params.hash} manifest={this.manifest} />} />
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />
@@ -392,7 +390,6 @@ class App extends React.Component {
                         )}
                       />
                       <Route path='/vendors/:hash?' exact render={route => <Vendors vendorHash={route.match.params.hash} manifest={this.manifest} />} />
-                      <Route path='/vendors-old/:hash?' exact render={route => <VendorsOld vendorHash={route.match.params.hash} manifest={this.manifest} />} />
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />
