@@ -32,23 +32,28 @@ class Vendors extends React.Component {
 
       console.log(vendors, vendorDefinition);
 
-      // clone displayCategories object
-      let displayCategories = vendorDefinition.displayCategories;
+      // displayCategories object
+      let displayCategories = {};
 
       Object.values(vendors.tess.Response.sales.data).forEach(item => {
         // find categoryIndex of sales item
         let displayCategoryIndex = vendors.tess.Response.categories.data.categories.find(category => category.itemIndexes.includes(item.vendorItemIndex)).displayCategoryIndex;
 
-        // check if item array exists on cloned displayCategories object
-        displayCategories[displayCategoryIndex].items = displayCategories[displayCategoryIndex].items ? displayCategories[displayCategoryIndex].items : [];
+        if (!displayCategories[displayCategoryIndex]) {
+          displayCategories[displayCategoryIndex] = {
+            identifier: vendorDefinition.displayCategories[displayCategoryIndex].identifier,
+            displayProperties: {
+              name: vendorDefinition.displayCategories[displayCategoryIndex].displayProperties.name
+            },
+            items: []
+          }
+        }
 
-        // add item to cloned displayCategories object
+        // add item to displayCategories object
         displayCategories[displayCategoryIndex].items.push(item);
       });
 
-      console.log(displayCategories);
-
-      let output = displayCategories.map(category => {
+      let output = Object.values(displayCategories).map(category => {
         if (category.items) {
           return (
             <div className='category'>
