@@ -32,6 +32,7 @@ import Account from './views/Account';
 import Character from './views/Character';
 import ThisWeek from './views/ThisWeek';
 import Vendors from './views/Vendors';
+import VendorsOld from './views/VendorsOld';
 import Settings from './views/Settings';
 import Pride from './views/Pride';
 import Credits from './views/Credits';
@@ -70,10 +71,7 @@ class App extends React.Component {
   };
 
   componentDidUpdate() {
-    // if (this.props.refreshService.config.enabled && this.props.profile.data && !window.refreshActive) {
-    //   window.refreshTimer = false;
-    //   refreshService(this.props.profile.membershipType, this.props.profile.membershipId);
-    // }
+    
   }
 
   getVersionAndSettings = () => {
@@ -284,6 +282,7 @@ class App extends React.Component {
                         )}
                       />
                       <Route path='/vendors/:hash?' exact render={route => <Vendors vendorHash={route.match.params.hash} manifest={this.manifest} />} />
+                      <Route path='/vendors-old/:hash?' exact render={route => <VendorsOld vendorHash={route.match.params.hash} manifest={this.manifest} />} />
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />
@@ -393,6 +392,7 @@ class App extends React.Component {
                         )}
                       />
                       <Route path='/vendors/:hash?' exact render={route => <Vendors vendorHash={route.match.params.hash} manifest={this.manifest} />} />
+                      <Route path='/vendors-old/:hash?' exact render={route => <VendorsOld vendorHash={route.match.params.hash} manifest={this.manifest} />} />
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />
@@ -415,8 +415,7 @@ class App extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     profile: state.profile,
-    theme: state.theme,
-    refreshService: state.refreshService
+    theme: state.theme
   };
 }
 

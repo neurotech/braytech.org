@@ -3,10 +3,12 @@ import { createStore, combineReducers } from 'redux';
 import profile from './reducers/profile';
 import theme from './reducers/theme';
 import collectibles from './reducers/collectibles';
+import vendors from './reducers/vendors';
 import refreshService from './reducers/refreshService';
 
 const rootReducer = combineReducers({
   profile,
+  vendors,
   theme,
   collectibles,
   refreshService
