@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
 import cx from 'classnames';
-import assign from 'lodash/assign';
 
 import './Core.css';
 import './App.css';
@@ -12,8 +11,8 @@ import './components/PresentationNode.css';
 
 import './utils/i18n';
 import { isProfileRoute } from './utils/globals';
-
 import dexie from './utils/dexie';
+import bungie from './utils/bungie';
 import GoogleAnalytics from './components/GoogleAnalytics';
 
 import Loading from './components/Loading';
@@ -39,8 +38,6 @@ import Pride from './views/Pride';
 import Credits from './views/Credits';
 import Tools from './views/Tools';
 import ClanBannerBuilder from './views/Tools/ClanBannerBuilder';
-
-import bungie from './utils/bungie';
 
 // Print timings of promises to console (and performance logger)
 // if we're running in development mode.

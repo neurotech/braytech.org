@@ -32,6 +32,9 @@ const mod = (manifest, item) => {
     <>
       {stats.length > 0 ? <div className='stats'>{stats}</div> : null}
       <div className={cx('sockets', { hasTraits: traits.length > 0 })}>{traits.length > 0 ? traits : null}</div>
+      {item.itemSubType === 21 ? <div className='description'>
+        <pre>{item.displayProperties.description}</pre>
+      </div> : null}
     </>
   );
 };
