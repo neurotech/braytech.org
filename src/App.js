@@ -11,7 +11,8 @@ import './App.css';
 import './components/PresentationNode.css';
 
 import './utils/i18n';
-import { Globals, isProfileRoute } from './utils/globals';
+import { isProfileRoute } from './utils/globals';
+
 import dexie from './utils/dexie';
 import GoogleAnalytics from './components/GoogleAnalytics';
 
@@ -39,24 +40,44 @@ import Credits from './views/Credits';
 import Tools from './views/Tools';
 import ClanBannerBuilder from './views/Tools/ClanBannerBuilder';
 
+import bungie from './utils/bungie';
+
+// Print timings of promises to console (and performance logger)
+// if we're running in development mode.
+async function timed(name, promise) {
+  if (process.env.NODE_ENV === 'development') console.time(name);
+  const result = await promise;
+  if (process.env.NODE_ENV === 'development') console.timeEnd(name);
+  return result;
+}
+
 class App extends React.Component {
   constructor(props) {
     super();
-
     this.state = {
       status: {
         code: false,
         detail: false
-      },
-      manifest: {
-        version: false,
-        settings: false
       }
     };
 
     this.manifest = {};
-    this.bungieSettings = {};
     this.currentLanguage = props.i18n.getCurrentLanguage();
+
+    // We do these as early as possible - we don't want to wait
+    // for the component to mount before starting the web
+    // requests
+    this.startupRequests = {
+      storedManifest: timed(
+        'storedManifest',
+        dexie
+          .table('manifest')
+          .toCollection()
+          .first()
+      ),
+      manifestIndex: timed('getManifestIndex', bungie.manifestIndex()),
+      bungieSettings: timed('getSettings', bungie.settings())
+    };
   }
 
   updateViewport = () => {
@@ -70,152 +91,47 @@ class App extends React.Component {
     });
   };
 
-  componentDidUpdate() {}
-
-  getVersionAndSettings = () => {
-    let state = this.state;
-    state.status.code = 'checkManifest';
-    this.setState(state);
-
-    const paths = [
-      {
-        name: 'manifest',
-        url: 'https://www.bungie.net/Platform/Destiny2/Manifest/'
-      },
-      {
-        name: 'settings',
-        url: 'https://www.bungie.net/Platform/Settings/'
-      }
-    ];
-
-    let requests = paths.map(path => {
-      return fetch(path.url, {
-        headers: {
-          'X-API-Key': Globals.key.bungie
-        }
-      })
-        .then(response => {
-          return response.json();
-        })
-        .then(response => {
-          if (response.ErrorCode === 1) {
-            let object = {};
-            object[path.name] = response.Response;
-            return object;
-          }
-        });
-    });
-
-    return Promise.all(requests)
-      .then(responses => {
-        const response = assign(...responses);
-
-        this.bungieSettings = response.settings;
-
-        let availableLanguages = [];
-        for (var i in response.manifest.jsonWorldContentPaths) {
-          availableLanguages.push(i);
-        }
-
-        this.availableLanguages = availableLanguages;
-
-        return response.manifest.jsonWorldContentPaths[this.currentLanguage];
-      })
-      .catch(error => {
-        return error;
-      });
-  };
-
-  getManifest = version => {
-    let state = this.state;
-    state.status.code = 'fetchManifest';
-    state.manifest.version = version;
-    this.setState(state);
-
-    let manifest = async () => {
-      const request = await fetch(`https://www.bungie.net${version}`);
-      const response = await request.json();
-      return response;
-    };
-
-    manifest()
-      .then(manifest => {
-        let state = this.state;
-        state.status.code = 'setManifest';
-        this.setState(state);
-        dexie
-          .table('manifest')
-          .clear()
-          .then(() => {
-            dexie.table('manifest').add({
-              version: version,
-              value: manifest
-            });
-          })
-          .then(() => {
-            dexie
-              .table('manifest')
-              .toArray()
-              .then(manifest => {
-                this.manifest = manifest[0].value;
-                this.manifest.settings = this.bungieSettings;
-                let state = this.state;
-                state.status.code = 'ready';
-                this.setState(state);
-              });
-          });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  componentDidMount() {
+  async componentDidMount() {
     this.updateViewport();
     window.addEventListener('resize', this.updateViewport);
 
-    dexie
-      .table('manifest')
-      .toArray()
-      .then(manifest => {
-        if (manifest.length > 0) {
-          let state = this.state;
-          state.manifest.version = manifest[0].version;
-          this.setState(state);
-        }
-      })
-      .then(() => {
-        this.getVersionAndSettings()
-          .then(version => {
-            if (version !== this.state.manifest.version) {
-              this.getManifest(version);
-            } else {
-              dexie
-                .table('manifest')
-                .toArray()
-                .then(manifest => {
-                  if (manifest.length > 0) {
-                    this.manifest = manifest[0].value;
-                    this.manifest.settings = this.bungieSettings;
-                    let state = this.state;
-                    state.status.code = 'ready';
-                    this.setState(state);
-                  } else {
-                    let state = this.state;
-                    state.status.code = 'error';
-                    state.status.detail = 'Failure to access IndexedDB manifest';
-                    this.setState(state);
-                  }
-                });
-            }
-          })
-          .catch(error => {
-            let state = this.state;
-            state.status.code = 'error';
-            state.status.detail = error;
-            this.setState(state);
-          });
-      });
+    try {
+      await timed('setUpManifest', this.setUpManifest());
+    } catch (error) {
+      console.log(error);
+      this.setState({ status: { code: 'error', detail: error } });
+    }
+  }
+
+  async setUpManifest() {
+    this.setState({ status: { code: 'checkManifest' } });
+    const storedManifest = await this.startupRequests.storedManifest;
+    const manifestIndex = await this.startupRequests.manifestIndex;
+
+    const currentVersion = manifestIndex.jsonWorldContentPaths[this.currentLanguage];
+
+    if (!storedManifest || currentVersion !== storedManifest.version) {
+      // Manifest missing from IndexedDB or doesn't match the current version -
+      // download a new one and store it.
+      this.manifest = await this.downloadNewManifest(currentVersion);
+    } else {
+      this.manifest = storedManifest.value;
+    }
+
+    this.manifest.settings = await this.startupRequests.bungieSettings;
+    this.availableLanguages = Object.keys(manifestIndex.jsonWorldContentPaths);
+
+    this.setState({ status: { code: 'ready' } });
+  }
+
+  async downloadNewManifest(version) {
+    this.setState({ status: { code: 'fetchManifest' } });
+    const manifest = await timed('downloadManifest', bungie.manifest(version));
+
+    this.setState({ status: { code: 'setManifest' } });
+    await timed('clearTable', dexie.table('manifest').clear());
+    await timed('storeManifest', dexie.table('manifest').add({ version: version, value: manifest }));
+    return manifest;
   }
 
   componentWillUnmount() {
@@ -226,8 +142,6 @@ class App extends React.Component {
     if (!window.ga) {
       GoogleAnalytics.init();
     }
-
-    // console.log(this.props)
 
     if (this.state.status.code !== 'ready') {
       return <Loading state={this.state.status} theme={this.props.theme.selected} />;
