@@ -82,7 +82,7 @@ class Header extends React.Component {
 
     views = process.env.NODE_ENV !== 'development' ? views.filter(view => !view.dev) : views;
 
-    if (this.props.profile.data && this.props.profile.characterId && isProfileRoute(this.props.route.location.pathname)) {
+    if (this.props.profile.data && this.props.profile.characterId && isProfileRoute(this.props.route.location.pathname, true)) {
       return <HeaderProfile {...this.props.route} {...this.props.profile} viewport={this.props.viewport} manifest={this.props.manifest} views={views} />;
     } else {
       return <HeaderStandard {...this.props.profile} viewport={this.props.viewport} views={views} isIndex={this.props.route.location.pathname === '/' ? true : false} />;

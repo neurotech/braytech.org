@@ -9,12 +9,20 @@ export const Globals = {
     bungie: "https://www.bungie.net"
   },
   routes: {
-    standard: ['character-select', 'pride', 'credits', 'settings', 'tools']
+    standard: ['character-select', 'pride', 'credits', 'settings', 'tools'],
+    badboys: ['vendors']
   }
 }
 
-export const isProfileRoute = (pathname) => {
-  return pathname !== '/' && !Globals.routes.standard.includes(pathname.split('/')[1]) ? true : false;
+export const isProfileRoute = (pathname, hasProfileData = false) => {
+  let view = pathname.split('/')[1];
+  if (pathname !== '/' && !Globals.routes.standard.includes(view) && !Globals.routes.badboys.includes(view)) {
+    return true;
+  } else if (Globals.routes.badboys.includes(view) && hasProfileData) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 export default Globals;

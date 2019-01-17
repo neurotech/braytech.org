@@ -237,7 +237,7 @@ class App extends React.Component {
           <Router>
             <Route
               render={route => (
-                <div className={cx('wrapper', this.props.theme.selected, { 'profile-route': isProfileRoute(route.location.pathname) })}>
+                <div className={cx('wrapper', this.props.theme.selected, { 'profile-route': isProfileRoute(route.location.pathname, true) })}>
                   <Route path='/' render={route => <NotificationApp updateAvailable={this.props.updateAvailable} />} />
                   <Route path='/' render={route => <NotificationProgress manifest={this.manifest} />} />
                   <Route path='/' render={route => <RefreshService {...this.props} />} />

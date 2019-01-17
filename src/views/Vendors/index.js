@@ -5,6 +5,7 @@ import { withNamespaces } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
+import { isProfileRoute } from '../../utils/globals';
 import getVendors from '../../utils/getVendors';
 import Spinner from '../../components/Spinner';
 import Items from '../../components/Items';
@@ -84,13 +85,13 @@ class Vendors extends React.Component {
 
       return (
         <>
-          <div className={cx('view', this.props.theme.selected)} id='vendors'>
+          <div className={cx('view', this.props.theme.selected, { 'profile-route': isProfileRoute('/vendors', this.props.profile.data) })} id='vendors'>
             <div className='pane'>
               <div className='header'>
                 <div className='sub-header sub'>
                   <div>{t('Vendors')}</div>
                 </div>
-                <div className='description'>{t("The data driving this content is bassed on the developers' own character's progression and may result in visual discrepancies. It is updated every 4 hours daily and for the most part is accurate.")}</div>
+                <div className='description'>{t("The data driving this content is based on the developers' own character's progression and may result in visual discrepancies. It is updated every 4 hours daily and for the most part is accurate.")}</div>
               </div>
               <div className='display'>
                 <div className='name'>{vendorDefinition.displayProperties.name}</div>
@@ -131,7 +132,7 @@ class Vendors extends React.Component {
       );
     } else {
       return (
-        <div className={cx('view', this.props.theme.selected)} id='vendors'>
+        <div className={cx('view', this.props.theme.selected, { 'profile-route': isProfileRoute('/vendors', this.props.profile.data) })} id='vendors'>
           <div className='pane'>
             <div className='header'>
               <div className='sub-header sub'>
@@ -155,6 +156,7 @@ class Vendors extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     vendors: state.vendors,
+    profile: state.profile,
     theme: state.theme
   };
 }

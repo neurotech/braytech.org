@@ -4,7 +4,6 @@
   display: grid;
   grid-template-columns: 20rem 1fr;
   grid-gap: 3rem;
-  color: rgba(255, 255, 255, 0.8);
 }
 
 #vendors .pane .header {
@@ -38,6 +37,30 @@
   text-transform: uppercase;
   font-size: 14px;
   letter-spacing: 2px;
+}
+
+#vendors .items .category {
+  margin: 0 0 2rem;
+}
+
+#vendors .items .category .sub-header {
+  padding: 0;
+  border-bottom: none;
+}
+
+@media screen and (max-width: 500px) {
+
+  #vendors {
+    padding: 3rem 2rem 2rem;
+    grid-template-columns: 1fr;
+    grid-gap: 2rem;
+  }
+
+}
+
+
+
+#vendors .pane .inventories .list li {
   color: rgba(255, 255, 255, 0.4);
   background-color: rgba(255, 255, 255, 0);
 }
@@ -61,21 +84,41 @@
   color: #fff;
 }
 
-#vendors .items .category {
-  margin: 0 0 2rem;
+
+#vendors.light-mode:not(.profile-route) .pane .inventories .list li.linked {
+  background-color: rgba(0, 0, 0, 0);
 }
 
-#vendors .items .category .sub-header {
-  padding: 0;
-  border-bottom: none;
+#vendors.light-mode:not(.profile-route) .pane .inventories .list li.linked a {
+  color: #555;
 }
 
-@media screen and (max-width: 500px) {
+#vendors.light-mode:not(.profile-route) .pane .inventories .list li.linked a.active {
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.8);
+}
 
-  #vendors {
-    padding: 3rem 2rem 2rem;
-    grid-template-columns: 1fr;
-    grid-gap: 2rem;
-  }
+#vendors.light-mode:not(.profile-route) .pane .inventories .list li::before {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
 
+#vendors.light-mode:not(.profile-route) .pane .inventories .list li::after {
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0);
+}
+
+#vendors.light-mode:not(.profile-route) .pane .inventories .list li.linked:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+#vendors.light-mode:not(.profile-route) .pane .inventories .list li.linked:hover a {
+  color: #222;
+}
+
+#vendors.light-mode:not(.profile-route) .pane .inventories .list li.linked:hover::before {
+  box-shadow: inset 0 0 0 1px #000;
+}
+
+#vendors.light-mode:not(.profile-route) .pane .inventories .list li.linked:hover::after {
+  box-shadow: 0 0 0 2px #000;
 }
