@@ -149,9 +149,7 @@ class Vendors extends React.Component {
               <Spinner />
             </div>
           </div>
-          <div className='items'>
-            <Spinner />
-          </div>
+          <div className='items'></div>
         </div>
       );
     }

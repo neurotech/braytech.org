@@ -10,15 +10,6 @@ import './styles.css';
 
 class Items extends React.Component {
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // if (nextProps.data === this.props.data) {
-    //   return false;
-    // } else {
-    //   return true;
-    // }
-    return false;
-  }
-
   render() {
     const { manifest, data, profile } = this.props;
 
@@ -59,7 +50,7 @@ class Items extends React.Component {
       if (itemDefinition.redacted) {
         items.push(
           <li
-            key={itemDefinition.hash + '-' + Math.random()}
+            key={itemDefinition.hash}
           >
             <ul className='list'>
               <li className={cx('item', 'tooltip', {
@@ -75,7 +66,7 @@ class Items extends React.Component {
       } else {
         items.push(
           <li
-            key={itemDefinition.hash + '-' + Math.random()}
+            key={itemDefinition.hash}
           >
             <ul className='list'>
               <li className={cx('item', 'tooltip', {
