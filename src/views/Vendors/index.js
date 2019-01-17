@@ -8,7 +8,7 @@ import cx from 'classnames';
 import { isProfileRoute } from '../../utils/globals';
 import getVendors from '../../utils/getVendors';
 import Spinner from '../../components/Spinner';
-import Items from '../../components/Items';
+import Item from '../../components/Item';
 import Tooltip from '../../components/Tooltip';
 
 import './styles.css';
@@ -74,7 +74,13 @@ class Vendors extends React.Component {
                 <div>{category.displayProperties.name}</div>
               </div>
               <ul className='list items'>
-                <Items data={category.items} manifest={manifest} />
+                {category.items.map(item => {
+                  return (
+                    <li key={item.itemHash}>
+                      <Item data={item} manifest={manifest} />
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           );
@@ -149,7 +155,7 @@ class Vendors extends React.Component {
               <Spinner />
             </div>
           </div>
-          <div className='items'></div>
+          <div className='items' />
         </div>
       );
     }
