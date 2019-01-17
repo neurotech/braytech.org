@@ -21,6 +21,10 @@ async function apiRequest() {
     {
       slug: 'xur',
       hash: '2190858386'
+    },
+    {
+      slug: 'ada',
+      hash: '2917531897'
     }
   ];
 

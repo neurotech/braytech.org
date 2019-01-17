@@ -9,6 +9,16 @@ import { enumerateCollectibleState } from '../../utils/destinyEnums';
 import './styles.css';
 
 class Items extends React.Component {
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // if (nextProps.data === this.props.data) {
+    //   return false;
+    // } else {
+    //   return true;
+    // }
+    return false;
+  }
+
   render() {
     const { manifest, data, profile } = this.props;
 

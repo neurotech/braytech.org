@@ -11,6 +11,8 @@
 .list.items li {
   flex-flow: row wrap;
   height: unset;
+  align-items: flex-start;
+  align-content: flex-start;
 }
 
 .list.items li .list {
@@ -28,11 +30,17 @@
 
 .list.items li .list.costs {
   margin: 7px 0 0;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  
 }
 
 .list.items li .list.costs .item {
   padding-bottom: unset;
   display: inline-flex;
+  flex-basis: 100%;
+  margin: 0 0 3px;
 }
 
 .list.items li .list.costs .item::before,
@@ -104,22 +112,17 @@
   transition: box-shadow 0.25s;
 }
 
-.list.items .item .icon.not-acquired {
+.list.items .item.not-acquired .icon {
   background-color: rgba(0, 0, 0, 0.1);
-  color: rgba(255, 255, 255, 0.4);
 }
 
-.list.items .item .icon.not-acquired .image.dl {
+.list.items .item.not-acquired .icon.image.dl {
   opacity: 0.4;
 }
 
 @media screen and (max-width: 500px) {
   .list.items {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  }
-
-  .list.items li .list.costs {
-    margin: 0;
   }
 
   .list.items li .list.costs .item .icon {
