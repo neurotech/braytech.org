@@ -213,7 +213,7 @@ class ClanBanner extends React.Component {
 
     return (
       <div className='canvas'>
-        {this.state.loaded !== 6 ? <Spinner dark={this.props.dark} /> : null}
+        {this.state.loaded !== 6 ? <Spinner /> : null}
         <canvas ref='canvas' width={canvasWidth} height='900' />
       </div>
     );

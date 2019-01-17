@@ -8,6 +8,7 @@ import assign from 'lodash/assign';
 
 import './Core.css';
 import './App.css';
+import './components/PresentationNode.css';
 
 import './utils/i18n';
 import { Globals, isProfileRoute } from './utils/globals';
@@ -69,9 +70,7 @@ class App extends React.Component {
     });
   };
 
-  componentDidUpdate() {
-    
-  }
+  componentDidUpdate() {}
 
   getVersionAndSettings = () => {
     let state = this.state;
@@ -280,7 +279,7 @@ class App extends React.Component {
                           </>
                         )}
                       />
-                      <Route path='/vendors/:hash?' exact render={route => <Vendors vendorHash={route.match.params.hash} manifest={this.manifest} />} />
+                      <Route path='/vendors/:hash?' exact render={route => <Vendors {...route} manifest={this.manifest} />} />
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />
@@ -389,7 +388,7 @@ class App extends React.Component {
                           />
                         )}
                       />
-                      <Route path='/vendors/:hash?' exact render={route => <Vendors vendorHash={route.match.params.hash} manifest={this.manifest} />} />
+                      <Route path='/vendors/:hash?' exact render={route => <Vendors {...route} manifest={this.manifest} />} />
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />
@@ -417,8 +416,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default compose(
-  connect(
-    mapStateToProps
-  ),
+  connect(mapStateToProps),
   withNamespaces()
 )(App);

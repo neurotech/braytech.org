@@ -12,7 +12,7 @@ async function apiRequest() {
     },
     {
       slug: 'banshee',
-      hash: '1265988377',
+      hash: '672118013',
     },
     {
       slug: 'tess',
@@ -28,7 +28,7 @@ async function apiRequest() {
     const request = await fetch(`https://api.braytech.org/cache/json/vendors/${vendor.hash}.json`, { cache: 'reload' });
     const response = await request.json();
     let object = {};
-    object[vendor.slug] = response;
+    object[vendor.hash] = response;
     return object;
   });
 

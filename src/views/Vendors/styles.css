@@ -8,11 +8,26 @@
 }
 
 #vendors .pane .header {
-  margin: 0 0 3rem;
+  margin: 0 0 2rem;
 }
 
 #vendors .pane .header .description {
   font-size: 14px;
+}
+
+#vendors .pane .display {
+  margin: 0 0 2rem;
+}
+
+#vendors .pane .display .name {
+  font-size: 24px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0 0 7px;
+}
+
+#vendors .pane .display .description {
+  font-size: 18px;
 }
 
 #vendors .pane .inventories {
@@ -44,4 +59,23 @@
 
 #vendors .pane .inventories .list li a:hover {
   color: #fff;
+}
+
+#vendors .items .category {
+  margin: 0 0 2rem;
+}
+
+#vendors .items .category .sub-header {
+  padding: 0;
+  border-bottom: none;
+}
+
+@media screen and (max-width: 500px) {
+
+  #vendors {
+    padding: 3rem 2rem 2rem;
+    grid-template-columns: 1fr;
+    grid-gap: 2rem;
+  }
+
 }

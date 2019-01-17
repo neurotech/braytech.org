@@ -16,6 +16,10 @@ class ObservedImage extends React.Component {
     const src = this.props.src;
     const ratio = this.props.ratio ? this.props.ratio : false;
 
+    if (this.state.downloaded) {
+      return;
+    }
+
     if (ratio) {
       this.setState({
         styles: {

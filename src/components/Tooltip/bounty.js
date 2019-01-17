@@ -1,7 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
+
 import ObservedImage from '../ObservedImage';
-import '../../utils/destinyEnums';
+import ProgressBar from '../ProgressBar';
 
 const bounty = (manifest, item) => {
   let description = item.displaySource !== '' ? item.displaySource : false;
@@ -11,21 +12,16 @@ const bounty = (manifest, item) => {
   let rewards = [];
 
   item.objectives.objectiveHashes.forEach(element => {
-    let definition = manifest.DestinyObjectiveDefinition[element];
+    let objectiveDefinition = manifest.DestinyObjectiveDefinition[element];
+
+    let playerProgress = {
+      complete: false,
+      progress: 0,
+      objectiveHash: objectiveDefinition.hash
+    }
 
     objectives.push(
-      <div key={definition.hash} className='progress'>
-        <div className='title'>{definition.progressDescription}</div>
-        <div className='fraction'>
-          {0}/{definition.completionValue}
-        </div>
-        <div
-          className='bar'
-          style={{
-            width: `0%`
-          }}
-        />
-      </div>
+      <ProgressBar key={objectiveDefinition.hash} objectiveDefinition={objectiveDefinition} playerProgress={playerProgress} />
     );
   });
 

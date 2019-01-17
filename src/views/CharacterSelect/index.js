@@ -188,7 +188,7 @@ class CharacterSelect extends React.Component {
       <div className={cx('view', this.props.theme.selected, { loading: this.state.loading })} id='get-profile'>
         {reverse ? (
           <div className='profile'>
-            {this.state.loading ? <Spinner dark /> : null}
+            {this.state.loading ? <Spinner /> : null}
             {profileElement}
           </div>
         ) : null}
@@ -229,7 +229,7 @@ class CharacterSelect extends React.Component {
         </div>
         {!reverse ? (
           <div className='profile'>
-            {this.state.loading ? <Spinner dark /> : null}
+            {this.state.loading ? <Spinner /> : null}
             {profileElement}
           </div>
         ) : null}
