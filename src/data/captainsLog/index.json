@@ -73,5 +73,10 @@
     "date": "2019-01-15T04:11:19.541Z",
     "version": "1.3.6",
     "content": "## Changes\n- Michael added checklists for Ghost Stories, Awoken of the Reef, and Forsaken Prince lore. _Powered by lowlines_ 🔥\n- rewrote the fresh service logic and borrowed some inspiration from DIM\n- this is the first version where you can see triumphs notifications as you collect them in game\n\n## Conversation\nAs always, some of these additions are new and have sensitve emotions. Use TLC. [Tweet me](https://twitter.com/justrealmilk) or join the [Discord](https://discordapp.com/invite/Y68xDsG) if you have any dramas."
+  },
+  {
+    "date": "2019-01-17T02:01:07.334Z",
+    "version": "1.3.7",
+    "content": "## Changes\n- Minor dark mode impovements\n- refreshed page footer design\n- Vendors page soft re-launch"
   }
 ]
