@@ -122,6 +122,10 @@
   box-shadow: 0 0 0 2px #000;
 }
 
+#vendors.light-mode:not(.profile-route) .list.items .item {
+  color: rgba(0, 0, 0, 0.8);
+}
+
 #vendors.light-mode:not(.profile-route) .list.items .item:hover::before {
   box-shadow: inset 0 0 0 1px #000;
 }

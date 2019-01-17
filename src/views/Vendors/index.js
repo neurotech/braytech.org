@@ -74,7 +74,7 @@ class Vendors extends React.Component {
                 <div>{category.displayProperties.name}</div>
               </div>
               <ul className='list items'>
-                <Items hashes={category.items.map(item => item.itemHash)} manifest={manifest} />
+                <Items data={category.items} manifest={manifest} />
               </ul>
             </div>
           );

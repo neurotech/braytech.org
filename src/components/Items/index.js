@@ -10,14 +10,26 @@ import './styles.css';
 
 class Items extends React.Component {
   render() {
-    console.log(this);
-
-    const { manifest, hashes, profile } = this.props;
+    const { manifest, data, profile } = this.props;
 
     let items = [];
 
-    hashes.forEach(hash => {
+    data.forEach(item => {
+      let hash = item.itemHash;
       let itemDefinition = manifest.DestinyInventoryItemDefinition[hash];
+
+      let costs = [];
+      if (item.costs !== undefined) {
+        item.costs.forEach(cost => {
+          let currencyDefinition = manifest.DestinyInventoryItemDefinition[cost.itemHash];
+          costs.push(
+            <li key={currencyDefinition.hash} className='item tooltip' data-itemhash={currencyDefinition.hash}>
+              <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${currencyDefinition.displayProperties.icon}`} />
+              <div className='value'>{cost.quantity}</div>
+            </li>
+          );
+        });
+      }
 
       let state = 0;
       if (profile.data) {
@@ -38,28 +50,32 @@ class Items extends React.Component {
         items.push(
           <li
             key={itemDefinition.hash + '-' + Math.random()}
-            className={cx('item', 'tooltip', {
-              'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired
-            })}
-            data-itemhash={itemDefinition.hash}
           >
-            <div className='icon'>
-              <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${manifest.settings.destiny2CoreSettings.undiscoveredCollectibleImage}`} />
-            </div>
+            <ul className='list'>
+              <li className={cx('item', 'tooltip', {
+              'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired
+            })} data-itemhash={itemDefinition.hash}>
+                <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${manifest.settings.destiny2CoreSettings.undiscoveredCollectibleImage}`} />
+                {item.quantity > 1 ? <div className='quantity'>{item.quantity}</div> : null}
+              </li>
+            </ul>
+            {costs.length > 0 ? <ul className='list costs'>{costs}</ul> : null}
           </li>
         );
       } else {
         items.push(
           <li
             key={itemDefinition.hash + '-' + Math.random()}
-            className={cx('item', 'tooltip', {
-              'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired
-            })}
-            data-itemhash={itemDefinition.hash}
           >
-            <div className='icon'>
-              <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${itemDefinition.displayProperties.icon}`} />
-            </div>
+            <ul className='list'>
+              <li className={cx('item', 'tooltip', {
+              'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired
+            })} data-itemhash={itemDefinition.hash}>
+                <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${itemDefinition.displayProperties.icon}`} />
+                {item.quantity > 1 ? <div className='quantity'>{item.quantity}</div> : null}
+              </li>
+            </ul>
+            {costs.length > 0 ? <ul className='list costs'>{costs}</ul> : null}
           </li>
         );
       }
