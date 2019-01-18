@@ -98,8 +98,8 @@ class Vendors extends React.Component {
                   <div>{t('Vendors')}</div>
                 </div>
                 <div className='description'>
-                  <p>{t("The data driving this content is based on the developers' own character's progression and may result in visual discrepancies. It is updated every 4 hours daily and for the most part is accurate.")}</p>
-                  {this.props.profile.data ? <p>{t("API limitations determine whether an item's acqusition state can be determined. For example, ornaments can't reliably be tracked at this time. Where possible, item's states are reflected as per other views.")}</p> : null}
+                  <p>{t("The data driving this content is based on the developers' own character's progression and may result in visual discrepancies. It's updated every 4 hours daily and for the most part is accurate.")}</p>
+                  {this.props.profile.data ? <p>{t("API limitations determine whether an item's acqusition state can be determined. For example, ornaments can't be reliably tracked at this time. Where possible, item's states are reflected as per other views.")}</p> : null}
                 </div>
               </div>
               <div className='display'>
@@ -148,7 +148,7 @@ class Vendors extends React.Component {
                 <div>{t('Vendors')}</div>
               </div>
               <div className='description'>
-                <p>{t("The data driving this content is based on the developers' own character's progression and may result in visual discrepancies. It is updated every 4 hours daily and for the most part is accurate.")}</p>
+                <p>{t("The data driving this content is based on the developers' own character's progression and may result in visual discrepancies. It's updated every 4 hours daily and for the most part is accurate.")}</p>
               </div>
             </div>
             <div className='inventories'>

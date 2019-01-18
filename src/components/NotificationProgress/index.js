@@ -101,7 +101,7 @@ class NotificationProgress extends React.Component {
         }
         let state = enumerateRecordState(profileRecords[key].state);
         console.log(state);
-        if (!state.objectiveNotCompleted) { //  && !state.recordRedeemed
+        if (!state.objectiveNotCompleted && !state.recordRedeemed) {
           if (progress.hash) {
             progress.number = progress.number + 1;
             return;

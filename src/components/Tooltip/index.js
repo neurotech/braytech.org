@@ -10,6 +10,7 @@ import armour from './armour';
 import emblem from './emblem';
 import bounty from './bounty';
 import mod from './mod';
+import perk from './perk';
 
 class Tooltip extends React.Component {
   constructor(props) {
@@ -177,6 +178,11 @@ class Tooltip extends React.Component {
           render = bounty(manifest, item);
           break;
         case 19:
+          if (item.inventory.bucketTypeHash === 1469714392) {
+            kind = 'perk';
+            render = perk(manifest, item);
+            break;
+          }
           kind = 'mod';
           render = mod(manifest, item);
           break;
@@ -205,15 +211,19 @@ class Tooltip extends React.Component {
           tier = 'basic';
       }
 
+      if (kind === 'perk') {
+        tier = 'ui';
+      }
+
       return (
         <div id='tooltip' ref={this.tooltip}>
           <div className='acrylic' />
-          <div className={cx('frame', tier, kind)}>
+          <div className={cx('frame', kind, tier)}>
             <div className='header'>
               <div className='name'>{item.displayProperties.name}</div>
               <div>
                 <div className='kind'>{item.itemTypeDisplayName}</div>
-                <div className='rarity'>{item.inventory.tierTypeName}</div>
+                {kind !== 'perk' ? <div className='rarity'>{item.inventory.tierTypeName}</div> : null}
               </div>
             </div>
             <div className='black'>{render}</div>

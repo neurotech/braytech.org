@@ -11,7 +11,7 @@
   --dark: 0, 0, 0;
   --light: 255, 255, 255;
   --accent: 0, 0, 255;
-  --exotic: 43, 71%, 53%;
+  --exotic: 48, 61%, 50%;
   --legendary: 279, 36%, 29%;
   --rare: 213, 34%, 48%;
   --uncommon: 126, 35%, 32%;
@@ -21,6 +21,7 @@
   --rareDark: 213, 34%, 6%;
   --uncommonDark: 126, 35%, 5%;
   --commonDark: 0, 0%, 7%;
+  --commonDarker: 0, 0%, 0%;
 }
 
 #tooltip .acrylic {
@@ -315,6 +316,12 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+#tooltip .perk .description pre {
+  padding: 12px 16px 12px;
+  font-style: unset;
+  letter-spacing: unset;
+}
+
 #tooltip .frame .image.emblem {
   position: relative;
   height: initial;
@@ -365,6 +372,15 @@
 #tooltip .frame.bounty .header {
   background-color: hsla(var(--commonDark), 0.7);
   color: #fff;
+}
+
+#tooltip .frame.ui .header {
+  background-color: hsla(var(--commonDarker), 0.9);
+  border-top: 5px solid rgba(214, 214, 214, 0.8);
+}
+
+#tooltip .frame.ui .black {
+  background-color: hsla(var(--commonDark), 0.9);
 }
 
 #tooltip .frame .objective {

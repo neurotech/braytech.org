@@ -41,7 +41,7 @@ class BadgeNode extends React.Component {
           <div className='sub-header sub'>
             <div>{nodeDefinition.displayProperties.name}</div>
           </div>
-          <ul className='list tertiary collection-items items'>
+          <ul className='list tertiary collection-items'>
             <Collectibles {...this.props} {...this.state} node={node.presentationNodeHash} />
           </ul>
         </div>
