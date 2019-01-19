@@ -1,21 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
+
 import ObservedImage from '../ObservedImage';
-import '../../utils/destinyEnums';
 import { damageTypeToString, ammoTypeToString } from '../../utils/destinyUtils';
 import { getWeapon } from '../../utils/destinyItems';
 
-const badSockets = [
-  4248210736, // Shaders
-  236077174, // Year 1 Masterwork
-  2285418970, // Year 2 Masterwork Trackers
-  2323986101, // Empty Mod Sockets
-  2931483505, // Ornaments
-  1959648454 // Ornmanets
-];
-
 const weapon = (manifest, item) => {
-  let { stats, sockets } = getWeapon(manifest, item.hash, badSockets, true);
+  let { stats, sockets } = getWeapon(manifest, item.hash, false, true);
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 

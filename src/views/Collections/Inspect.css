@@ -192,6 +192,16 @@
   margin: 0;
 }
 
+
+
+
+#inspect .properties .sockets .category.is-mods .sockets .socket .plug:not(:first-child) {
+  display: none;
+}
+
+
+
+
 #inspect .properties .sockets .category .sockets .socket .plug .text {
   display: none;
 }

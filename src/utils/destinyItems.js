@@ -41,7 +41,7 @@ const interpolate = (investmentValue, displayInterpolation) => {
   return round(displayValue);
 };
 
-export const getWeapon = (manifest, hash, socketExclusions = [2285418970], initialOnly = false) => {
+export const getWeapon = (manifest, hash, mods = true, initialOnly = false, socketExclusions = [2285418970]) => {
   let item = manifest.DestinyInventoryItemDefinition[hash];
 
   let weaponsStats = [
@@ -164,12 +164,13 @@ export const getWeapon = (manifest, hash, socketExclusions = [2285418970], initi
   let socketsOutput = [];
   Object.keys(item.sockets.socketEntries).forEach(key => {
     let socket = item.sockets.socketEntries[key];
+    
+    let categoryHash = item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false
 
-    if (socketExclusions.includes(socket.singleInitialItemHash)) {
+    if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && categoryHash === 2685412949)) {
       return;
     }
 
-    // singleInitialItemHash for stats
     socket.reusablePlugItems.forEach(reusablePlug => {
       let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
 
@@ -187,14 +188,6 @@ export const getWeapon = (manifest, hash, socketExclusions = [2285418970], initi
 
     socket.reusablePlugItems.forEach(reusablePlug => {
       let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
-
-      // if (plug.hash === 3876796314) { // black armoury radiance thing
-      //   return;
-      // }
-
-      // if (plug.hash === 4248210736) { // default shader
-      //   return;
-      // }
 
       if (initialOnly && plug.hash !== socket.singleInitialItemHash) {
         return;
@@ -235,7 +228,7 @@ export const getWeapon = (manifest, hash, socketExclusions = [2285418970], initi
     }
 
     socketsOutput.push({
-      categoryHash: item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false,
+      categoryHash,
       singleInitialItem,
       plugs: socketPlugs
     });

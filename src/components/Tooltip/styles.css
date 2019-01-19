@@ -21,7 +21,6 @@
   --rareDark: 213, 34%, 6%;
   --uncommonDark: 126, 35%, 5%;
   --commonDark: 0, 0%, 7%;
-  --commonDarker: 0, 0%, 0%;
 }
 
 #tooltip .acrylic {
@@ -304,12 +303,11 @@
 #tooltip .description pre {
   padding: 16px 16px 12px;
   white-space: pre-wrap;
-  color: rgba(255, 255, 255, 0.8);
   line-height: 1.4;
   font-style: italic;
   font-size: 14px;
   letter-spacing: 0.8px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 #tooltip .frame.ui .description pre {
@@ -371,12 +369,12 @@
 }
 
 #tooltip .frame.ui .header {
-  background-color: hsla(var(--commonDarker), 0.9);
+  background-color: hsla(0, 0%, 0%, 0.9);
   border-top: 5px solid rgba(214, 214, 214, 0.8);
 }
 
 #tooltip .frame.ui .black {
-  background-color: hsla(var(--commonDark), 0.9);
+  background-color: hsla(0, 0%, 3%, 0.9);
 }
 
 #tooltip .frame .objective {
