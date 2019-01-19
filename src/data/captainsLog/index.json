@@ -88,5 +88,10 @@
     "date": "2019-01-19T12:32:29.709Z",
     "version": "1.3.9",
     "content": "## Changes\n- Minor bug fixes"
+  },
+  {
+    "date": "2019-01-19T17:04:47.730Z",
+    "version": "1.3.10",
+    "content": "## Changes\n- Tooltip stuff refactoring\n- New fun time since data refresh timer for stuff"
   }
 ]
