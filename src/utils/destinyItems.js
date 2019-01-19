@@ -41,7 +41,7 @@ const interpolate = (investmentValue, displayInterpolation) => {
   return round(displayValue);
 };
 
-export const getWeapon = (manifest, hash, mods = true, initialOnly = false, socketExclusions = [2285418970]) => {
+export const getWeapon = (manifest, hash, mods = true, initialOnly = false, socketExclusions = [2285418970]) => { // 2285418970 === Tracker Disabled
   let item = manifest.DestinyInventoryItemDefinition[hash];
 
   let weaponsStats = [
@@ -227,6 +227,10 @@ export const getWeapon = (manifest, hash, mods = true, initialOnly = false, sock
       socketPlugs.unshift(singleInitialItem);
     }
 
+    if (!singleInitialItem && socketPlugs.length === 0) {
+      return;
+    }
+
     socketsOutput.push({
       categoryHash,
       singleInitialItem,
@@ -270,3 +274,123 @@ export const getWeapon = (manifest, hash, mods = true, initialOnly = false, sock
     sockets: socketsOutput
   };
 };
+
+export const getArmour = (manifest, hash, mods = true, initialOnly = false, socketExclusions = []) => {
+  let item = manifest.DestinyInventoryItemDefinition[hash];
+
+  let armourStats = [
+    {
+      hash: 2996146975,
+      name: manifest.DestinyStatDefinition[2996146975].displayProperties.name,
+      type: 'bar',
+      modifier: 0
+    },
+    {
+      hash: 392767087,
+      name: manifest.DestinyStatDefinition[392767087].displayProperties.name,
+      type: 'bar',
+      modifier: 0
+    },
+    {
+      hash: 1943323491,
+      name: manifest.DestinyStatDefinition[1943323491].displayProperties.name,
+      type: 'bar',
+      modifier: 0
+    }
+  ];
+
+  let socketsOutput = [];
+  Object.keys(item.sockets.socketEntries).forEach(key => {
+    let socket = item.sockets.socketEntries[key];
+    
+    let categoryHash = item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false
+
+    if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && categoryHash === 590099826)) {
+      return;
+    }
+
+    socket.reusablePlugItems.forEach(reusablePlug => {
+      let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
+
+      if (plug.hash === socket.singleInitialItemHash) {
+        plug.investmentStats.forEach(modifier => {
+          let index = armourStats.findIndex(stat => stat.hash === modifier.statTypeHash);
+          if (index > -1) {
+            armourStats[index].modifier = modifier.value;
+          }
+        });
+      }
+    });
+
+    let socketPlugs = [];
+
+    socket.reusablePlugItems.forEach(reusablePlug => {
+      let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
+
+      if (initialOnly && plug.hash !== socket.singleInitialItemHash) {
+        return;
+      }
+
+      socketPlugs.push({
+        active: plug.hash === socket.singleInitialItemHash,
+        definition: plug,
+        element: (
+          <div key={plug.hash} className={cx('plug', 'tooltip', { 'is-intrinsic': plug.itemCategoryHashes.includes(2237038328), 'is-active': plug.hash === socket.singleInitialItemHash })} data-itemhash={plug.hash}>
+            <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
+            <div className='text'>
+              <div className='name'>{plug.displayProperties.name}</div>
+            </div>
+          </div>
+        )
+      });
+    });
+
+    let singleInitialItem = false;
+    if (socket.singleInitialItemHash !== 0) {
+      let plug = manifest.DestinyInventoryItemDefinition[socket.singleInitialItemHash];
+      singleInitialItem = {
+        definition: plug,
+        element: (
+          <div key={plug.hash} className={cx('plug', 'tooltip', { 'is-intrinsic': plug.itemCategoryHashes.includes(2237038328), 'is-active': plug.hash === socket.singleInitialItemHash })} data-itemhash={plug.hash}>
+            <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
+            <div className='text'>
+              <div className='name'>{plug.displayProperties.name}</div>
+            </div>
+          </div>
+        )
+      };
+    }
+
+    if (socket.singleInitialItemHash !== 0 && !socketPlugs.find(plug => plug.definition.hash === socket.singleInitialItemHash)) {
+      socketPlugs.unshift(singleInitialItem);
+    }
+
+    if (!singleInitialItem && socketPlugs.length === 0) {
+      return;
+    }
+
+    socketsOutput.push({
+      categoryHash,
+      singleInitialItem,
+      plugs: socketPlugs
+    });
+  });
+
+  let stats = [];
+
+  armourStats.forEach(stat => {
+    let value = item.stats.stats[stat.hash] ? item.stats.stats[stat.hash].value : 0;
+    let modifier = stat.modifier ? stat.modifier : 0;
+    stats.push(
+      <div key={stat.hash} className='stat'>
+        <div className='name'>{stat.name}</div>
+        <div className={cx('value', stat.type)}>{stat.type === 'bar' ? <div className='bar' data-value={value + modifier} style={{ width: `${((value + modifier) / 3) * 100}%` }} /> : value + modifier}</div>
+      </div>
+    );
+  });
+
+  return {
+    stats,
+    sockets: socketsOutput
+  };
+}

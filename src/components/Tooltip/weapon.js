@@ -31,7 +31,7 @@ const weapon = (manifest, item) => {
         </div>
       ) : null}
       <div className='stats'>{stats}</div>
-      <div className={cx('sockets', { hasTraits: sockets.length > 0 })}>
+      <div className={cx('sockets', { 'has-sockets': sockets.length > 0 })}>
         {intrinsic ? (
           <div className='plug intrinsic'>
             <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${intrinsic.displayProperties.icon}`} />

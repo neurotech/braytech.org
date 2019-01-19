@@ -193,9 +193,8 @@
 }
 
 #tooltip .stats {
-  padding: 14px 16px 8px;
+  padding: 14px 16px 6px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 #tooltip .stats .stat {
@@ -254,7 +253,13 @@
   opacity: 0;
 }
 
-#tooltip .sockets.hasTraits {
+#tooltip .sockets {
+  display: none;
+}
+
+#tooltip .sockets.has-sockets {
+  display: block;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0 0 16px;
 }
 

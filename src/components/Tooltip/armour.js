@@ -1,104 +1,23 @@
 import React from 'react';
 import cx from 'classnames';
+
 import ObservedImage from '../ObservedImage';
-import '../../utils/destinyEnums';
-import { getDefName } from '../../utils/destinyUtils';
+import { getArmour } from '../../utils/destinyItems';
 
 const armour = (manifest, item) => {
+  let { stats, sockets } = getArmour(manifest, item.hash, false, true);
+
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 
-  let socketIndexes = [];
-
-  let armourStats = [
-    {
-      hash: 2996146975,
-      name: getDefName(2996146975, manifest, 'DestinyStatDefinition'),
-      type: 'bar',
-      modifier: 0
-    },
-    {
-      hash: 392767087,
-      name: getDefName(392767087, manifest, 'DestinyStatDefinition'),
-      type: 'bar',
-      modifier: 0
-    },
-    {
-      hash: 1943323491,
-      name: getDefName(1943323491, manifest, 'DestinyStatDefinition'),
-      type: 'bar',
-      modifier: 0
-    }
-  ];
-
-  if (item.sockets) {
-    Object.keys(item.sockets.socketCategories).forEach(key => {
-      if (item.sockets.socketCategories[key].socketCategoryHash === 2518356196) {
-        socketIndexes = item.sockets.socketCategories[key].socketIndexes;
-        return;
-      }
-    });
-  }
-
-  let intrinsic = false;
-  let traits = [];
-  Object.values(socketIndexes).forEach(index => {
-    let socket = item.sockets.socketEntries[index];
-
-    if (socket.socketTypeHash === 1282012138) {
-      return;
-    }
-    socket.reusablePlugItems.forEach(reusablePlug => {
-      let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
-
-      if (plug.itemCategoryHashes.includes(2237038328)) {
-        plug.investmentStats.forEach(modifier => {
-          let index = armourStats.findIndex(stat => stat.hash === modifier.statTypeHash);
-          if (index > -1) {
-            armourStats[index].modifier = modifier.value;
-          }
-        });
-        intrinsic = manifest.DestinySandboxPerkDefinition[plug.perks[0].perkHash];
-        return;
-      }
-      if (plug.hash === socket.singleInitialItemHash) {
-        plug.investmentStats.forEach(modifier => {
-          let index = armourStats.findIndex(stat => stat.hash === modifier.statTypeHash);
-          if (index > -1) {
-            armourStats[index].modifier = modifier.value;
-          }
-        });
-        traits.push(
-          <div key={plug.hash} className='plug trait'>
-            <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${plug.displayProperties.icon}`} />
-            <div className='text'>
-              <div className='name'>{plug.displayProperties.name}</div>
-              {/* <div className="description">{plug.displayProperties.description}</div> */}
-            </div>
-          </div>
-        );
-      }
-    });
-  });
-
-  let stats = [];
-
-  armourStats.forEach(stat => {
-    let value = item.stats.stats[stat.hash] ? item.stats.stats[stat.hash].value : 0;
-    let modifier = stat.modifier ? stat.modifier : 0;
-    stats.push(
-      <div key={stat.hash} className='stat'>
-        <div className='name'>{stat.name}</div>
-        <div className={cx('value', stat.type)}>{stat.type === 'bar' ? <div className='bar' data-value={value + modifier} style={{ width: `${((value + modifier) / 3) * 100}%` }} /> : value + modifier}</div>
-      </div>
-    );
-  });
+  let intrinsic = sockets.find(socket => socket.singleInitialItem ? socket.singleInitialItem.definition.itemCategoryHashes.includes(2237038328) : false);
+      intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
 
   return (
     <>
       <div className='damage armour'>
         <div className={cx('power')}>
           <div className='text'>600</div>
-          <div className='text'>{getDefName(3897883278, manifest, 'DestinyStatDefinition')}</div>
+          <div className='text'>{manifest.DestinyStatDefinition[3897883278].displayProperties.name}</div>
         </div>
       </div>
       {sourceString ? (
@@ -107,7 +26,7 @@ const armour = (manifest, item) => {
         </div>
       ) : null}
       <div className='stats'>{stats}</div>
-      <div className={cx('sockets', { hasTraits: traits.length > 0 })}>
+      <div className={cx('sockets', { 'has-sockets': sockets.length > 0 })}>
         {intrinsic ? (
           <div className='plug intrinsic'>
             <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${intrinsic.displayProperties.icon}`} />
@@ -117,7 +36,9 @@ const armour = (manifest, item) => {
             </div>
           </div>
         ) : null}
-        {traits.length > 0 ? traits : null}
+        {sockets.length > 0 ? sockets
+          .map(socket => socket.plugs.filter(plug => !plug.definition.itemCategoryHashes.includes(2237038328)).map(plug => plug.element))
+        : null}
       </div>
     </>
   );

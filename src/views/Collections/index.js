@@ -21,7 +21,6 @@ class Collections extends React.Component {
 
   componentDidMount() {
     if (!this.props.match.params.quaternary) {
-      console.log(this.props.match.params.quaternary)
       window.scrollTo(0, 0);
     }
   }
