@@ -13,12 +13,14 @@ const setProfile = (membershipType, membershipId, characterId = false, data, set
 
   const state = store.getState();
   
+  let now = new Date().getTime();
   let value = {
     membershipType: membershipType,
     membershipId: membershipId,
     characterId: characterId,
     data: data,
-    prevData: state.profile.data
+    prevData: state.profile.data,
+    updated: now
   }
 
   store.dispatch({ type: 'SET_PROFILE', payload: value });

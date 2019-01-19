@@ -6,7 +6,8 @@ const defaultState = {
   membershipId: savedProfile ? savedProfile.membershipId : false,
   characterId: false,
   data: false,
-  prevData: false
+  prevData: false,
+  updated: undefined
 }
 
 export default function profileReducer(state = defaultState, action) {

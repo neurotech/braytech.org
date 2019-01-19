@@ -1,8 +1,7 @@
 import React from 'react';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
+import Moment from 'react-moment';
 import packageJSON from '../../../package.json';
 
 import ObservedImage from '../../components/ObservedImage';
@@ -39,11 +38,11 @@ class HeaderProfile extends React.Component {
 
   render() {
     const manifest = this.props.manifest;
-    const characterId = this.props.characterId;
 
-    let profile = this.props.data.profile.profile.data;
-    let characters = this.props.data.profile.characters.data;
-    let characterProgressions = this.props.data.profile.characterProgressions.data;
+    let characterId = this.props.profile.characterId;
+    let profile = this.props.profile.data.profile.profile.data;
+    let characters = this.props.profile.data.profile.characters.data;
+    let characterProgressions = this.props.profile.data.profile.characterProgressions.data;
 
     let character = characters.find(character => character.characterId === characterId);
 
@@ -100,7 +99,7 @@ class HeaderProfile extends React.Component {
           <div className='logo'>
             <Link to='/'>
               <span className='destiny-clovis_bray_device' />
-              Braytech {packageJSON.version}
+              Braytech {packageJSON.version} / <Moment interval={1000} durationFromNow>{this.props.profile.updated}</Moment>
             </Link>
           </div>
           {!viewsInline ? (
@@ -170,14 +169,4 @@ class HeaderProfile extends React.Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    theme: state.theme
-  };
-}
-
-export default compose(
-  connect(
-    mapStateToProps
-  )
-)(HeaderProfile);
+export default HeaderProfile;

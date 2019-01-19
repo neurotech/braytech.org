@@ -1,4 +1,6 @@
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { withNamespaces } from 'react-i18next';
 
 import { isProfileRoute } from '../../utils/globals';
@@ -83,11 +85,21 @@ class Header extends React.Component {
     views = process.env.NODE_ENV !== 'development' ? views.filter(view => !view.dev) : views;
 
     if (this.props.profile.data && this.props.profile.characterId && isProfileRoute(this.props.route.location.pathname, true)) {
-      return <HeaderProfile {...this.props.route} {...this.props.profile} viewport={this.props.viewport} manifest={this.props.manifest} views={views} />;
+      return <HeaderProfile {...this.props} views={views} />;
     } else {
-      return <HeaderStandard {...this.props.profile} viewport={this.props.viewport} views={views} isIndex={this.props.route.location.pathname === '/' ? true : false} />;
+      return <HeaderStandard {...this.props} views={views} isIndex={this.props.route.location.pathname === '/' ? true : false} />;
     }
   }
 }
 
-export default withNamespaces()(Header);
+function mapStateToProps(state, ownProps) {
+  return {
+    profile: state.profile,
+    theme: state.theme
+  };
+}
+
+export default compose(
+  connect(mapStateToProps),
+  withNamespaces()
+)(Header);

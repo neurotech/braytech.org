@@ -1,6 +1,4 @@
 import React from 'react';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
 import packageJSON from '../../../package.json';
@@ -106,14 +104,4 @@ class HeaderStandard extends React.Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    theme: state.theme
-  };
-}
-
-export default compose(
-  connect(
-    mapStateToProps
-  )
-)(HeaderStandard);
+export default HeaderStandard;
