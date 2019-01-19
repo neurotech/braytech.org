@@ -41,7 +41,7 @@ const interpolate = (investmentValue, displayInterpolation) => {
   return round(displayValue);
 };
 
-export const getWeapon = (manifest, hash, mods = true, initialOnly = false, socketExclusions = [2285418970]) => { // 2285418970 === Tracker Disabled
+export const getWeapon = (manifest, hash, mods = true, initialOnly = false, socketExclusions = [2285418970]) => { // 2285418970 === 'Tracker Disabled'
   let item = manifest.DestinyInventoryItemDefinition[hash];
 
   let weaponsStats = [

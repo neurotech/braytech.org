@@ -89,9 +89,9 @@ class Tooltip extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
-      this.setState({
-        hash: false
-      });
+      // this.setState({
+      //   hash: false
+      // });
       this.bindings();
     }
 

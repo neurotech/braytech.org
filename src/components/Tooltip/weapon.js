@@ -10,8 +10,8 @@ const weapon = (manifest, item) => {
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 
-  let intrinsic = sockets.find(socket => socket.plugs[0].definition.itemCategoryHashes.includes(2237038328));
-      intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.plugs[0].definition.perks[0].perkHash] : false;
+  let intrinsic = sockets.find(socket => socket.singleInitialItem ? socket.singleInitialItem.definition.itemCategoryHashes.includes(2237038328) : false);
+      intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
 
   return (
     <>
