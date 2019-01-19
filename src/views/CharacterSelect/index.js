@@ -142,7 +142,7 @@ class CharacterSelect extends React.Component {
     }
 
     const { from } = this.props.location.state || { from: { pathname: '/' } };
-
+    
     if (this.state.profile.data) {
       let clan = null;
       if (this.state.profile.data.groups.results.length === 1) {

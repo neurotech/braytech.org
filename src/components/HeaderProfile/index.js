@@ -154,7 +154,7 @@ class HeaderProfile extends React.Component {
                   <Link
                     to={{
                       pathname: '/character-select',
-                      state: { from: this.props.location }
+                      state: { from: this.props.route.location }
                     }}
                   />
                 </li>
