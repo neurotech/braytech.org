@@ -165,7 +165,7 @@ export const getWeapon = (manifest, hash, socketExclusions = [2285418970], initi
   Object.keys(item.sockets.socketEntries).forEach(key => {
     let socket = item.sockets.socketEntries[key];
 
-    if (socketExclusions.includes(socket.singleInitialItemHash) || socket.socketTypeHash === 2218962841) {
+    if (socketExclusions.includes(socket.singleInitialItemHash)) {
       return;
     }
 
@@ -192,6 +192,10 @@ export const getWeapon = (manifest, hash, socketExclusions = [2285418970], initi
       //   return;
       // }
 
+      // if (plug.hash === 4248210736) { // default shader
+      //   return;
+      // }
+
       if (initialOnly && plug.hash !== socket.singleInitialItemHash) {
         return;
       }
@@ -210,8 +214,29 @@ export const getWeapon = (manifest, hash, socketExclusions = [2285418970], initi
       });
     });
 
+    let singleInitialItem = false;
+    if (socket.singleInitialItemHash !== 0) {
+      let plug = manifest.DestinyInventoryItemDefinition[socket.singleInitialItemHash];
+      singleInitialItem = {
+        definition: plug,
+        element: (
+          <div key={plug.hash} className={cx('plug', 'tooltip', { 'is-intrinsic': plug.itemCategoryHashes.includes(2237038328), 'is-active': plug.hash === socket.singleInitialItemHash })} data-itemhash={plug.hash}>
+            <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
+            <div className='text'>
+              <div className='name'>{plug.displayProperties.name}</div>
+            </div>
+          </div>
+        )
+      };
+    }
+
+    if (socket.singleInitialItemHash !== 0 && !socketPlugs.find(plug => plug.definition.hash === socket.singleInitialItemHash)) {
+      socketPlugs.unshift(singleInitialItem);
+    }
+
     socketsOutput.push({
       categoryHash: item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false,
+      singleInitialItem,
       plugs: socketPlugs
     });
   });

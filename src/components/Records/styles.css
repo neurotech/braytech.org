@@ -120,18 +120,6 @@
   animation: animation-backround-highlight 1s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
 }
 
-@keyframes animation-backround-highlight {
-  0% {
-    background-color: rgba(255, 255, 255, 0);
-  }
-  50% {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-  100% {
-    background-color: rgba(255, 255, 255, 0);
-  }
-}
-
 .list.record-items .all-completed {
   grid-column: 1/-1;
 }

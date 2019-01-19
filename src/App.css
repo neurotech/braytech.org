@@ -516,3 +516,15 @@ button.square.active {
 .wrapper.dark-mode .sticky-nav {
   background-color: hsla(0, 0%, 16%, 0.8);
 }
+
+@keyframes animation-backround-highlight {
+  0% {
+    background-color: rgba(255, 255, 255, 0);
+  }
+  50% {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    background-color: rgba(255, 255, 255, 0);
+  }
+}

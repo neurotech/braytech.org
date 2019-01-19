@@ -17,7 +17,7 @@ class Collectibles extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.quaternaryHash && this.scrollToRecordRef.current !== null) {
+    if (this.props.highlight && this.scrollToRecordRef.current !== null) {
       window.scrollTo({
         top: this.scrollToRecordRef.current.offsetTop + this.scrollToRecordRef.current.offsetHeight / 2 - window.innerHeight / 2
       });
@@ -32,7 +32,6 @@ class Collectibles extends React.Component {
     const profileCollectibles = this.props.profile.data.profile.profileCollectibles.data;
 
     const highlight = this.props.highlight;
-
     let collectibles = [];
 
     if (this.props.node) {

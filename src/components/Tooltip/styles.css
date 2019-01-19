@@ -16,7 +16,7 @@
   --rare: 213, 34%, 48%;
   --uncommon: 126, 35%, 32%;
   --common: 0, 0%, 80%;
-  --exoticDark: 43, 71%, 5%;
+  --exoticDark: 48, 71%, 5%;
   --legendaryDark: 279, 36%, 5%;
   --rareDark: 213, 34%, 6%;
   --uncommonDark: 126, 35%, 5%;
@@ -193,10 +193,6 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-#tooltip .frame.emblem .source {
-  border-top: none;
-}
-
 #tooltip .stats {
   padding: 14px 16px 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -316,7 +312,7 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-#tooltip .perk .description pre {
+#tooltip .frame.ui .description pre {
   padding: 12px 16px 12px;
   font-style: unset;
   letter-spacing: unset;

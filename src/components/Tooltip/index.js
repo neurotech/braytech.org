@@ -10,7 +10,7 @@ import armour from './armour';
 import emblem from './emblem';
 import bounty from './bounty';
 import mod from './mod';
-import perk from './perk';
+import ui from './ui';
 
 class Tooltip extends React.Component {
   constructor(props) {
@@ -177,10 +177,14 @@ class Tooltip extends React.Component {
           kind = 'bounty';
           render = bounty(manifest, item);
           break;
+        case 20:
+          kind = 'ui';
+          render = ui(manifest, item);
+          break;
         case 19:
-          if (item.inventory.bucketTypeHash === 1469714392) {
-            kind = 'perk';
-            render = perk(manifest, item);
+          if (item.inventory.bucketTypeHash === 1469714392 || item.hash === 2162261876) {
+            kind = 'ui';
+            render = ui(manifest, item);
             break;
           }
           kind = 'mod';
@@ -209,10 +213,6 @@ class Tooltip extends React.Component {
           break;
         default:
           tier = 'basic';
-      }
-
-      if (kind === 'perk') {
-        tier = 'ui';
       }
 
       return (

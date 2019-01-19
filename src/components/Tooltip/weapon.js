@@ -7,11 +7,11 @@ import { getWeapon } from '../../utils/destinyItems';
 
 const badSockets = [
   4248210736, // Shaders
-  236077174, // Y1 Masterworks
-  2285418970, // Y2 Masterwork Trackers
-  2323986101, // Mod Sockets
+  236077174, // Year 1 Masterwork
+  2285418970, // Year 2 Masterwork Trackers
+  2323986101, // Empty Mod Sockets
   2931483505, // Ornaments
-  1959648454 // ornmanets
+  1959648454 // Ornmanets
 ];
 
 const weapon = (manifest, item) => {
