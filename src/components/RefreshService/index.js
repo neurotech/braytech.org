@@ -5,7 +5,7 @@ import getProfile from '../../utils/getProfile';
 import setProfile from '../../utils/setProfile';
 
 const AUTO_REFRESH_INTERVAL = 20 * 1000;
-const ONE_HOUR = 60 * 60 * 1000;
+const HALF_HOUR = 30 * 60 * 1000;
 
 class RefreshService extends React.Component {
 
@@ -89,12 +89,13 @@ class RefreshService extends React.Component {
 
   service = (membershipType = this.props.profile.membershipType, membershipId = this.props.profile.membershipId) => {
 
-    if (!this.activeWithinTimespan(ONE_HOUR)) {
+    if (!this.activeWithinTimespan(HALF_HOUR)) {
       return;
     }
 
     if (this.running) {
       console.warn('RefreshService: service was called though it was already running!');
+      this.running = false;
       return;
     } else {
       this.running = true;
@@ -121,6 +122,10 @@ class RefreshService extends React.Component {
         this.running = false;
         // setProfile with new data - triggers componentDidUpdate in App.js to fire this service again
         setProfile(membershipType, membershipId, this.props.profile.characterId, callback.data);
+      } else if (!callback.loading) {
+        this.running = false;
+      } else {
+
       }
     });
   }

@@ -1,9 +1,8 @@
 @font-face {
   font-family: 'destiny';
   src:
-    url('destiny.ttf?rcnbis') format('truetype'),
-    url('destiny.woff?rcnbis') format('woff'),
-    url('destiny.svg?rcnbis#destiny') format('svg');
+    url('destiny.ttf?y6m4y0') format('truetype'),
+    url('destiny.woff?y6m4y0') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -23,6 +22,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.destiny-book_ghost_stories:before {
+  content: "\e9e3";
+}
+.destiny-book_awoken_reef:before {
+  content: "\e9e4";
+}
+.destiny-book_forsaken_prince:before {
+  content: "\e9e5";
+}
 .destiny-inspect_dazzle_2:before {
   content: "\e9e1";
 }

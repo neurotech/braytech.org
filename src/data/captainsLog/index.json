@@ -103,5 +103,10 @@
     "date": "2019-01-20T07:10:31.064Z",
     "version": "1.3.12",
     "content": "## Changes\n- Improvements to RefreshService"
+  },
+  {
+    "date": "2019-01-20T07:10:31.064Z",
+    "version": "1.3.13",
+    "content": "## Changes\n- Added new icons for Ghost Stories, Awoken of the Reef, and Forsaken Prince lore checklists"
   }
 ]

@@ -72,6 +72,10 @@ class NotificationProgress extends React.Component {
       return;
     }
 
+    if (prevProps.profile.membershipId !== this.props.profile.membershipId) {
+      return;
+    }
+
     // console.log('characters', difference(fresh.profile.characters, stale.profile.characters));
     // console.log('profileRecords', difference(fresh.profile.profileRecords.data.records, stale.profile.profileRecords.data.records));
     // console.log('characterRecords', difference(fresh.profile.characterRecords.data[characterId].records, stale.profile.characterRecords.data[characterId].records));
@@ -99,7 +103,7 @@ class NotificationProgress extends React.Component {
           return;
         }
         let state = enumerateRecordState(profileRecords[key].state);
-        console.log(state);
+        //console.log(state);
         if (!state.objectiveNotCompleted && !state.recordRedeemed) {
           if (progress.hash) {
             progress.number = progress.number + 1;

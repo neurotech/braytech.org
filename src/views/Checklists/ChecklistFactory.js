@@ -152,7 +152,7 @@ class ChecklistFactory {
   ghostStories() {
     return this.m.recordChecklist({
       name: this.t('Ghost Stories'),
-      // icon: 'destiny-sleeper_nodes',
+      icon: 'destiny-book_ghost_stories',
       items: this.m.presentationItems(1420597821),
       progressDescription: this.t('Stories found')
     });
@@ -161,7 +161,7 @@ class ChecklistFactory {
   awokenOfTheReef() {
     return this.m.recordChecklist({
       name: this.t('Awoken of the Reef'),
-      // icon: 'destiny-sleeper_nodes',
+      icon: 'destiny-book_awoken_reef',
       items: this.m.presentationItems(3305936921),
       progressDescription: this.t('Crystals scanned')
     });
@@ -170,9 +170,9 @@ class ChecklistFactory {
   forsakenPrince() {
     return this.m.recordChecklist({
       name: this.t('Forsaken Prince'),
-      // icon: 'destiny-sleeper_nodes'
+      icon: 'destiny-book_forsaken_prince',
       items: this.m.presentationItems(655926402),
-      progressDescription: this.t('Lore scanned') // I have no idea what these things are that we're scanning?
+      progressDescription: this.t('Data caches decrypted') // I have no idea what these things are that we're scanning?
     });
   }
 }
