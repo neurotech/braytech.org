@@ -95,6 +95,7 @@ class Header extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     profile: state.profile,
+    refreshService: state.refreshService,
     theme: state.theme
   };
 }

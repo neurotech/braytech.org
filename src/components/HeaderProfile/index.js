@@ -99,7 +99,7 @@ class HeaderProfile extends React.Component {
           <div className='logo'>
             <Link to='/'>
               <span className='destiny-clovis_bray_device' />
-              Braytech {packageJSON.version} / <Moment interval={1000} durationFromNow>{this.props.profile.updated}</Moment>
+              Braytech {packageJSON.version}{this.props.refreshService.config.enabled ? <> / <Moment interval={1000} durationFromNow>{this.props.profile.updated}</Moment></> : null}
             </Link>
           </div>
           {!viewsInline ? (

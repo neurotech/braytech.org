@@ -12,7 +12,35 @@ class RefreshService extends React.Component {
   running = false;
 
   componentDidMount() {
+    this.init();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.profile.data !== this.props.profile.data || prevProps.refreshService.config.enabled !== this.props.refreshService.config.enabled) {
+      if (prevProps.refreshService.config.enabled !== this.props.refreshService.config.enabled) {
+        if (this.props.refreshService.config.enabled) {
+          this.init();
+        } else {
+          this.quit();
+        }
+      } else {
+        this.clearTimer();
+        this.startTimer();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.quit();
+  }
+
+  render() {
+    return null;
+  }
+
+  init() {
     if (this.props.refreshService.config.enabled) {
+      console.log('RefreshService: init');
       this.track();
       document.addEventListener('click', this.clickHandler);
       document.addEventListener('visibilitychange', this.visibilityHandler);
@@ -21,21 +49,11 @@ class RefreshService extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.profile.data !== this.props.profile.data) {
-      this.clearTimer();
-      this.startTimer();
-    }
-  }
-
-  componentWillUnmount() {
+  quit() {
+    console.log('RefreshService: quit');
     document.removeEventListener('click', this.clickHandler);
     document.removeEventListener('visibilitychange', this.visibilityHandler);
     this.clearTimer();
-  }
-
-  render() {
-    return null;
   }
 
   track() {
@@ -76,7 +94,7 @@ class RefreshService extends React.Component {
     }
 
     if (this.running) {
-      console.warn('service was called though it was already running!');
+      console.warn('RefreshService: service was called though it was already running!');
       return;
     } else {
       this.running = true;

@@ -13,7 +13,14 @@ const defaultState = {
 export default function profileReducer(state = defaultState, action) {
   switch (action.type) {
     case 'SET_PROFILE':
-      return action.payload
+      if (state.prevData !== action.payload.data) {
+        let now = new Date().getTime();
+        action.payload.updated = now;
+      }
+      return {
+        ...state,
+        ...action.payload
+      }
     default:
       return state
   }

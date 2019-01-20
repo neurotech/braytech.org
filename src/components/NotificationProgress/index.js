@@ -62,7 +62,6 @@ class NotificationProgress extends React.Component {
 
   componentDidUpdate(prevProps) {
 
-    console.log(this)
     this.timeOut();
 
     const fresh = this.props.profile.data;
@@ -74,7 +73,7 @@ class NotificationProgress extends React.Component {
     }
 
     // console.log('characters', difference(fresh.profile.characters, stale.profile.characters));
-    console.log('profileRecords', difference(fresh.profile.profileRecords.data.records, stale.profile.profileRecords.data.records));
+    // console.log('profileRecords', difference(fresh.profile.profileRecords.data.records, stale.profile.profileRecords.data.records));
     // console.log('characterRecords', difference(fresh.profile.characterRecords.data[characterId].records, stale.profile.characterRecords.data[characterId].records));
     // console.log('profileProgression', difference(fresh.profile.profileProgression, stale.profile.profileProgression));
     // console.log('characterProgressions', difference(fresh.profile.characterProgressions.data[characterId], stale.profile.characterProgressions.data[characterId]));
