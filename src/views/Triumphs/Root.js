@@ -105,8 +105,8 @@ class Root extends React.Component {
               recordsStates.push(scope);
             } else {
               // console.log(`107 Undefined state for ${record.recordHash}`);
-              // states.push({ state: 0 });
-              // recordsStates.push({ state: 0 });
+              states.push({ state: 0 });
+              recordsStates.push({ state: 0 });
             }
           });
         });
@@ -149,7 +149,6 @@ class Root extends React.Component {
         let scope = profileRecords[record.recordHash] ? profileRecords[record.recordHash] : characterRecords[characterId].records[record.recordHash];
         if (scope) {
           states.push(scope);
-          recordsStates.push(scope);
         } else {
           // console.log(`138 Undefined state for ${record.recordHash}`);
         }

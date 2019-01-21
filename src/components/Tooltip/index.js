@@ -21,10 +21,11 @@ class Tooltip extends React.Component {
     };
 
     this.tooltip = React.createRef();
-
-    this.bindings = this.bindings.bind(this);
-    this.mouseMove = this.mouseMove.bind(this);
     this.touchMovement = false;
+    this.mouseMoveXY = {
+      x: 0,
+      y: 0
+    }
   }
 
   mouseMove = e => {
@@ -50,6 +51,10 @@ class Tooltip extends React.Component {
     y = y < 0 ? 0 : y;
 
     if (this.state.hash) {
+      this.mouseMoveXY = {
+        x,
+        y
+      }
       this.tooltip.current.style.cssText = `top: ${y}px; left: ${x}px`;
     }
   };
@@ -88,10 +93,10 @@ class Tooltip extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
-      // this.setState({
-      //   hash: false
-      // });
+    if (this.props.location && prevProps.location.pathname !== this.props.location.pathname) {
+      this.setState({
+        hash: false
+      });
       this.bindings();
     }
 
@@ -216,7 +221,7 @@ class Tooltip extends React.Component {
       }
 
       return (
-        <div id='tooltip' ref={this.tooltip}>
+        <div id='tooltip' ref={this.tooltip} style={{ top: `${this.mouseMoveXY.y}px`, left: `${this.mouseMoveXY.x}px` }}>
           <div className='acrylic' />
           <div className={cx('frame', kind, tier)}>
             <div className='header'>
