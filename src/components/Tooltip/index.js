@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import '../../utils/destinyEnums';
@@ -65,7 +66,7 @@ class Tooltip extends React.Component {
       item.addEventListener('mouseenter', e => {
         if (e.currentTarget.dataset.itemhash) {
           this.setState({
-            hash: parseInt(e.currentTarget.dataset.itemhash, 10)
+            hash: e.currentTarget.dataset.itemhash
           });
         }
       });
@@ -84,7 +85,7 @@ class Tooltip extends React.Component {
         if (!this.touchMovement) {
           if (e.currentTarget.dataset.itemhash) {
             this.setState({
-              hash: parseInt(e.currentTarget.dataset.itemhash, 10)
+              hash: e.currentTarget.dataset.itemhash
             });
           }
         }
@@ -97,6 +98,10 @@ class Tooltip extends React.Component {
       this.setState({
         hash: false
       });
+      this.bindings();
+    }
+
+    if (this.props.vendors !== prevProps.vendors) {
       this.bindings();
     }
 
@@ -165,40 +170,31 @@ class Tooltip extends React.Component {
       let tier;
       let render;
 
-      switch (item.itemType) {
-        case 3:
-          kind = 'weapon';
-          render = weapon(manifest, item);
-          break;
-        case 2:
-          kind = 'armour';
-          render = armour(manifest, item);
-          break;
-        case 14:
-          kind = 'emblem';
-          render = emblem(manifest, item);
-          break;
-        case 26:
-          kind = 'bounty';
-          render = bounty(manifest, item);
-          break;
-        case 20:
-          kind = 'ui';
-          render = ui(manifest, item);
-          break;
-        case 19:
-          if (item.inventory.bucketTypeHash === 1469714392 || item.hash === 2162261876) {
-            kind = 'ui';
-            render = ui(manifest, item);
-            break;
-          }
-          kind = 'mod';
-          render = mod(manifest, item);
-          break;
-        default:
-          kind = '';
-          render = fallback(manifest, item);
-      }
+  switch (item.itemType) {
+    case 3:
+      kind = 'weapon';
+      render = weapon(manifest, item);
+      break;
+    case 2:
+      kind = 'armour';
+      render = armour(manifest, item);
+      break;
+    case 14:
+      kind = 'emblem';
+      render = emblem(manifest, item);
+      break;
+    case 26:
+      kind = 'bounty';
+      render = bounty(manifest, item);
+      break;
+    case 19:
+      kind = 'mod';
+      render = mod(manifest, item);
+      break;
+    default:
+      kind = '';
+      render = fallback(manifest, item);
+  }
 
       switch (item.inventory.tierType) {
         case 6:
@@ -241,4 +237,11 @@ class Tooltip extends React.Component {
   }
 }
 
-export default Tooltip;
+function mapStateToProps(state, ownProps) {
+  return {
+    profile: state.profile,
+    vendors: state.vendors
+  };
+}
+
+export default connect(mapStateToProps)(Tooltip);

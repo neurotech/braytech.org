@@ -105,28 +105,28 @@ class Root extends React.Component {
               recordsStates.push(scope);
             } else {
               // console.log(`107 Undefined state for ${record.recordHash}`);
-              states.push({ state: 0 });
-              recordsStates.push({ state: 0 });
+              // states.push({ state: 0 });
+              // recordsStates.push({ state: 0 });
             }
           });
         });
       });
 
-      console.log(
-        node.displayProperties.name,
-        states.length,
-        states.filter(record => enumerateRecordState(record.state).canEquipTitle).length,
-        states.filter(record => enumerateRecordState(record.state).entitlementUnowned).length,
-        states.filter(record => enumerateRecordState(record.state).invisible).length,
-        states.filter(record => enumerateRecordState(record.state).objectiveNotCompleted).length,
-        states.filter(record => enumerateRecordState(record.state).obscured).length,
-        states.filter(record => enumerateRecordState(record.state).recordRedeemed).length,
-        states.filter(record => enumerateRecordState(record.state).rewardUnavailable).length
-      );
-      console.log(
-        node.displayProperties.name,
-        states.length - states.filter(record => enumerateRecordState(record.state).invisible).length - states.filter(record => enumerateRecordState(record.state).obscured).length
-      )
+      // console.log(
+      //   node.displayProperties.name,
+      //   states.length,
+      //   states.filter(record => enumerateRecordState(record.state).canEquipTitle).length,
+      //   states.filter(record => enumerateRecordState(record.state).entitlementUnowned).length,
+      //   states.filter(record => enumerateRecordState(record.state).invisible).length,
+      //   states.filter(record => enumerateRecordState(record.state).objectiveNotCompleted).length,
+      //   states.filter(record => enumerateRecordState(record.state).obscured).length,
+      //   states.filter(record => enumerateRecordState(record.state).recordRedeemed).length,
+      //   states.filter(record => enumerateRecordState(record.state).rewardUnavailable).length
+      // );
+      // console.log(
+      //   node.displayProperties.name,
+      //   states.length - states.filter(record => enumerateRecordState(record.state).invisible).length - states.filter(record => enumerateRecordState(record.state).obscured).length
+      // )
 
       nodes.push(
         <div key={node.hash} className='node'>

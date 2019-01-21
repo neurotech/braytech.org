@@ -187,6 +187,7 @@ class App extends React.Component {
               render={route => (
                 <div className={cx('wrapper', this.props.theme.selected, { 'profile-route': isProfileRoute(route.location.pathname) })}>
                   <Route path='/' render={route => <NotificationApp updateAvailable={this.props.updateAvailable} />} />
+                  <Route path='/' render={route => <Tooltip {...route} manifest={this.manifest} />} />
                   <GoogleAnalytics.RouteTracker />
                   <div className='main'>
                     <Route path='/' render={route => <Header route={route} {...this.state} {...this.props} manifest={this.manifest} />} />
