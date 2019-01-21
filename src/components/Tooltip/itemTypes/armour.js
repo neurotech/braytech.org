@@ -1,8 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 
-import ObservedImage from '../ObservedImage';
-import { getArmour } from '../../utils/destinyItems';
+import ObservedImage from '../../ObservedImage';
+import { getArmour } from '../../../utils/destinyItems';
 
 const armour = (manifest, item) => {
   let { stats, sockets } = getArmour(manifest, item.hash, false, true);

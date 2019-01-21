@@ -1,9 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 
-import ObservedImage from '../ObservedImage';
-import { damageTypeToString, ammoTypeToString } from '../../utils/destinyUtils';
-import { getWeapon } from '../../utils/destinyItems';
+import ObservedImage from '../../ObservedImage';
+import { damageTypeToString, ammoTypeToString } from '../../../utils/destinyUtils';
+import { getWeapon } from '../../../utils/destinyItems';
 
 const weapon = (manifest, item) => {
   let { stats, sockets } = getWeapon(manifest, item.hash, false, true);

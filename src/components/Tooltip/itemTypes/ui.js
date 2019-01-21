@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../utils/destinyEnums';
+import '../../../utils/destinyEnums';
 
 const ui = (manifest, item) => {
 

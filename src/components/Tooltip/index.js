@@ -1,17 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import cx from 'classnames';
-
-import '../../utils/destinyEnums';
 
 import './styles.css';
-import fallback from './fallback';
-import weapon from './weapon';
-import armour from './armour';
-import emblem from './emblem';
-import bounty from './bounty';
-import mod from './mod';
-import ui from './ui';
+import itemTypes from './itemTypes';
+
 
 class Tooltip extends React.Component {
   constructor(props) {
@@ -136,99 +128,12 @@ class Tooltip extends React.Component {
   render() {
     let manifest = this.props.manifest;
     if (this.state.hash) {
-      let item;
-      if (this.state.hash === 343) {
-        item = {
-          redacted: true
-        };
-      } else {
-        item = manifest.DestinyInventoryItemDefinition[this.state.hash];
-      }
 
-      if (item.redacted) {
-        return (
-          <div id='tooltip' ref={this.tooltip}>
-            <div className='acrylic' />
-            <div className='frame common'>
-              <div className='header'>
-                <div className='name'>Classified</div>
-                <div>
-                  <div className='kind'>Insufficient clearance</div>
-                </div>
-              </div>
-              <div className='black'>
-                <div className='description'>
-                  <pre>Keep it clean.</pre>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      }
-
-      let kind;
-      let tier;
-      let render;
-
-  switch (item.itemType) {
-    case 3:
-      kind = 'weapon';
-      render = weapon(manifest, item);
-      break;
-    case 2:
-      kind = 'armour';
-      render = armour(manifest, item);
-      break;
-    case 14:
-      kind = 'emblem';
-      render = emblem(manifest, item);
-      break;
-    case 26:
-      kind = 'bounty';
-      render = bounty(manifest, item);
-      break;
-    case 19:
-      kind = 'mod';
-      render = mod(manifest, item);
-      break;
-    default:
-      kind = '';
-      render = fallback(manifest, item);
-  }
-
-      switch (item.inventory.tierType) {
-        case 6:
-          tier = 'exotic';
-          break;
-        case 5:
-          tier = 'legendary';
-          break;
-        case 4:
-          tier = 'rare';
-          break;
-        case 3:
-          tier = 'uncommon';
-          break;
-        case 2:
-          tier = 'basic';
-          break;
-        default:
-          tier = 'basic';
-      }
+      let render = itemTypes(manifest, this.state.hash);
 
       return (
         <div id='tooltip' ref={this.tooltip} style={{ top: `${this.mouseMoveXY.y}px`, left: `${this.mouseMoveXY.x}px` }}>
-          <div className='acrylic' />
-          <div className={cx('frame', kind, tier)}>
-            <div className='header'>
-              <div className='name'>{item.displayProperties.name}</div>
-              <div>
-                <div className='kind'>{item.itemTypeDisplayName}</div>
-                {kind !== 'perk' ? <div className='rarity'>{item.inventory.tierTypeName}</div> : null}
-              </div>
-            </div>
-            <div className='black'>{render}</div>
-          </div>
+          {render}
         </div>
       );
     } else {

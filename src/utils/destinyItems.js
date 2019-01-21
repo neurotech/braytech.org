@@ -41,6 +41,81 @@ const interpolate = (investmentValue, displayInterpolation) => {
   return round(displayValue);
 };
 
+export const getSockets = (manifest, hash, mods = true, initialOnly = false, socketExclusions = []) => {
+  let item = manifest.DestinyInventoryItemDefinition[hash];
+
+  let socketsOutput = [];
+  Object.keys(item.sockets.socketEntries).forEach(key => {
+    let socket = item.sockets.socketEntries[key];
+    
+    let categoryHash = item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false
+
+    let modCategoryHash = [3379164649, 590099826, 2685412949];
+
+    if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && modCategoryHash.includes(categoryHash))) {
+      return;
+    }
+
+    let socketPlugs = [];
+
+    socket.reusablePlugItems.forEach(reusablePlug => {
+      let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
+
+      if (initialOnly && plug.hash !== socket.singleInitialItemHash) {
+        return;
+      }
+
+      socketPlugs.push({
+        active: plug.hash === socket.singleInitialItemHash,
+        definition: plug,
+        element: (
+          <div key={plug.hash} className={cx('plug', 'tooltip', { 'is-intrinsic': plug.itemCategoryHashes.includes(2237038328), 'is-active': plug.hash === socket.singleInitialItemHash })} data-itemhash={plug.hash}>
+            <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
+            <div className='text'>
+              <div className='name'>{plug.displayProperties.name}</div>
+            </div>
+          </div>
+        )
+      });
+    });
+
+    let singleInitialItem = false;
+    if (socket.singleInitialItemHash !== 0) {
+      let plug = manifest.DestinyInventoryItemDefinition[socket.singleInitialItemHash];
+      singleInitialItem = {
+        definition: plug,
+        element: (
+          <div key={plug.hash} className={cx('plug', 'tooltip', { 'is-intrinsic': plug.itemCategoryHashes.includes(2237038328), 'is-active': plug.hash === socket.singleInitialItemHash })} data-itemhash={plug.hash}>
+            <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
+            <div className='text'>
+              <div className='name'>{plug.displayProperties.name}</div>
+            </div>
+          </div>
+        )
+      };
+    }
+
+    if (socket.singleInitialItemHash !== 0 && !socketPlugs.find(plug => plug.definition.hash === socket.singleInitialItemHash)) {
+      socketPlugs.unshift(singleInitialItem);
+    }
+
+    if (!singleInitialItem && socketPlugs.length === 0) {
+      return;
+    }
+
+    socketsOutput.push({
+      categoryHash,
+      singleInitialItem,
+      plugs: socketPlugs
+    });
+  });
+
+  return {
+    sockets: socketsOutput
+  }
+
+}
+
 export const getWeapon = (manifest, hash, mods = true, initialOnly = false, socketExclusions = [2285418970]) => { // 2285418970 === 'Tracker Disabled'
   let item = manifest.DestinyInventoryItemDefinition[hash];
 
