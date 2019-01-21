@@ -6,35 +6,39 @@ import ObservedImage from '../../ObservedImage';
 import { getSockets } from '../../../utils/destinyItems';
 
 const emblem = (manifest, item) => {
-  let sockets = item.sockets ? getSockets(manifest, item.hash, false, true, [1608119540]).sockets : [];
+  let sockets = [];
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 
   let description = item.displayProperties.description !== '' ? item.displayProperties.description : false;
 
   if (item.sockets) {
+    sockets = getSockets(manifest, item.hash, false, true, [1608119540]).sockets;
+
     let variants = item.sockets.socketEntries.find(socket => socket.singleInitialItemHash === 1608119540);
-    let plugs = [];
-    variants.reusablePlugItems
-      .filter(plug => plug.plugItemHash !== 1608119540)
-      .forEach(plug => {
-        let def = manifest.DestinyInventoryItemDefinition[plug.plugItemHash];
-        plugs.push({
-          element: (
-            <div key={def.hash} className={cx('plug', 'tooltip')} data-itemhash={def.hash}>
-              <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${def.displayProperties.icon}`} />
-              <div className='text'>
-                <div className='name'>{def.displayProperties.name}</div>
-                <div className='description'>Emblem variant</div>
+    if (variants) {
+      let plugs = [];
+      variants.reusablePlugItems
+        .filter(plug => plug.plugItemHash !== 1608119540)
+        .forEach(plug => {
+          let def = manifest.DestinyInventoryItemDefinition[plug.plugItemHash];
+          plugs.push({
+            element: (
+              <div key={def.hash} className={cx('plug', 'tooltip')} data-itemhash={def.hash}>
+                <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${def.displayProperties.icon}`} />
+                <div className='text'>
+                  <div className='name'>{def.displayProperties.name}</div>
+                  <div className='description'>Emblem variant</div>
+                </div>
               </div>
-            </div>
-          )
+            )
+          });
         });
-      });
-    if (plugs.length > 0) {
-      sockets.push({
-        plugs
-      });
+      if (plugs.length > 0) {
+        sockets.push({
+          plugs
+        });
+      }
     }
   }
 
