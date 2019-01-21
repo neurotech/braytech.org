@@ -487,10 +487,9 @@ button.square.active {
   user-select: none;
 }
 
-/* html.backdropfilter .sticky-nav {
-  background-color: rgba(0, 0, 0, 0);
-  backdrop-filter: blur(3px) brightness(0.9);
-} */
+html.backdropfilter .sticky-nav{
+  backdrop-filter: blur(7px) brightness(1.2);
+}
 
 .sticky-nav i {
   vertical-align: -2px;
