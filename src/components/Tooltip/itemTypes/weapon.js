@@ -3,10 +3,11 @@ import cx from 'classnames';
 
 import ObservedImage from '../../ObservedImage';
 import { damageTypeToString, ammoTypeToString } from '../../../utils/destinyUtils';
-import { getWeapon } from '../../../utils/destinyItems';
+import { getWeapon, getOrnaments } from '../../../utils/destinyItems';
 
 const weapon = (manifest, item) => {
   let { stats, sockets } = getWeapon(manifest, item.hash, false, true);
+  let ornaments = getOrnaments(manifest, item.hash);
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 
@@ -49,5 +50,9 @@ const weapon = (manifest, item) => {
     </>
   );
 };
+
+// {ornaments.length > 0
+//   ? ornaments.map(ornament => ornament.element)
+//   : null}
 
 export default weapon;

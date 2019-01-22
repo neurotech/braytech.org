@@ -22,12 +22,12 @@ const sparrow = (manifest, item) => {
           <pre>{description}</pre>
         </div>
       ) : null}
+      <div className={cx('sockets', { 'has-sockets': sockets.length > 0 })}>{sockets.length > 0 ? sockets.map(socket => socket.plugs.map(plug => plug.element)) : null}</div>
       {sourceString ? (
         <div className={cx('source', { 'no-border': !description })}>
           <p>{sourceString}</p>
         </div>
       ) : null}
-      <div className={cx('sockets', { 'has-sockets': sockets.length > 0 })}>{sockets.length > 0 ? sockets.map(socket => socket.plugs.map(plug => plug.element)) : null}</div>
     </>
   );
 };

@@ -63,6 +63,7 @@ export const getSockets = (manifest, hash, mods = true, initialOnly = false, soc
             <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
             <div className='text'>
               <div className='name'>{plug.displayProperties.name}</div>
+              <div className='description'>{plug.itemTypeDisplayName}</div>
             </div>
           </div>
         )
@@ -79,6 +80,7 @@ export const getSockets = (manifest, hash, mods = true, initialOnly = false, soc
             <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
             <div className='text'>
               <div className='name'>{plug.displayProperties.name}</div>
+              <div className='description'>{plug.itemTypeDisplayName}</div>
             </div>
           </div>
         )
@@ -104,7 +106,40 @@ export const getSockets = (manifest, hash, mods = true, initialOnly = false, soc
     sockets: socketsOutput
   }
 
-}
+};
+
+export const getOrnaments = (manifest, hash) => {
+  let item = manifest.DestinyInventoryItemDefinition[hash];
+
+  let ornaments = [];
+
+  let defaultOrnamentHash = [1959648454, 2931483505];
+  if (item.sockets) {
+    Object.keys(item.sockets.socketEntries).forEach(key => {
+      if (defaultOrnamentHash.includes(item.sockets.socketEntries[key].singleInitialItemHash)) {
+        item.sockets.socketEntries[key].reusablePlugItems
+        .filter(plug => !defaultOrnamentHash.includes(plug.plugItemHash))
+        .forEach(plug => {
+          let def = manifest.DestinyInventoryItemDefinition[plug.plugItemHash];
+          ornaments.push({
+            element: (
+              <div key={def.hash} className={cx('plug', 'tooltip')} data-itemhash={def.hash}>
+                <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${def.displayProperties.icon}`} />
+                <div className='text'>
+                  <div className='name'>{def.displayProperties.name}</div>
+                  <div className='description'>Ornament</div>
+                </div>
+              </div>
+            )
+          });
+        });
+      }
+    });
+  }
+
+  return ornaments;
+
+};
 
 export const getWeapon = (manifest, hash, mods = true, initialOnly = false, socketExclusions = [2285418970]) => { // 2285418970 === 'Tracker Disabled'
   let item = manifest.DestinyInventoryItemDefinition[hash];
@@ -266,6 +301,7 @@ export const getWeapon = (manifest, hash, mods = true, initialOnly = false, sock
             <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
             <div className='text'>
               <div className='name'>{plug.displayProperties.name}</div>
+              <div className='description'>{plug.itemTypeDisplayName}</div>
             </div>
           </div>
         )
@@ -282,6 +318,7 @@ export const getWeapon = (manifest, hash, mods = true, initialOnly = false, sock
             <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
             <div className='text'>
               <div className='name'>{plug.displayProperties.name}</div>
+              <div className='description'>{plug.itemTypeDisplayName}</div>
             </div>
           </div>
         )
@@ -405,6 +442,7 @@ export const getArmour = (manifest, hash, mods = true, initialOnly = false, sock
               <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
               <div className='text'>
                 <div className='name'>{plug.displayProperties.name}</div>
+                <div className='description'>{plug.itemTypeDisplayName}</div>
               </div>
             </div>
           )
@@ -421,6 +459,7 @@ export const getArmour = (manifest, hash, mods = true, initialOnly = false, sock
               <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
               <div className='text'>
                 <div className='name'>{plug.displayProperties.name}</div>
+                <div className='description'>{plug.itemTypeDisplayName}</div>
               </div>
             </div>
           )

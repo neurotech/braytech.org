@@ -9,11 +9,18 @@ const ghost = (manifest, item) => {
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 
+  let description = item.displayProperties.description !== '' ? item.displayProperties.description : false;
+  
   let intrinsic = sockets.find(socket => (socket.singleInitialItem ? socket.singleInitialItem.definition.itemCategoryHashes.includes(2237038328) : false));
   intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
 
   return (
     <>
+      {description ? (
+        <div className='description'>
+          <pre>{description}</pre>
+        </div>
+      ) : null}
       <div className={cx('sockets', { 'has-sockets': sockets.length > 0 })}>
         {intrinsic ? (
           <div className='plug intrinsic'>
