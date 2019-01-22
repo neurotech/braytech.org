@@ -8,6 +8,7 @@ import emblem from './emblem';
 import bounty from './bounty';
 import mod from './mod';
 import ghost from './ghost';
+import sparrow from './sparrow';
 import ui from './ui';
 
 export default (manifest, hash) => {
@@ -49,6 +50,10 @@ export default (manifest, hash) => {
     case 20:
       kind = 'bounty';
       black = ui(manifest, item);
+      break;
+    case 22:
+      kind = 'sparrow';
+      black = sparrow(manifest, item);
       break;
     case 24:
       kind = 'ghost';

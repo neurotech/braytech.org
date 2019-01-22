@@ -50,7 +50,7 @@ export const getSockets = (manifest, hash, mods = true, initialOnly = false, soc
     
     let categoryHash = item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false
 
-    let modCategoryHash = [3379164649, 590099826, 2685412949];
+    let modCategoryHash = [3379164649, 590099826, 2685412949, 4243480345];
 
     if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && modCategoryHash.includes(categoryHash))) {
       return;
