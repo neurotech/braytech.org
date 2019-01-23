@@ -13,7 +13,6 @@ import './styles.css';
 class HeaderProfile extends React.Component {
   constructor(props) {
     super(props);
-    this.manifest = props.manifest;
     this.state = {
       mobileNavOpen: false,
       lastUpdate: false,
@@ -105,13 +104,15 @@ class HeaderProfile extends React.Component {
       </div>
     );
 
+    // {this.props.refreshService.config.enabled ? <> / <Moment interval={1000} durationFromNow>{this.props.profile.updated}</Moment></> : null}
+
     return (
       <div id='header' className={cx('profile-header', this.props.theme.selected, { navOpen: this.state.mobileNavOpen })}>
         <div className='braytech'>
           <div className='logo'>
             <Link to='/'>
               <span className='destiny-clovis_bray_device' />
-              Braytech {packageJSON.version}{this.props.refreshService.config.enabled ? <> / <Moment interval={1000} durationFromNow>{this.props.profile.updated}</Moment></> : null}
+              Braytech {packageJSON.version}
             </Link>
           </div>
           {!viewsInline ? (
@@ -149,7 +150,7 @@ class HeaderProfile extends React.Component {
                   />
                   <div className='displayName'>{profile.userInfo.displayName}</div>
                   <div className='basics'>
-                    {character.baseCharacterLevel} / {classHashToString(character.classHash, this.manifest, character.genderType)} / <span className='light'>{character.light}</span>
+                    {character.baseCharacterLevel} / {classHashToString(character.classHash, this.props.manifest, character.genderType)} / <span className='light'>{character.light}</span>
                   </div>
                   <ProgressBar
                     classNames={{

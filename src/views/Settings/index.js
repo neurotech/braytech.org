@@ -143,7 +143,7 @@ class Settings extends React.Component {
           <div className='sub-header sub'>
             <div>{t('Refresh service')}</div>
           </div>
-          <div className='description'>{t("This is an experimental feature that will refresh the active profile's data every 20 seconds")}</div>
+          <div className='description'>{t("Refresh the active profile's data every 20 seconds")}</div>
           <ul className='list settings'>
             <li
               key='enabled'
