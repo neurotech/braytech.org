@@ -5,7 +5,7 @@ import getProfile from '../../utils/getProfile';
 import setProfile from '../../utils/setProfile';
 
 const AUTO_REFRESH_INTERVAL = 20 * 1000;
-const HALF_HOUR = 30 * 60 * 1000;
+const TIMEOUT = 60 * 60 * 1000;
 
 class RefreshService extends React.Component {
 
@@ -24,8 +24,8 @@ class RefreshService extends React.Component {
           this.quit();
         }
       } else {
-        this.clearTimer();
-        this.startTimer();
+        this.clearInterval();
+        this.startInterval();
       }
     }
   }
@@ -45,7 +45,7 @@ class RefreshService extends React.Component {
       document.addEventListener('click', this.clickHandler);
       document.addEventListener('visibilitychange', this.visibilityHandler);
 
-      this.startTimer();
+      this.startInterval();
     }
   }
 
@@ -53,10 +53,10 @@ class RefreshService extends React.Component {
     console.log('RefreshService: quit');
     document.removeEventListener('click', this.clickHandler);
     document.removeEventListener('visibilitychange', this.visibilityHandler);
-    this.clearTimer();
+    this.clearInterval();
   }
 
-  track() {
+  track() {   
     this.lastActivityTimestamp = Date.now();
   }
 
@@ -64,16 +64,16 @@ class RefreshService extends React.Component {
     return Date.now() - this.lastActivityTimestamp <= timespan;
   }
 
-  startTimer() {
+  startInterval() {
     // console.log('starting a timer');
-    this.refreshAccountDataInterval = window.setTimeout(
+    this.refreshAccountDataInterval = window.setInterval(
       this.service,
       AUTO_REFRESH_INTERVAL
     );
   }
 
-  clearTimer() {
-    window.clearTimeout(this.refreshAccountDataInterval);
+  clearInterval() {
+    window.clearInterval(this.refreshAccountDataInterval);
   }
 
   clickHandler = () => {
@@ -89,7 +89,7 @@ class RefreshService extends React.Component {
 
   service = (membershipType = this.props.profile.membershipType, membershipId = this.props.profile.membershipId) => {
 
-    if (!this.activeWithinTimespan(HALF_HOUR)) {
+    if (!this.activeWithinTimespan(TIMEOUT)) {
       return;
     }
 

@@ -36,8 +36,8 @@ import Vendors from './views/Vendors';
 import Settings from './views/Settings';
 import Pride from './views/Pride';
 import Credits from './views/Credits';
-import Tools from './views/Tools';
-import ClanBannerBuilder from './views/Tools/ClanBannerBuilder';
+import Resources from './views/Resources';
+import ClanBannerBuilder from './views/Resources/ClanBannerBuilder';
 
 // Print timings of promises to console (and performance logger)
 // if we're running in development mode.
@@ -169,8 +169,8 @@ class App extends React.Component {
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />
-                      <Route path='/tools' exact render={() => <Tools />} />
-                      <Route path='/tools/clan-banner-builder/:decalBackgroundColorId?/:decalColorId?/:decalId?/:gonfalonColorId?/:gonfalonDetailColorId?/:gonfalonDetailId?/:gonfalonId?/' exact render={route => <ClanBannerBuilder {...route} />} />
+                      <Route path='/resources' exact render={() => <Resources />} />
+                      <Route path='/resources/clan-banner-builder/:decalBackgroundColorId?/:decalColorId?/:decalId?/:gonfalonColorId?/:gonfalonDetailColorId?/:gonfalonDetailId?/:gonfalonId?/' exact render={route => <ClanBannerBuilder {...route} />} />
                       <Route path='/' exact render={() => <Index />} />
                     </Switch>
                   </div>
@@ -279,8 +279,8 @@ class App extends React.Component {
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />
-                      <Route path='/tools' exact render={() => <Tools />} />
-                      <Route path='/tools/clan-banner-builder/:decalBackgroundColorId?/:decalColorId?/:decalId?/:gonfalonColorId?/:gonfalonDetailColorId?/:gonfalonDetailId?/:gonfalonId?/' exact render={route => <ClanBannerBuilder {...route} />} />
+                      <Route path='/resources' exact render={() => <Resources />} />
+                      <Route path='/resources/clan-banner-builder/:decalBackgroundColorId?/:decalColorId?/:decalId?/:gonfalonColorId?/:gonfalonDetailColorId?/:gonfalonDetailId?/:gonfalonId?/' exact render={route => <ClanBannerBuilder {...route} />} />
                       <Route path='/' render={() => <Index />} />
                     </Switch>
                   </div>

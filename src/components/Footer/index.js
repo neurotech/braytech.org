@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
+import { withNamespaces } from 'react-i18next';
 
 import './styles.css';
-import { withNamespaces } from 'react-i18next';
 
 class Footer extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class Footer extends React.Component {
       return (
         <div id='footer' className={cx({ dark: darkPaths.includes(this.props.route.location.pathname) })}>
           <div>
-            © 2018 Tom Chapman
+            © 2019 Tom Chapman
           </div>
           <ul>
             <li>

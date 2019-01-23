@@ -71,7 +71,7 @@ class HeaderProfile extends React.Component {
     );
 
     let viewsInline = false;
-    if (this.props.viewport.width >= 1300) {
+    if (this.props.viewport.width >= 1360) {
       viewsInline = true;
     }
 

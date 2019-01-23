@@ -69,9 +69,9 @@ class Header extends React.Component {
         exact: false
       },
       {
-        name: t('Tools'),
-        desc: t('Assorted Destiny-related tools'),
-        slug: '/tools',
+        name: t('Resources'),
+        desc: t('Assorted Destiny-related resources'),
+        slug: '/resources',
         exact: true
       },
       {

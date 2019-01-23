@@ -9,7 +9,7 @@ export const Globals = {
     bungie: "https://www.bungie.net"
   },
   routes: {
-    standard: ['character-select', 'pride', 'credits', 'settings', 'tools'],
+    standard: ['character-select', 'pride', 'credits', 'settings', 'resources'],
     badboys: ['vendors']
   }
 }
