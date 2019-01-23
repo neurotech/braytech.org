@@ -38,6 +38,7 @@ import Pride from './views/Pride';
 import Credits from './views/Credits';
 import Resources from './views/Resources';
 import ClanBannerBuilder from './views/Resources/ClanBannerBuilder';
+import GodRolls from './views/Resources/GodRolls';
 
 // Print timings of promises to console (and performance logger)
 // if we're running in development mode.
@@ -171,6 +172,7 @@ class App extends React.Component {
                       <Route path='/credits' exact render={() => <Credits />} />
                       <Route path='/resources' exact render={() => <Resources />} />
                       <Route path='/resources/clan-banner-builder/:decalBackgroundColorId?/:decalColorId?/:decalId?/:gonfalonColorId?/:gonfalonDetailColorId?/:gonfalonDetailId?/:gonfalonId?/' exact render={route => <ClanBannerBuilder {...route} />} />
+                      <Route path='/resources/god-rolls' exact render={() => <GodRolls manifest={this.manifest} />} />
                       <Route path='/' exact render={() => <Index />} />
                     </Switch>
                   </div>
@@ -281,6 +283,7 @@ class App extends React.Component {
                       <Route path='/credits' exact render={() => <Credits />} />
                       <Route path='/resources' exact render={() => <Resources />} />
                       <Route path='/resources/clan-banner-builder/:decalBackgroundColorId?/:decalColorId?/:decalId?/:gonfalonColorId?/:gonfalonDetailColorId?/:gonfalonDetailId?/:gonfalonId?/' exact render={route => <ClanBannerBuilder {...route} />} />
+                      <Route path='/resources/god-rolls' exact render={() => <GodRolls manifest={this.manifest} />} />
                       <Route path='/' render={() => <Index />} />
                     </Switch>
                   </div>
