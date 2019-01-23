@@ -15,11 +15,12 @@ class HeaderProfile extends React.Component {
     super(props);
     this.manifest = props.manifest;
     this.state = {
-      mobileNavOpen: false
+      mobileNavOpen: false,
+      lastUpdate: false,
+      updateFlash: false,
     };
 
-    this.TriggerClickHandler = this.TriggerClickHandler.bind(this);
-    this.NavlinkClickHandler = this.NavlinkClickHandler.bind(this);
+    this.updateFlash = false;
   }
 
   TriggerClickHandler = () => {
@@ -35,6 +36,17 @@ class HeaderProfile extends React.Component {
       this.setState({ mobileNavOpen: false });
     }
   };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.profile.updated !== this.props.profile.updated && this.state.lastUpdate !== this.props.profile.updated && !this.state.updateFlash) {
+      this.setState({ lastUpdate: this.props.profile.updated, updateFlash: true })
+    }
+    if (this.state.updateFlash) {
+      window.setTimeout(() => {
+        this.setState({ updateFlash: false })
+      }, 1000);
+    }
+  }
 
   render() {
     const manifest = this.props.manifest;
@@ -117,7 +129,7 @@ class HeaderProfile extends React.Component {
           ) : null}
         </div>
         <div className='profile'>
-          <div className='background'>
+          <div className={cx('background', { 'update-flash': this.state.updateFlash })}>
             <ObservedImage
               className={cx('image', 'emblem', {
                 missing: emblemDefinition.redacted
