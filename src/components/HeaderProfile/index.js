@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 import packageJSON from '../../../package.json';
 
 import ObservedImage from '../../components/ObservedImage';

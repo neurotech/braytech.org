@@ -164,6 +164,7 @@ html.backdropfilter #header.profile-header .braytech {
 
 #header.profile-header .characters .list li .progress-bar .bar .fill {
   background-color: #5aa366;
+  transition: width .5s;
 }
 
 #header.profile-header .characters .list li .progress-bar.capped .bar .fill {

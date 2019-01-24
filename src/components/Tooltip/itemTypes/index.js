@@ -10,8 +10,15 @@ import mod from './mod';
 import ghost from './ghost';
 import sparrow from './sparrow';
 import ui from './ui';
+import sandboxPerk from './sandboxPerk';
 
-export default (manifest, hash) => {
+export default (profile, manifest, hash, itemInstanceId, table) => {
+
+  const itemComponents = profile.data.profile.itemComponents;
+
+  if (!table) {
+    table = 'DestinyInventoryItemDefinition';
+  }
 
   let item;
   if (hash === '343') {
@@ -19,73 +26,86 @@ export default (manifest, hash) => {
       redacted: true
     };
   } else {
-    item = manifest.DestinyInventoryItemDefinition[hash];
+    item = manifest[table][hash];
   }
 
-  let kind;
-  let tier;
+  if (itemInstanceId) {
+    item.instanceSockets = itemComponents.sockets.data[itemInstanceId] ? itemComponents.sockets.data[itemInstanceId].sockets : false;
+  }
+
+  let kind = 'ui';
+  let tier = 'basic';;
   let black;
 
-  switch (item.itemType) {
-    case 1:
-      kind = 'ui';
-      black = ui(manifest, item);
-      break;
-    case 3:
-      kind = 'weapon';
-      black = weapon(manifest, item);
-      break;
-    case 2:
-      kind = 'armour';
-      black = armour(manifest, item);
-      break;
-    case 14:
-      kind = 'emblem';
-      black = emblem(manifest, item);
-      break;
-    case 19:
-      kind = 'mod';
-      black = mod(manifest, item);
-      break;
-    case 20:
-      kind = 'bounty';
-      black = ui(manifest, item);
-      break;
-    case 22:
-      kind = 'sparrow';
-      black = sparrow(manifest, item);
-      break;
-    case 24:
-      kind = 'ghost';
-      black = ghost(manifest, item);
-      break;
-    case 26:
-      kind = 'bounty';
-      black = bounty(manifest, item);
-      break;
-    default:
-      kind = '';
-      black = fallback(manifest, item);
+  if (item.itemType) {
+    switch (item.itemType) {
+      case 1:
+        kind = 'ui';
+        black = ui(manifest, item);
+        break;
+      case 3:
+        kind = 'weapon';
+        black = weapon(manifest, item);
+        break;
+      case 2:
+        kind = 'armour';
+        black = armour(manifest, item);
+        break;
+      case 14:
+        kind = 'emblem';
+        black = emblem(manifest, item);
+        break;
+      case 19:
+        kind = 'mod';
+        black = mod(manifest, item);
+        break;
+      case 20:
+        kind = 'bounty';
+        black = ui(manifest, item);
+        break;
+      case 22:
+        kind = 'sparrow';
+        black = sparrow(manifest, item);
+        break;
+      case 24:
+        kind = 'ghost';
+        black = ghost(manifest, item);
+        break;
+      case 26:
+        kind = 'bounty';
+        black = bounty(manifest, item);
+        break;
+      default:
+        kind = '';
+        black = fallback(manifest, item);
+    }
   }
 
-  switch (item.inventory.tierType) {
-    case 6:
-      tier = 'exotic';
-      break;
-    case 5:
-      tier = 'legendary';
-      break;
-    case 4:
-      tier = 'rare';
-      break;
-    case 3:
-      tier = 'uncommon';
-      break;
-    case 2:
-      tier = 'basic';
-      break;
-    default:
-      tier = 'basic';
+  if (table === 'DestinySandboxPerkDefinition') {
+    kind = 'ui name-only sandbox-perk';
+    black = sandboxPerk(manifest, item);
+  }
+
+  if (item.inventory) {
+    switch (item.inventory.tierType) {
+      case 6:
+        tier = 'exotic';
+        break;
+      case 5:
+        tier = 'legendary';
+        break;
+      case 4:
+        tier = 'rare';
+        break;
+      case 3:
+        tier = 'uncommon';
+        break;
+      case 2:
+        tier = 'basic';
+        break;
+      default:
+        tier = 'basic';
+    }
   }
 
   if (item.redacted) {
@@ -116,7 +136,7 @@ export default (manifest, hash) => {
             <div className='name'>{item.displayProperties.name}</div>
             <div>
               <div className='kind'>{item.itemTypeDisplayName}</div>
-              {kind !== 'ui' ? <div className='rarity'>{item.inventory.tierTypeName}</div> : null}
+              {kind !== 'ui' && item.inventory ? <div className='rarity'>{item.inventory.tierTypeName}</div> : null}
             </div>
           </div>
           <div className='black'>{black}</div>

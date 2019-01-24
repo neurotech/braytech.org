@@ -52,6 +52,7 @@ class Item extends React.Component {
                 'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired
               })}
               data-itemhash={itemDefinition.hash}
+              data-iteminstanceid={data.itemInstanceId}
             >
               <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${manifest.settings.destiny2CoreSettings.undiscoveredCollectibleImage}`} />
               {data.quantity > 1 ? <div className='quantity'>{data.quantity}</div> : null}
@@ -69,6 +70,7 @@ class Item extends React.Component {
                 'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired
               })}
               data-itemhash={itemDefinition.hash}
+              data-iteminstanceid={data.itemInstanceId}
             >
               <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${itemDefinition.displayProperties.icon}`} />
               {data.quantity > 1 ? <div className='quantity'>{data.quantity}</div> : null}

@@ -4,10 +4,13 @@ import { connect } from 'react-redux';
 import { withNamespaces } from 'react-i18next';
 import cx from 'classnames';
 import ReactMarkdown from 'react-markdown';
+import Moment from 'react-moment';
 import orderBy from 'lodash/orderBy';
 
+import Globals from '../../utils/globals';
 import ObservedImage from '../../components/ObservedImage';
 import Collectibles from '../../components/Collectibles';
+import Item from '../../components/Item';
 import RecordsAlmost from '../../components/RecordsAlmost';
 import ProgressBar from '../../components/ProgressBar';
 import * as utils from '../../utils/destinyUtils';
@@ -27,17 +30,45 @@ class Account extends React.Component {
     const characterId = this.props.profile.characterId;
 
     const characters = this.props.profile.data.profile.characters.data;
+    const characterEquipment = this.props.profile.data.profile.characterEquipment.data;
     const characterProgressions = this.props.profile.data.profile.characterProgressions.data;
     const profileRecords = this.props.profile.data.profile.profileRecords.data.records;
     const characterRecords = this.props.profile.data.profile.characterRecords.data;
     const genderHash = characters.find(character => character.characterId === characterId).genderHash;
+    const itemComponents = this.props.profile.data.profile.itemComponents;
 
     const Characters = () => {
       let charactersEl = [];
       characters.forEach(character => {
+        console.log(character);
+        let equipment = characterEquipment[character.characterId].items;
+        equipment = equipment.map(item => ({
+          ...manifest.DestinyInventoryItemDefinition[item.itemHash],
+          ...item
+        }));
+
+        let loadout = {
+          subclass: equipment.find(item => item.inventory.bucketTypeHash === 3284755031),
+          kinetic: equipment.find(item => item.inventory.bucketTypeHash === 1498876634),
+          energy: equipment.find(item => item.inventory.bucketTypeHash === 2465295065),
+          power: equipment.find(item => item.inventory.bucketTypeHash === 953998645),
+          helmet: equipment.find(item => item.inventory.bucketTypeHash === 3448274439),
+          gloves: equipment.find(item => item.inventory.bucketTypeHash === 3551918588),
+          chest: equipment.find(item => item.inventory.bucketTypeHash === 14239492),
+          legs: equipment.find(item => item.inventory.bucketTypeHash === 20886954)
+        };
+        
+        // Object.keys(loadout).forEach(key => {
+        //   loadout[key].instanceSockets = itemComponents.sockets.data[loadout[key].itemInstanceId];
+        // });
+
+        // console.log(loadout);
+
+        let wellRested = utils.isWellRested(this.props.profile.data.profile.characterProgressions.data[character.characterId], manifest);
+
         charactersEl.push(
           <div key={character.characterId} className='character'>
-            <ul className='list'>
+            <ul className='list character-bar'>
               <li>
                 <ObservedImage
                   className={cx('image', 'emblem', {
@@ -45,23 +76,56 @@ class Account extends React.Component {
                   })}
                   src={`https://www.bungie.net${character.emblemPath ? character.emblemPath : `/img/misc/missing_icon_d2.png`}`}
                 />
-                <div className='level'>
-                  {t('Level')} {character.baseCharacterLevel}
-                </div>
-                <div className='light'>{character.light}</div>
+                <div className='level'>{character.baseCharacterLevel}</div>
                 <div className='class'>{utils.classHashToString(character.classHash, manifest, character.genderType)}</div>
+                <div className='light'>{character.light}</div>
+                {wellRested.wellRested ? (
+                  <div className='wellRested'>
+                    <ObservedImage className='image icon tooltip' data-itemhash='1519921522' data-table='DestinySandboxPerkDefinition' src={Globals.url.bungie + manifest.DestinySandboxPerkDefinition[1519921522].displayProperties.icon} />
+                  </div>
+                ) : null}
+                {character.titleRecordHash ? <div className='title'>{manifest.DestinyRecordDefinition[character.titleRecordHash].titleInfo.titlesByGenderHash[character.genderHash]}</div> : null}
               </li>
             </ul>
-            <div className='timePlayed'>
-              {Math.floor(parseInt(character.minutesPlayedTotal) / 1440) < 2 ? (
-                <>
-                  {Math.floor(parseInt(character.minutesPlayedTotal) / 1440)} {t('day played')}
-                </>
-              ) : (
-                <>
-                  {Math.floor(parseInt(character.minutesPlayedTotal) / 1440)} {t('days played')}
-                </>
-              )}
+            <div className='summary'>
+              <div className='timePlayed'>
+                <div className='name'>Time played</div>
+                <div className='value'>
+                  {Math.floor(parseInt(character.minutesPlayedTotal) / 1440) < 2 ? (
+                    <>
+                      {Math.floor(parseInt(character.minutesPlayedTotal) / 1440)} {t('day')}
+                    </>
+                  ) : (
+                    <>
+                      {Math.floor(parseInt(character.minutesPlayedTotal) / 1440)} {t('days')}
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className='lastPlayed'>
+                <div className='name'>Last played</div>
+                <div className='value'>
+                  <Moment fromNow>{character.dateLastPlayed}</Moment>
+                </div>
+              </div>
+              <div className='loadout'>
+                <div className='name'>Loadout</div>
+                <div className='value'>
+                  <ul className='list items'>
+                    {Object.values(loadout).map(item => {
+                      if (item.itemType === 2 && item.inventory.tierType !== 6) {
+                        return null;
+                      } else {
+                        return (
+                          <li key={item.itemInstanceId}>
+                            <Item manifest={manifest} data={{ itemHash: item.hash, itemInstanceId: item.itemInstanceId }} />
+                          </li>
+                        );
+                      }
+                    })}
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -176,11 +240,11 @@ class Account extends React.Component {
 
         1660030044, // Wish-Ender
 
-        199171386,  // Sleeper Simulant
-        199171387,  // Worldline Zero
+        199171386, // Sleeper Simulant
+        199171387, // Worldline Zero
 
         1469913803, // Harbinger's Echo
-        3142437750, // A Thousand Wings
+        3142437750 // A Thousand Wings
       ];
 
       return (
@@ -191,23 +255,7 @@ class Account extends React.Component {
     };
 
     const Strikes = () => {
-
-      let strikes = [
-        { hash: 3749730895, score: 1039797865 },
-        { hash: 2737678546, score: 165166474 },
-        { hash: 3054774873, score: 2692332187 },
-        { hash: 1707190649, score: 3399168111 },
-        { hash: 56596211, score: 1526865549 },
-        { hash: 3145627334, score: 3951275509 },
-        { hash: 1336344009, score: 2836924866 },
-        { hash: 2782139949, score: 3340846443 },
-        { hash: 256005845, score: 2099501667 },
-        { hash: 319759693, score: 1060780635 },
-        { hash: 141268704, score: 1329556468 },
-        { hash: 794103965, score: 3450793480 },
-        { hash: 1889144800, score: 2282894388 },
-        { hash: 20431832, score: 3973165904 }
-      ];
+      let strikes = [{ hash: 3749730895, score: 1039797865 }, { hash: 2737678546, score: 165166474 }, { hash: 3054774873, score: 2692332187 }, { hash: 1707190649, score: 3399168111 }, { hash: 56596211, score: 1526865549 }, { hash: 3145627334, score: 3951275509 }, { hash: 1336344009, score: 2836924866 }, { hash: 2782139949, score: 3340846443 }, { hash: 256005845, score: 2099501667 }, { hash: 319759693, score: 1060780635 }, { hash: 141268704, score: 1329556468 }, { hash: 794103965, score: 3450793480 }, { hash: 1889144800, score: 2282894388 }, { hash: 20431832, score: 3973165904 }];
 
       let list = strikes.map(strike => {
         let scoreDefinition = manifest.DestinyRecordDefinition[strike.score];
@@ -304,7 +352,7 @@ class Account extends React.Component {
                 <span className={value.icon} />
               </div>
               <div className='name'>{value.mode}</div>
-              {value.resets ? <div className='resets'>{value.resets}x</div> : null}
+              {value.resets ? <div className='resets'>{value.resets} resets</div> : null}
             </div>
             <div className='shallow'>
               <ReactMarkdown className='description rank' source={value.definition.displayProperties.description} />
@@ -346,6 +394,10 @@ class Account extends React.Component {
     return (
       <div className={cx('view', this.props.theme.selected)} id='account'>
         <div className='module'>
+          <div className='sub-header sub'>
+            <div>{t('Characters')}</div>
+          </div>
+          <div className='content characters'>{Characters()}</div>
           <div className='sub-header sub'>
             <div>{t('Rare collectibles')}</div>
           </div>

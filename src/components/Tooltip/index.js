@@ -10,7 +10,9 @@ class Tooltip extends React.Component {
     super(props);
 
     this.state = {
-      hash: false
+      hash: false,
+      itemInstanceId: false,
+      table: false
     };
 
     this.tooltip = React.createRef();
@@ -58,13 +60,17 @@ class Tooltip extends React.Component {
       item.addEventListener('mouseenter', e => {
         if (e.currentTarget.dataset.itemhash) {
           this.setState({
-            hash: e.currentTarget.dataset.itemhash
+            hash: e.currentTarget.dataset.itemhash,
+            itemInstanceId: e.currentTarget.dataset.iteminstanceid,
+            table: e.currentTarget.dataset.table ? e.currentTarget.dataset.table : false
           });
         }
       });
       item.addEventListener('mouseleave', e => {
         this.setState({
-          hash: false
+          hash: false,
+          itemInstanceId: false,
+          table: false
         });
       });
       item.addEventListener('touchstart', e => {
@@ -77,7 +83,9 @@ class Tooltip extends React.Component {
         if (!this.touchMovement) {
           if (e.currentTarget.dataset.itemhash) {
             this.setState({
-              hash: e.currentTarget.dataset.itemhash
+              hash: e.currentTarget.dataset.itemhash,
+              itemInstanceId: e.currentTarget.dataset.iteminstanceid,
+              table: e.currentTarget.dataset.table ? e.currentTarget.dataset.table : false
             });
           }
         }
@@ -88,7 +96,9 @@ class Tooltip extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.location && prevProps.location.pathname !== this.props.location.pathname) {
       this.setState({
-        hash: false
+        hash: false,
+        itemInstanceId: false,
+        table: false
       });
       this.bindings();
     }
@@ -108,7 +118,9 @@ class Tooltip extends React.Component {
         e.preventDefault();
         if (!this.touchMovement) {
           this.setState({
-            hash: false
+            hash: false,
+            itemInstanceId: false,
+            table: false
           });
         }
       });
@@ -126,10 +138,10 @@ class Tooltip extends React.Component {
   }
 
   render() {
-    let manifest = this.props.manifest;
+    const { manifest, profile } = this.props;
     if (this.state.hash) {
 
-      let render = itemTypes(manifest, this.state.hash);
+      let render = itemTypes(profile, manifest, this.state.hash, this.state.itemInstanceId, this.state.table);
 
       return (
         <div id='tooltip' ref={this.tooltip} style={{ top: `${this.mouseMoveXY.y}px`, left: `${this.mouseMoveXY.x}px` }}>

@@ -24,31 +24,31 @@
   margin: 0;
 }
 
-#account .module .content.characters .character .list {
+#account .module .content.characters .character .list.character-bar {
   margin: 0 0 1rem;
 }
 
-#account .module .content.characters .character .list li {
+#account .module .content.characters .character .list.character-bar li {
   display: grid;
-  grid-template-columns: 56px 70px 60px auto;
-  font-size: 16px;
+  grid-template-columns: 56px 32px 60px 50px 30px auto;
+  font-size: 14px;
   background-color: rgba(255, 255, 255, 0.05);
 }
 
-#account .module .content.characters .character .list li .emblem {
+#account .module .content.characters .character .list.character-bar li .emblem {
   position: relative;
   width: 38px;
   height: 38px;
 }
 
-#account .module .content.characters .character .list li .light {
+#account .module .content.characters .character .list.character-bar li .light {
   position: relative;
   margin: 0 0 0 14px;
   font-weight: 500;
   color: #2ed1c9;
 }
 
-#account .module .content.characters .character .list li .light::before {
+#account .module .content.characters .character .list.character-bar li .light::before {
   content: 'l';
   position: absolute;
   top: 5px;
@@ -63,6 +63,40 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+#account .module .content.characters .character .list.character-bar li .wellRested {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+#account .module .content.characters .character .list.character-bar li .title {
+  color: hsl(306, 42%, 47%);
+  font-weight: 500;
+  justify-self: end;
+  padding: 0 13px 0 0;
+}
+
+#account .module .content.characters .character .summary > div {
+  display: grid;
+  grid-template-columns: 98px auto;
+  margin: 0 0 7px 56px;
+}
+
+#account .module .content.characters .character .summary div div {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#account .module .content.characters .character .summary div .name {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+#account .module .content.characters .character .summary .loadout .list.items {
+  grid-template-columns: repeat(auto-fill, 48px);
+}
+
+
 
 
 
@@ -165,13 +199,17 @@
 }
 
 #account .module .ranks .rank .mode .name {
-  flex-basis: calc(100% - 7rem);
+  flex-basis: calc(100% - 100px);
 }
 
 #account .module .ranks .rank .mode .resets {
-  flex-basis: 2rem;
+  flex-basis: 100px;
   justify-content: flex-end;
   margin: 0 1rem 0 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 #account .module .ranks .rank .shallow > .description {
@@ -189,7 +227,7 @@
 }
 
 #account .module .ranks .rank.infamy .mode .icon {
-  font-size: 42px;
+  font-size: 38px;
 }
 
 #account .module .ranks .rank.infamy .shallow {
@@ -277,6 +315,23 @@
 
   #account .module .content.collectibles .collection-items {
     grid-template-columns: 1fr 1fr;
+  }
+
+  #account .module .ranks .rank .mode .icon {
+    font-size: 44px;
+  }
+
+  #account .module .ranks .rank.infamy .mode .icon {
+    font-size: 32px;
+  }
+
+  #account .module .ranks .rank .mode .name {
+    font-size: 16px;
+  }
+
+  #account .module .ranks .rank .mode .resets {
+    font-size: 12px;
+    letter-spacing: 1px;
   }
 
   /* #account .module.activity-checklists-seals {
