@@ -33,6 +33,8 @@ const interpolate = (investmentValue, displayInterpolation) => {
 };
 
 export const getSockets = (manifest, item, mods = true, initialOnly = false, socketExclusions = []) => {
+  
+
   let statGroup = manifest.DestinyStatGroupDefinition[item.stats.statGroupHash];
   let defaultStats = [
     // weapon
@@ -180,8 +182,15 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
     Object.keys(socketEntries).forEach(key => {
       socketEntries[key].singleInitialItemHash = item.instanceSockets[key].plugHash || 0;
       socketEntries[key].reusablePlugItems = item.instanceSockets[key].reusablePlugs || [];
+      if (socketEntries[key].reusablePlugItems.length === 0 && socketEntries[key].singleInitialItemHash !== 0) {
+        socketEntries[key].reusablePlugItems.push({
+          plugItemHash: socketEntries[key].singleInitialItemHash
+        })
+      }
     });
   }
+
+  console.log(item);
 
   Object.keys(socketEntries).forEach(key => {
     let socket = socketEntries[key];

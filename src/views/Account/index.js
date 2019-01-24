@@ -40,7 +40,9 @@ class Account extends React.Component {
     const Characters = () => {
       let charactersEl = [];
       characters.forEach(character => {
-        console.log(character);
+        
+        // console.log(character);
+        
         let equipment = characterEquipment[character.characterId].items;
         equipment = equipment.map(item => ({
           ...manifest.DestinyInventoryItemDefinition[item.itemHash],
@@ -57,7 +59,7 @@ class Account extends React.Component {
           chest: equipment.find(item => item.inventory.bucketTypeHash === 14239492),
           legs: equipment.find(item => item.inventory.bucketTypeHash === 20886954)
         };
-        
+
         // Object.keys(loadout).forEach(key => {
         //   loadout[key].instanceSockets = itemComponents.sockets.data[loadout[key].itemInstanceId];
         // });
@@ -79,11 +81,7 @@ class Account extends React.Component {
                 <div className='level'>{character.baseCharacterLevel}</div>
                 <div className='class'>{utils.classHashToString(character.classHash, manifest, character.genderType)}</div>
                 <div className='light'>{character.light}</div>
-                {wellRested.wellRested ? (
-                  <div className='wellRested'>
-                    <ObservedImage className='image icon tooltip' data-itemhash='1519921522' data-table='DestinySandboxPerkDefinition' src={Globals.url.bungie + manifest.DestinySandboxPerkDefinition[1519921522].displayProperties.icon} />
-                  </div>
-                ) : null}
+                <div className='wellRested'>{wellRested.wellRested ? <ObservedImage className='image icon tooltip' data-itemhash='1519921522' data-table='DestinySandboxPerkDefinition' src={Globals.url.bungie + manifest.DestinySandboxPerkDefinition[1519921522].displayProperties.icon} /> : null}</div>
                 {character.titleRecordHash ? <div className='title'>{manifest.DestinyRecordDefinition[character.titleRecordHash].titleInfo.titlesByGenderHash[character.genderHash]}</div> : null}
               </li>
             </ul>
