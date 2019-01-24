@@ -72,7 +72,7 @@ class Header extends React.Component {
         name: t('Resources'),
         desc: t('Assorted Destiny-related resources'),
         slug: '/resources',
-        exact: true
+        exact: false
       },
       {
         name: <span className='destiny-settings' />,

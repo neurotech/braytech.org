@@ -5,6 +5,8 @@ import { withNamespaces } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
+import ObservedImage from '../../components/ObservedImage';
+
 import './styles.css';
 
 class Resources extends React.Component {
@@ -27,13 +29,17 @@ class Resources extends React.Component {
     const { t } = this.props;
     return (
       <div className={cx('view', this.props.theme.selected)} id='resources'>
-        <div className='tool'>
-          <div className='name'>
-            <Link to='/resources/clan-banner-builder'>{t('Clan Banner Builder')}</Link>
+        <div className='resource'>
+          <ObservedImage className='image' src='/static/images/clan-banner-builder.jpg'></ObservedImage>
+          <div className='properties'>
+            <div className='name'>
+              {t('Clan Banner Builder')}
+            </div>
+            <div className='description'>
+              <p>{t('Collaborate with clan members on a new clan banner.')}</p>
+            </div>
           </div>
-          <div className='description'>
-            <p>{t('Collaborate with clan members on a new clan banner.')}</p>
-          </div>
+          <Link to='/resources/clan-banner-builder'></Link>
         </div>
       </div>
     );
