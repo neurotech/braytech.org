@@ -68,7 +68,7 @@ class Account extends React.Component {
 
         charactersEl.push(
           <div key={character.characterId} className='character'>
-            <ul className='list character-bar'>
+            <ul className={cx('list', 'character-bar', { 'has-title': character.titleRecordHash })}>
               <li>
                 <ObservedImage
                   className={cx('image', 'emblem', {

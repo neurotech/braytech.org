@@ -70,11 +70,14 @@
   height: 20px;
 }
 
+#account .module .content.characters .character .list.character-bar.has-title li {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.05) 70%, #7b3274);
+}
+
 #account .module .content.characters .character .list.character-bar li .title {
-  color: hsl(306, 42%, 47%);
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
   justify-self: end;
-  padding: 0 13px 0 0;
+  padding: 0 16px 0 0;
 }
 
 #account .module .content.characters .character .summary > div {

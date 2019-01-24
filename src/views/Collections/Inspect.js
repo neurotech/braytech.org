@@ -6,7 +6,7 @@ import { withNamespaces } from 'react-i18next';
 import Globals from '../../utils/globals';
 import ObservedImage from '../../components/ObservedImage';
 
-import { getWeapon } from '../../utils/destinyItems';
+import { getSockets } from '../../utils/destinyItems';
 
 import './Inspect.css';
 
@@ -40,7 +40,7 @@ class Inspect extends React.Component {
         tier = 'basic';
     }
 
-    let properties = getWeapon(manifest, hash);
+    let properties = getSockets(manifest, definition);
     console.log(properties);
 
     let sockets = [];
