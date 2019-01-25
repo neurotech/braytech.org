@@ -28,6 +28,10 @@
   height: unset;
 }
 
+.list.items .item.is-masterworked::before {
+  box-shadow: inset 0 0 0 2px #e8a534;
+}
+
 .list.items li .list.costs {
   margin: 7px 0 0;
   display: flex;

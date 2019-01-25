@@ -42,7 +42,7 @@ class Account extends React.Component {
       characters.forEach(character => {
         
         // console.log(character);
-        
+
         let equipment = characterEquipment[character.characterId].items;
         equipment = equipment.map(item => ({
           ...manifest.DestinyInventoryItemDefinition[item.itemHash],
@@ -116,7 +116,7 @@ class Account extends React.Component {
                       } else {
                         return (
                           <li key={item.itemInstanceId}>
-                            <Item manifest={manifest} data={{ itemHash: item.hash, itemInstanceId: item.itemInstanceId }} />
+                            <Item manifest={manifest} data={{ itemHash: item.hash, itemInstanceId: item.itemInstanceId, itemState: item.state }} />
                           </li>
                         );
                       }
@@ -393,7 +393,7 @@ class Account extends React.Component {
       <div className={cx('view', this.props.theme.selected)} id='account'>
         <div className='module'>
           <div className='sub-header sub'>
-            <div>{t('Characters')}</div>
+            <div>{t('Characters (WIP)')}</div>
           </div>
           <div className='content characters'>{Characters()}</div>
           <div className='sub-header sub'>

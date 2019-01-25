@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
+import { enumerateItemState } from '../../../utils/destinyEnums';
 import fallback from './fallback';
 import weapon from './weapon';
 import armour from './armour';
@@ -12,29 +13,34 @@ import sparrow from './sparrow';
 import ui from './ui';
 import sandboxPerk from './sandboxPerk';
 
-export default (profile, manifest, hash, itemInstanceId, table) => {
+export default (profile, manifest, props) => {
 
   const itemComponents = profile.data.profile.itemComponents;
 
-  if (!table) {
-    table = 'DestinyInventoryItemDefinition';
+  if (!props.table) {
+    props.table = 'DestinyInventoryItemDefinition';
   }
 
   let item;
-  if (hash === '343') {
+  if (props.hash === '343') {
     item = {
       redacted: true
     };
   } else {
-    item = manifest[table][hash];
+    item = manifest[props.table][props.hash];
   }
 
-  if (itemInstanceId) {
-    item.instanceSockets = itemComponents.sockets.data[itemInstanceId] ? itemComponents.sockets.data[itemInstanceId].sockets : false;
+  if (props.itemInstanceId) {
+    item.itemComponents = {
+      state: props.itemState ? parseInt(props.itemState, 10) : false,
+      instance: itemComponents.instances.data[props.itemInstanceId] ? itemComponents.instances.data[props.itemInstanceId] : false,
+      sockets: itemComponents.sockets.data[props.itemInstanceId] ? itemComponents.sockets.data[props.itemInstanceId].sockets : false,
+      stats: itemComponents.stats.data[props.itemInstanceId] ? itemComponents.stats.data[props.itemInstanceId].stats : false
+    };
   }
 
   let kind = 'ui';
-  let tier = 'basic';;
+  let tier = 'basic';
   let black;
 
   if (item.itemType) {
@@ -81,7 +87,7 @@ export default (profile, manifest, hash, itemInstanceId, table) => {
     }
   }
 
-  if (table === 'DestinySandboxPerkDefinition') {
+  if (props.table === 'DestinySandboxPerkDefinition') {
     kind = 'ui name-only sandbox-perk';
     black = sandboxPerk(manifest, item);
   }
@@ -112,7 +118,7 @@ export default (profile, manifest, hash, itemInstanceId, table) => {
     return (
       <>
         <div className='acrylic' />
-        <div className='frame common'>
+        <div className={cx('frame', 'common')}>
           <div className='header'>
             <div className='name'>Classified</div>
             <div>
@@ -131,7 +137,7 @@ export default (profile, manifest, hash, itemInstanceId, table) => {
     return (
       <>
         <div className='acrylic' />
-        <div className={cx('frame', kind, tier)}>
+        <div className={cx('frame', kind, tier, { 'is-masterworked': enumerateItemState(parseInt(props.itemState, 10)).masterworked })}>
           <div className='header'>
             <div className='name'>{item.displayProperties.name}</div>
             <div>

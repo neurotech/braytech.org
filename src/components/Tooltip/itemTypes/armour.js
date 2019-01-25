@@ -12,11 +12,14 @@ const armour = (manifest, item) => {
   let intrinsic = sockets.find(socket => socket.singleInitialItem ? socket.singleInitialItem.definition.itemCategoryHashes.includes(2237038328) : false);
       intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
 
+  let powerLevel = '630';
+      powerLevel = item.itemComponents ? item.itemComponents.instance.primaryStat.value : powerLevel;
+
   return (
     <>
       <div className='damage armour'>
         <div className={cx('power')}>
-          <div className='text'>600</div>
+          <div className='text'>{powerLevel}</div>
           <div className='text'>{manifest.DestinyStatDefinition[3897883278].displayProperties.name}</div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
 import ObservedImage from '../../components/ObservedImage';
-import { enumerateCollectibleState } from '../../utils/destinyEnums';
+import { enumerateCollectibleState, enumerateItemState } from '../../utils/destinyEnums';
 
 import './styles.css';
 
@@ -49,10 +49,12 @@ class Item extends React.Component {
           <ul className='list'>
             <li
               className={cx('item', 'tooltip', {
-                'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired
+                'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired,
+                'is-masterworked': enumerateItemState(data.itemState).masterworked
               })}
               data-itemhash={itemDefinition.hash}
               data-iteminstanceid={data.itemInstanceId}
+              data-itemstate={data.itemState}
             >
               <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${manifest.settings.destiny2CoreSettings.undiscoveredCollectibleImage}`} />
               {data.quantity > 1 ? <div className='quantity'>{data.quantity}</div> : null}
@@ -67,10 +69,12 @@ class Item extends React.Component {
           <ul className='list'>
             <li
               className={cx('item', 'tooltip', {
-                'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired
+                'not-acquired': profile.data && enumerateCollectibleState(state).notAcquired,
+                'is-masterworked': enumerateItemState(data.itemState).masterworked
               })}
               data-itemhash={itemDefinition.hash}
               data-iteminstanceid={data.itemInstanceId}
+              data-itemstate={data.itemState}
             >
               <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${itemDefinition.displayProperties.icon}`} />
               {data.quantity > 1 ? <div className='quantity'>{data.quantity}</div> : null}

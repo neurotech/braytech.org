@@ -12,6 +12,7 @@ class Tooltip extends React.Component {
     this.state = {
       hash: false,
       itemInstanceId: false,
+      itemState: false,
       table: false
     };
 
@@ -62,6 +63,7 @@ class Tooltip extends React.Component {
           this.setState({
             hash: e.currentTarget.dataset.itemhash,
             itemInstanceId: e.currentTarget.dataset.iteminstanceid,
+            itemState: e.currentTarget.dataset.itemstate,
             table: e.currentTarget.dataset.table ? e.currentTarget.dataset.table : false
           });
         }
@@ -70,6 +72,7 @@ class Tooltip extends React.Component {
         this.setState({
           hash: false,
           itemInstanceId: false,
+          itemState: false,
           table: false
         });
       });
@@ -85,6 +88,7 @@ class Tooltip extends React.Component {
             this.setState({
               hash: e.currentTarget.dataset.itemhash,
               itemInstanceId: e.currentTarget.dataset.iteminstanceid,
+              itemState: e.currentTarget.dataset.itemstate,
               table: e.currentTarget.dataset.table ? e.currentTarget.dataset.table : false
             });
           }
@@ -98,6 +102,7 @@ class Tooltip extends React.Component {
       this.setState({
         hash: false,
         itemInstanceId: false,
+        itemState: false,
         table: false
       });
       this.bindings();
@@ -120,6 +125,7 @@ class Tooltip extends React.Component {
           this.setState({
             hash: false,
             itemInstanceId: false,
+            itemState: false,
             table: false
           });
         }
@@ -141,7 +147,7 @@ class Tooltip extends React.Component {
     const { manifest, profile } = this.props;
     if (this.state.hash) {
 
-      let render = itemTypes(profile, manifest, this.state.hash, this.state.itemInstanceId, this.state.table);
+      let render = itemTypes(profile, manifest, { hash: this.state.hash, itemInstanceId: this.state.itemInstanceId, itemState: this.state.itemState, table: this.state.table });
 
       return (
         <div id='tooltip' ref={this.tooltip} style={{ top: `${this.mouseMoveXY.y}px`, left: `${this.mouseMoveXY.x}px` }}>

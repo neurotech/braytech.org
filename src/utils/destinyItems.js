@@ -33,8 +33,6 @@ const interpolate = (investmentValue, displayInterpolation) => {
 };
 
 export const getSockets = (manifest, item, mods = true, initialOnly = false, socketExclusions = []) => {
-  
-
   let statGroup = manifest.DestinyStatGroupDefinition[item.stats.statGroupHash];
   let defaultStats = [
     // weapon
@@ -177,15 +175,15 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
   let socketsOutput = [];
 
   let socketEntries = item.sockets.socketEntries;
-  if (item.instanceSockets) {
+  if (item.itemComponents) {
     mods = true;
     Object.keys(socketEntries).forEach(key => {
-      socketEntries[key].singleInitialItemHash = item.instanceSockets[key].plugHash || 0;
-      socketEntries[key].reusablePlugItems = item.instanceSockets[key].reusablePlugs || [];
+      socketEntries[key].singleInitialItemHash = item.itemComponents.sockets[key].plugHash || 0;
+      socketEntries[key].reusablePlugItems = item.itemComponents.sockets[key].reusablePlugs || [];
       if (socketEntries[key].reusablePlugItems.length === 0 && socketEntries[key].singleInitialItemHash !== 0) {
         socketEntries[key].reusablePlugItems.push({
           plugItemHash: socketEntries[key].singleInitialItemHash
-        })
+        });
       }
     });
   }
@@ -202,6 +200,8 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
     if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && modCategoryHash.includes(categoryHash))) {
       return;
     }
+
+    console.log(socket);
 
     socket.reusablePlugItems.forEach(reusablePlug => {
       let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
@@ -281,9 +281,11 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
       }
       if (Object.keys(item.stats.stats).includes(stat.hash.toString())) {
         let modifier = stat.modifier ? stat.modifier : 0;
-        if (stat.hash === 3871231066) {
-          modifier = 0;
-        }
+        // if (stat.hash === 3871231066) {
+        //   modifier = 0;
+        // }
+
+        let instanceStat = item.itemComponents ? Object.values(item.itemComponents.stats).find(s => s.statHash === stat.hash) : false;
 
         let investmentStat = item.investmentStats.find(investment => investment.statTypeHash === stat.hash);
         let scaledStats = statGroup.scaledStats.find(scale => scale.statHash === stat.hash);
@@ -295,6 +297,8 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
           value = value < 1 ? 1 : value;
         }
 
+        value = instanceStat ? instanceStat.value : value;
+
         stats.push(
           <div key={stat.hash} className='stat'>
             <div className='name'>{stat.name}</div>
@@ -305,16 +309,18 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
     });
   }
   if (item.itemType === 2) {
-    defaultStats.filter(stat => stat.itemType === 2).forEach(stat => {
-      let value = item.stats.stats[stat.hash] ? item.stats.stats[stat.hash].value : 0;
-      let modifier = stat.modifier ? stat.modifier : 0;
-      stats.push(
-        <div key={stat.hash} className='stat'>
-          <div className='name'>{stat.name}</div>
-          <div className={cx('value', stat.displayAs)}>{stat.displayAs === 'bar' ? <div className='bar' data-value={value + modifier} style={{ width: `${((value + modifier) / 3) * 100}%` }} /> : value + modifier}</div>
-        </div>
-      );
-    });
+    defaultStats
+      .filter(stat => stat.itemType === 2)
+      .forEach(stat => {
+        let value = item.stats.stats[stat.hash] ? item.stats.stats[stat.hash].value : 0;
+        let modifier = stat.modifier ? stat.modifier : 0;
+        stats.push(
+          <div key={stat.hash} className='stat'>
+            <div className='name'>{stat.name}</div>
+            <div className={cx('value', stat.displayAs)}>{stat.displayAs === 'bar' ? <div className='bar' data-value={value + modifier} style={{ width: `${((value + modifier) / 3) * 100}%` }} /> : value + modifier}</div>
+          </div>
+        );
+      });
   }
 
   // push mods to the bottom lol
