@@ -1,6 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 
+import Globals from '../../../utils/globals';
+import ObservedImage from '../../ObservedImage';
 import { enumerateItemState } from '../../../utils/destinyEnums';
 import fallback from './fallback';
 import weapon from './weapon';
@@ -10,12 +12,13 @@ import bounty from './bounty';
 import mod from './mod';
 import ghost from './ghost';
 import sparrow from './sparrow';
+import subclass from './subclass';
 import ui from './ui';
 import sandboxPerk from './sandboxPerk';
 
 export default (profile, manifest, props) => {
 
-  const itemComponents = profile.data.profile.itemComponents;
+  const itemComponents = profile.data ? profile.data.profile.itemComponents : false;
 
   if (!props.table) {
     props.table = 'DestinyInventoryItemDefinition';
@@ -30,7 +33,7 @@ export default (profile, manifest, props) => {
     item = manifest[props.table][props.hash];
   }
 
-  if (props.itemInstanceId) {
+  if (itemComponents && props.itemInstanceId) {
     item.itemComponents = {
       state: props.itemState ? parseInt(props.itemState, 10) : false,
       instance: itemComponents.instances.data[props.itemInstanceId] ? itemComponents.instances.data[props.itemInstanceId] : false,
@@ -60,6 +63,10 @@ export default (profile, manifest, props) => {
       case 14:
         kind = 'emblem';
         black = emblem(manifest, item);
+        break;
+      case 16:
+        kind = 'ui sandbox-perk';
+        black = sandboxPerk(manifest, item);
         break;
       case 19:
         kind = 'mod';
@@ -138,7 +145,7 @@ export default (profile, manifest, props) => {
       <>
         <div className='acrylic' />
         <div className={cx('frame', kind, tier, { 'is-masterworked': enumerateItemState(parseInt(props.itemState, 10)).masterworked })}>
-          <div className='header'>
+          <div className='header' data-uitype={item.uiItemDisplayStyle}>
             <div className='name'>{item.displayProperties.name}</div>
             <div>
               <div className='kind'>{item.itemTypeDisplayName}</div>

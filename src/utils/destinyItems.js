@@ -33,7 +33,9 @@ const interpolate = (investmentValue, displayInterpolation) => {
 };
 
 export const getSockets = (manifest, item, mods = true, initialOnly = false, socketExclusions = []) => {
-  let statGroup = manifest.DestinyStatGroupDefinition[item.stats.statGroupHash];
+  let statGroup = item.stats ? manifest.DestinyStatGroupDefinition[item.stats.statGroupHash] : false;
+  let statModifiers = [];
+
   let defaultStats = [
     // weapon
     {
@@ -208,9 +210,14 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
 
       if (plug.hash === socket.singleInitialItemHash) {
         plug.investmentStats.forEach(modifier => {
-          let index = defaultStats.findIndex(stat => stat.hash === modifier.statTypeHash);
+          let index = statModifiers.findIndex(stat => stat.statHash === modifier.statTypeHash);
           if (index > -1) {
-            defaultStats[index].modifier = modifier.value;
+            statModifiers[index].value = statModifiers[index].value + modifier.value;
+          } else {
+            statModifiers.push({
+              statHash: modifier.statTypeHash,
+              value: modifier.value
+            });
           }
         });
       }
@@ -272,23 +279,26 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
     });
   });
 
-  let stats = [];
+  let statsOutput = [];
 
   if (item.itemType === 3) {
-    defaultStats.forEach(stat => {
-      if (stat.hidden) {
-        return;
-      }
-      if (Object.keys(item.stats.stats).includes(stat.hash.toString())) {
-        let modifier = stat.modifier ? stat.modifier : 0;
+    statGroup.scaledStats.forEach(stat => {
+      let statModifier = statModifiers.find(modifier => modifier.statHash === stat.statHash);
+      let statDef = manifest.DestinyStatDefinition[stat.statHash];
+
+      // if (stat.hidden) {
+      //   return;
+      // }
+      if (Object.keys(item.stats.stats).includes(stat.statHash.toString())) {
+        let modifier = statModifier ? statModifier.value : 0;
         // if (stat.hash === 3871231066) {
         //   modifier = 0;
         // }
 
-        let instanceStat = item.itemComponents && item.itemComponents.stats ? Object.values(item.itemComponents.stats).find(s => s.statHash === stat.hash) : false;
+        let instanceStat = item.itemComponents && item.itemComponents.stats ? Object.values(item.itemComponents.stats).find(s => s.statHash === stat.statHash) : false;
 
-        let investmentStat = item.investmentStats.find(investment => investment.statTypeHash === stat.hash);
-        let scaledStats = statGroup.scaledStats.find(scale => scale.statHash === stat.hash);
+        let investmentStat = item.investmentStats.find(investment => investment.statTypeHash === stat.statHash);
+        let scaledStats = statGroup.scaledStats.find(scale => scale.statHash === stat.statHash);
 
         let interpolatatedModifier = scaledStats ? interpolate(investmentStat.value + modifier, scaledStats.displayInterpolation) : modifier;
 
@@ -299,35 +309,52 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
 
         value = instanceStat ? instanceStat.value : value;
 
-        stats.push(
-          <div key={stat.hash} className='stat'>
-            <div className='name'>{stat.name}</div>
-            <div className={cx('value', stat.displayAs)}>{stat.displayAs === 'bar' ? <div className='bar' data-value={value} style={{ width: `${value}%` }} /> : value}</div>
-          </div>
-        );
+        statsOutput.push({
+          displayAsNumeric: stat.displayAsNumeric,
+          element: (
+            <div key={stat.statHash} className='stat'>
+              <div className='name'>{statDef.displayProperties.name}</div>
+              <div className={cx('value', { bar: !stat.displayAsNumeric, int: stat.displayAsNumeric })}>{!stat.displayAsNumeric ? <div className='bar' data-value={value} style={{ width: `${value}%` }} /> : value}</div>
+            </div>
+          )
+        });
       }
     });
   }
   if (item.itemType === 2) {
-    defaultStats
-      .filter(stat => stat.itemType === 2)
-      .forEach(stat => {
-        let value = item.stats.stats[stat.hash] ? item.stats.stats[stat.hash].value : 0;
-        let modifier = stat.modifier ? stat.modifier : 0;
-        stats.push(
-          <div key={stat.hash} className='stat'>
-            <div className='name'>{stat.name}</div>
-            <div className={cx('value', stat.displayAs)}>{stat.displayAs === 'bar' ? <div className='bar' data-value={value + modifier} style={{ width: `${((value + modifier) / 3) * 100}%` }} /> : value + modifier}</div>
-          </div>
-        );
-      });
-  }
+    statGroup.scaledStats.forEach(stat => {
+      let statModifier = statModifiers.find(modifier => modifier.statHash === stat.statHash);
+      let statDef = manifest.DestinyStatDefinition[stat.statHash];
 
-  // push mods to the bottom lol
+      let modifier = statModifier ? statModifier.value : 0;
+
+      let investmentStat = item.investmentStats.find(investment => investment.statTypeHash === stat.statHash);
+      let scaledStats = statGroup.scaledStats.find(scale => scale.statHash === stat.statHash);
+
+      // let interpolatatedModifier = scaledStats ? interpolate(investmentStat.value + modifier, scaledStats.displayInterpolation) : modifier;
+
+      // let value = interpolatatedModifier;
+      let value = Math.min((investmentStat ? investmentStat.value : 0) + modifier, scaledStats.maximumValue);
+
+      statsOutput.push({
+        element: (
+          <div key={stat.statHash} className='stat'>
+            <div className='name'>{statDef.displayProperties.name}</div>
+            <div className={cx('value', { bar: !stat.displayAsNumeric, int: stat.displayAsNumeric })}>{!stat.displayAsNumeric ? <div className='bar' data-value={value} style={{ width: `${(value / 3) * 100}%` }} /> : value}</div>
+          </div>
+        )
+      });
+    });
+  }
+  
+  // push numeric stats to the bottom
+  statsOutput = orderBy(statsOutput, [stat => stat.displayAsNumeric], ['asc']);
+
+  // push mods to the bottom
   socketsOutput = orderBy(socketsOutput, [socket => socket.categoryHash], ['desc']);
 
   return {
-    stats,
+    stats: statsOutput,
     sockets: socketsOutput
   };
 };

@@ -463,6 +463,14 @@
   line-height: 1.4;
 }
 
+#tooltip .header::before {
+  content: attr(data-debugtip);
+  position: absolute;
+  top: -22px;
+  right: 0;
+  font-size: 14px;
+}
+
 @media screen and (max-width: 600px) {
   #tooltip {
     top: 0 !important;

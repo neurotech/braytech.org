@@ -111,7 +111,9 @@ class Account extends React.Component {
                 <div className='value'>
                   <ul className='list items'>
                     {Object.values(loadout).map(item => {
-                      if (item.itemType === 2 && item.inventory.tierType !== 6) {
+                      if (!item) {
+                        return null;
+                      } else if (item.itemType === 2 && item.inventory.tierType !== 6) {
                         return null;
                       } else {
                         return (

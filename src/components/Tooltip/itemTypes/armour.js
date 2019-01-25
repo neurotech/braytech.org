@@ -28,7 +28,7 @@ const armour = (manifest, item) => {
           <p>{sourceString}</p>
         </div>
       ) : null}
-      <div className='stats'>{stats}</div>
+      <div className='stats'>{stats.map(stat => stat.element)}</div>
       <div className={cx('sockets', { 'has-sockets': sockets.length > 0 })}>
         {intrinsic ? (
           <div className='plug intrinsic'>

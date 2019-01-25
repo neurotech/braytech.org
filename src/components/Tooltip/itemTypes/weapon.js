@@ -34,7 +34,7 @@ const weapon = (manifest, item) => {
           <p>{sourceString}</p>
         </div>
       ) : null}
-      <div className='stats'>{stats}</div>
+      <div className='stats'>{stats.map(stat => stat.element)}</div>
       <div className={cx('sockets', { 'has-sockets': sockets.length > 0 })}>
         {intrinsic ? (
           <div className='plug intrinsic'>
@@ -47,7 +47,7 @@ const weapon = (manifest, item) => {
         ) : null}
         {sockets.length > 0
           ? sockets
-              .map(socket => socket.plugs.filter(plug => !plug.definition.itemCategoryHashes.includes(2237038328)).filter(plug => plug.definition.hash !== 2285418970).map(plug => plug.element))
+              .map(socket => socket.plugs.filter(plug => !plug.definition.itemCategoryHashes.includes(2237038328)).filter(plug => plug.definition.plug.plugCategoryHash !== 2947756142).map(plug => plug.element))
           : null}
       </div>
     </>

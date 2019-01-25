@@ -40,8 +40,8 @@ class Tooltip extends React.Component {
       x = x + offset;
     }
 
-    if (y + tooltipHeight > window.innerHeight) {
-      y = y - tooltipHeight - offset;
+    if (y + tooltipHeight + scrollbarAllowance > window.innerHeight) {
+      y = window.innerHeight - tooltipHeight - scrollbarAllowance;
     }
     y = y < 0 ? 0 : y;
 
