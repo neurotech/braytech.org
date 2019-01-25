@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import './styles.css';
 import itemTypes from './itemTypes';
 
-
 class Tooltip extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +20,7 @@ class Tooltip extends React.Component {
     this.mouseMoveXY = {
       x: 0,
       y: 0
-    }
+    };
   }
 
   mouseMove = e => {
@@ -50,51 +49,87 @@ class Tooltip extends React.Component {
       this.mouseMoveXY = {
         x,
         y
-      }
+      };
       this.tooltip.current.style.cssText = `top: ${y}px; left: ${x}px`;
     }
   };
 
-  bindings = () => {
-    let toolTipples = document.querySelectorAll('.tooltip');
-    toolTipples.forEach(item => {
-      item.addEventListener('mouseenter', e => {
-        if (e.currentTarget.dataset.itemhash) {
-          this.setState({
-            hash: e.currentTarget.dataset.itemhash,
-            itemInstanceId: e.currentTarget.dataset.iteminstanceid,
-            itemState: e.currentTarget.dataset.itemstate,
-            table: e.currentTarget.dataset.table ? e.currentTarget.dataset.table : false
-          });
-        }
+  target_mouseEnter = e => {
+    if (e.currentTarget.dataset.itemhash) {
+      this.setState({
+        hash: e.currentTarget.dataset.itemhash,
+        itemInstanceId: e.currentTarget.dataset.iteminstanceid,
+        itemState: e.currentTarget.dataset.itemstate,
+        table: e.currentTarget.dataset.table ? e.currentTarget.dataset.table : false
       });
-      item.addEventListener('mouseleave', e => {
-        this.setState({
-          hash: false,
-          itemInstanceId: false,
-          itemState: false,
-          table: false
-        });
-      });
-      item.addEventListener('touchstart', e => {
-        this.touchMovement = false;
-      });
-      item.addEventListener('touchmove', e => {
-        this.touchMovement = true;
-      });
-      item.addEventListener('touchend', e => {
-        if (!this.touchMovement) {
-          if (e.currentTarget.dataset.itemhash) {
-            this.setState({
-              hash: e.currentTarget.dataset.itemhash,
-              itemInstanceId: e.currentTarget.dataset.iteminstanceid,
-              itemState: e.currentTarget.dataset.itemstate,
-              table: e.currentTarget.dataset.table ? e.currentTarget.dataset.table : false
-            });
-          }
-        }
-      });
+    }
+  };
+
+  target_mouseLeave = e => {
+    this.setState({
+      hash: false,
+      itemInstanceId: false,
+      itemState: false,
+      table: false
     });
+  };
+
+  target_touchStart = e => {
+    this.touchMovement = false;
+  };
+
+  target_touchMove = e => {
+    this.touchMovement = true;
+  };
+
+  target_touchEnd = e => {
+    if (!this.touchMovement) {
+      if (e.currentTarget.dataset.itemhash) {
+        this.setState({
+          hash: e.currentTarget.dataset.itemhash,
+          itemInstanceId: e.currentTarget.dataset.iteminstanceid,
+          itemState: e.currentTarget.dataset.itemstate,
+          table: e.currentTarget.dataset.table ? e.currentTarget.dataset.table : false
+        });
+      }
+    }
+  };
+
+  target_bindings = () => {
+    let targets = document.querySelectorAll('.tooltip');
+    targets.forEach(target => {
+      target.addEventListener('mouseenter', this.target_mouseEnter);
+      target.addEventListener('mouseleave', this.target_mouseLeave);
+      target.addEventListener('touchstart', this.target_touchStart);
+      target.addEventListener('touchmove', this.target_touchMove);
+      target.addEventListener('touchend', this.target_touchEnd);
+    });
+  };
+
+  tooltip_touchStart = e => {
+    this.touchMovement = false;
+  };
+
+  tooltip_touchMove = e => {
+    this.touchMovement = true;
+  };
+
+  tooltip_touchEnd = e => {
+    e.preventDefault();
+    if (!this.touchMovement) {
+      this.setState({
+        hash: false,
+        itemInstanceId: false,
+        itemState: false,
+        table: false
+      });
+    }
+  };
+
+  tooltip_bindings = () => {
+    this.tooltip.current.addEventListener('touchstart', this.tooltip_touchStart);
+    this.tooltip.current.addEventListener('touchmove', this.tooltip_touchMove);
+    this.tooltip.current.addEventListener('touchend', this.tooltip_touchEnd);
   };
 
   componentDidUpdate(prevProps) {
@@ -105,38 +140,22 @@ class Tooltip extends React.Component {
         itemState: false,
         table: false
       });
-      this.bindings();
+      this.target_bindings();
     }
 
-    if (this.props.vendors !== prevProps.vendors) {
-      this.bindings();
+    if (this.props.vendors !== prevProps.vendors || this.props.profile.data !== prevProps.profile.data) {
+      this.target_bindings();
     }
 
     if (this.state.hash) {
-      this.tooltip.current.addEventListener('touchstart', e => {
-        this.touchMovement = false;
-      });
-      this.tooltip.current.addEventListener('touchmove', e => {
-        this.touchMovement = true;
-      });
-      this.tooltip.current.addEventListener('touchend', e => {
-        e.preventDefault();
-        if (!this.touchMovement) {
-          this.setState({
-            hash: false,
-            itemInstanceId: false,
-            itemState: false,
-            table: false
-          });
-        }
-      });
+      this.tooltip_bindings();
     }
   }
 
   componentDidMount() {
     window.addEventListener('mousemove', this.mouseMove);
 
-    this.bindings();
+    this.target_bindings();
   }
 
   componentWillUnmount() {
@@ -146,7 +165,6 @@ class Tooltip extends React.Component {
   render() {
     const { manifest, profile } = this.props;
     if (this.state.hash) {
-
       let render = itemTypes(profile, manifest, { hash: this.state.hash, itemInstanceId: this.state.itemInstanceId, itemState: this.state.itemState, table: this.state.table });
 
       return (

@@ -175,7 +175,7 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
   let socketsOutput = [];
 
   let socketEntries = item.sockets.socketEntries;
-  if (item.itemComponents) {
+  if (item.itemComponents && item.itemComponents.sockets) {
     mods = true;
     Object.keys(socketEntries).forEach(key => {
       socketEntries[key].singleInitialItemHash = item.itemComponents.sockets[key].plugHash || 0;
@@ -188,7 +188,7 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
     });
   }
 
-  console.log(item);
+  // console.log(item);
 
   Object.keys(socketEntries).forEach(key => {
     let socket = socketEntries[key];
@@ -201,7 +201,7 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
       return;
     }
 
-    console.log(socket);
+    // console.log(socket);
 
     socket.reusablePlugItems.forEach(reusablePlug => {
       let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
@@ -285,7 +285,7 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
         //   modifier = 0;
         // }
 
-        let instanceStat = item.itemComponents ? Object.values(item.itemComponents.stats).find(s => s.statHash === stat.hash) : false;
+        let instanceStat = item.itemComponents && item.itemComponents.stats ? Object.values(item.itemComponents.stats).find(s => s.statHash === stat.hash) : false;
 
         let investmentStat = item.investmentStats.find(investment => investment.statTypeHash === stat.hash);
         let scaledStats = statGroup.scaledStats.find(scale => scale.statHash === stat.hash);

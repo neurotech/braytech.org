@@ -232,6 +232,7 @@ class Account extends React.Component {
         4047371119, // The Mountaintop
 
         3810740723, // Loaded Question
+        4037097478, // Nightshade
 
         1666039008, // Breakneck
         1660030045, // Malfeasance
@@ -393,7 +394,7 @@ class Account extends React.Component {
       <div className={cx('view', this.props.theme.selected)} id='account'>
         <div className='module'>
           <div className='sub-header sub'>
-            <div>{t('Characters (WIP)')}</div>
+            <div>{t('Characters')}</div>
           </div>
           <div className='content characters'>{Characters()}</div>
           <div className='sub-header sub'>

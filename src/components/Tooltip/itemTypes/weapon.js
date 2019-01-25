@@ -15,7 +15,7 @@ const weapon = (manifest, item) => {
       intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
 
   let powerLevel = '630';
-      powerLevel = item.itemComponents ? item.itemComponents.instance.primaryStat.value : powerLevel;
+      powerLevel = item.itemComponents && item.itemComponents.instance ? item.itemComponents.instance.primaryStat.value : powerLevel;
 
   return (
     <>
@@ -47,7 +47,7 @@ const weapon = (manifest, item) => {
         ) : null}
         {sockets.length > 0
           ? sockets
-              .map(socket => socket.plugs.filter(plug => !plug.definition.itemCategoryHashes.includes(2237038328)).map(plug => plug.element))
+              .map(socket => socket.plugs.filter(plug => !plug.definition.itemCategoryHashes.includes(2237038328)).filter(plug => plug.definition.hash !== 2285418970).map(plug => plug.element))
           : null}
       </div>
     </>
