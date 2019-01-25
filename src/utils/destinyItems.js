@@ -34,7 +34,7 @@ const interpolate = (investmentValue, displayInterpolation) => {
 
 export const getSockets = (manifest, item, mods = true, initialOnly = false, socketExclusions = []) => {
   let statGroup = item.stats ? manifest.DestinyStatGroupDefinition[item.stats.statGroupHash] : false;
-  
+
   let statModifiers = [];
 
   let socketsOutput = [];
@@ -149,14 +149,8 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
       let statModifier = statModifiers.find(modifier => modifier.statHash === stat.statHash);
       let statDef = manifest.DestinyStatDefinition[stat.statHash];
 
-      // if (stat.hidden) {
-      //   return;
-      // }
       if (Object.keys(item.stats.stats).includes(stat.statHash.toString())) {
         let modifier = statModifier ? statModifier.value : 0;
-        // if (stat.hash === 3871231066) {
-        //   modifier = 0;
-        // }
 
         let instanceStat = item.itemComponents && item.itemComponents.stats ? Object.values(item.itemComponents.stats).find(s => s.statHash === stat.statHash) : false;
 
@@ -194,9 +188,6 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
       let investmentStat = item.investmentStats.find(investment => investment.statTypeHash === stat.statHash);
       let scaledStats = statGroup.scaledStats.find(scale => scale.statHash === stat.statHash);
 
-      // let interpolatatedModifier = scaledStats ? interpolate(investmentStat.value + modifier, scaledStats.displayInterpolation) : modifier;
-
-      // let value = interpolatatedModifier;
       let value = Math.min((investmentStat ? investmentStat.value : 0) + modifier, scaledStats.maximumValue);
 
       statsOutput.push({
