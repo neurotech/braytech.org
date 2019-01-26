@@ -123,5 +123,10 @@
     "date": "2019-01-25T23:19:31.359Z",
     "version": "1.3.16",
     "content": "## Changes\n- Fixed the collections badge image bug\n- more changes to tooltips\n- character module in account view bug if no weapons equipped fixed\n- no profile data vendor page bug fixed"
+  },
+  {
+    "date": "2019-01-26T12:03:12.254Z",
+    "version": "1.3.17",
+    "content": "## Changes\n- Added finishing touches on Masterwork items"
   }
 ]

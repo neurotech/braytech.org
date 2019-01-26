@@ -99,7 +99,7 @@ class Tooltip extends React.Component {
     let targets = document.querySelectorAll('.tooltip');
     targets.forEach(target => {
       target.addEventListener('mouseenter', this.target_mouseEnter);
-      target.addEventListener('mouseleave', this.target_mouseLeave);
+      // target.addEventListener('mouseleave', this.target_mouseLeave);
       target.addEventListener('touchstart', this.target_touchStart);
       target.addEventListener('touchmove', this.target_touchMove);
       target.addEventListener('touchend', this.target_touchEnd);

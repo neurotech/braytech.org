@@ -244,8 +244,10 @@ class Account extends React.Component {
         199171386, // Sleeper Simulant
         199171387, // Worldline Zero
 
+        3875807583, // Whisper of the Worm
+        3142437750, // A Thousand Wings
+
         1469913803, // Harbinger's Echo
-        3142437750 // A Thousand Wings
       ];
 
       return (

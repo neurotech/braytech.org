@@ -29,7 +29,7 @@ class Item extends React.Component {
     }
 
     let state = 0;
-    if (profile.data) {
+    if (profile.data && !data.itemInstanceId) {
       let hash = itemDefinition.collectibleHash ? itemDefinition.collectibleHash : false;
       if (hash) {
         let characterId = profile.characterId;

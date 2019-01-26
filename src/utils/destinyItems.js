@@ -36,6 +36,7 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
   let statGroup = item.stats ? manifest.DestinyStatGroupDefinition[item.stats.statGroupHash] : false;
 
   let statModifiers = [];
+  let statModifiersMasterworks = [];
 
   let socketsOutput = [];
 
@@ -61,6 +62,7 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
     let categoryHash = item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false;
 
     let modCategoryHash = [3379164649, 590099826, 2685412949, 4243480345, 590099826];
+    let mastworkSocketHash = [11855950, 2218962841];
 
     if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && modCategoryHash.includes(categoryHash))) {
       return;
@@ -81,6 +83,17 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
               statHash: modifier.statTypeHash,
               value: modifier.value
             });
+          }
+          if (mastworkSocketHash.includes(socket.socketTypeHash)) {
+            let index = statModifiersMasterworks.findIndex(stat => stat.statHash === modifier.statTypeHash);
+            if (index > -1) {
+              statModifiersMasterworks[index].value = statModifiersMasterworks[index].value + modifier.value;
+            } else {
+              statModifiersMasterworks.push({
+                statHash: modifier.statTypeHash,
+                value: modifier.value
+              });
+            }
           }
         });
       }
@@ -147,6 +160,7 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
   if (item.itemType === 3) {
     statGroup.scaledStats.forEach(stat => {
       let statModifier = statModifiers.find(modifier => modifier.statHash === stat.statHash);
+      let statModifierMasterwork = statModifiersMasterworks.find(modifier => modifier.statHash === stat.statHash);
       let statDef = manifest.DestinyStatDefinition[stat.statHash];
 
       if (Object.keys(item.stats.stats).includes(stat.statHash.toString())) {
@@ -165,13 +179,23 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
         }
 
         value = instanceStat ? instanceStat.value : value;
+        value = statModifierMasterwork ? value - statModifierMasterwork.value : value;
 
         statsOutput.push({
           displayAsNumeric: stat.displayAsNumeric,
           element: (
             <div key={stat.statHash} className='stat'>
               <div className='name'>{statDef.displayProperties.name}</div>
-              <div className={cx('value', { bar: !stat.displayAsNumeric, int: stat.displayAsNumeric })}>{!stat.displayAsNumeric ? <div className='bar' data-value={value} style={{ width: `${value}%` }} /> : value}</div>
+              <div className={cx('value', { bar: !stat.displayAsNumeric, int: stat.displayAsNumeric })}>
+                {!stat.displayAsNumeric ? (
+                  <>
+                    <div className='bar' data-value={value} style={{ width: `${value}%` }} />
+                    {statModifierMasterwork ? <div className='tip' style={{ width: `${statModifierMasterwork.value}%` }} /> : null}
+                  </>
+                ) : (
+                  value
+                )}
+              </div>
             </div>
           )
         });
@@ -200,7 +224,7 @@ export const getSockets = (manifest, item, mods = true, initialOnly = false, soc
       });
     });
   }
-  
+
   // push numeric stats to the bottom
   statsOutput = orderBy(statsOutput, [stat => stat.displayAsNumeric], ['asc']);
 

@@ -223,6 +223,7 @@
   height: 16px;
   position: relative;
   color: #fff;
+  display: flex;
 }
 
 #tooltip .stats .stat .value.bar {
@@ -235,11 +236,9 @@
 }
 
 #tooltip .stats .stat .value .bar {
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 100%;
   background-color: #fff;
+  position: relative;
 }
 
 #tooltip .stats .stat .value .bar::before {
@@ -255,6 +254,11 @@
   align-items: center;
   justify-content: flex-end;
   opacity: 0;
+}
+
+#tooltip .stats .stat .value .tip {
+  height: 100%;
+  background-color: #c6ab3c;
 }
 
 #tooltip .sockets {
@@ -470,6 +474,60 @@
   right: 0;
   font-size: 14px;
 }
+
+#tooltip .frame.is-masterworked .header {
+  position: relative;
+}
+
+#tooltip .frame.is-masterworked .image.bg {
+  background-size: cover;
+  background-position: center top;
+}
+
+#tooltip .frame.is-masterworked .image.bg::before,
+#tooltip .frame.is-masterworked .image.bg::after {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  animation: animation-masterwork-header 5s linear infinite;
+}
+
+@keyframes animation-masterwork-header {
+  0% {
+    background-position-x: 200%;
+  }
+  20% {
+    background-position-x: -200%;
+  }
+  100% {
+    background-position-x: -200%;
+  }
+}
+
+#tooltip .frame.is-masterworked .image.bg::before {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  background-size: 200%;
+  background-repeat: no-repeat;
+  padding-bottom: 1.1%;
+  top: 0;
+}
+
+#tooltip .frame.is-masterworked .image.bg::after {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  background-size: 200%;
+  background-repeat: no-repeat;
+  padding-bottom: 16.8%;
+  bottom: 0;
+}
+
+#tooltip .frame.is-masterworked.exotic .image.bg::after {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+  background-size: 200%;
+  background-repeat: no-repeat;
+}
+
+
 
 @media screen and (max-width: 600px) {
   #tooltip {

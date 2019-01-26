@@ -141,11 +141,13 @@ export default (profile, manifest, props) => {
       </>
     );
   } else {
+    let itemState = enumerateItemState(parseInt(props.itemState, 10));
     return (
       <>
         <div className='acrylic' />
-        <div className={cx('frame', kind, tier, { 'is-masterworked': enumerateItemState(parseInt(props.itemState, 10)).masterworked })}>
-          <div className='header' data-uitype={item.uiItemDisplayStyle}>
+        <div className={cx('frame', kind, tier, { 'is-masterworked': itemState.masterworked })}>
+          <div className='header'>
+            {itemState.masterworked ? <ObservedImage className={cx('image', 'bg')} src={tier === 'exotic' ? `/static/images/extracts/flair/01A3-00001DDC.PNG` : `/static/images/extracts/flair/01A3-00001DDE.PNG`} /> : null}
             <div className='name'>{item.displayProperties.name}</div>
             <div>
               <div className='kind'>{item.itemTypeDisplayName}</div>
