@@ -37,7 +37,11 @@
 }
 
 #get-profile .results {
-  margin: 1rem 0 3rem;
+  margin: 1rem 0 0;
+}
+
+#get-profile .search .sub-header ~ .sub-header {
+  margin: 2rem 0 0;
 }
 
 #get-profile .results .list li {
