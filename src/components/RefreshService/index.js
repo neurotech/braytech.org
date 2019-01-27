@@ -8,7 +8,6 @@ const AUTO_REFRESH_INTERVAL = 20 * 1000;
 const TIMEOUT = 60 * 60 * 1000;
 
 class RefreshService extends React.Component {
-
   running = false;
 
   componentDidMount() {
@@ -56,7 +55,7 @@ class RefreshService extends React.Component {
     this.clearInterval();
   }
 
-  track() {   
+  track() {
     this.lastActivityTimestamp = Date.now();
   }
 
@@ -66,10 +65,7 @@ class RefreshService extends React.Component {
 
   startInterval() {
     // console.log('starting a timer');
-    this.refreshAccountDataInterval = window.setInterval(
-      this.service,
-      AUTO_REFRESH_INTERVAL
-    );
+    this.refreshAccountDataInterval = window.setInterval(this.service, AUTO_REFRESH_INTERVAL);
   }
 
   clearInterval() {
@@ -88,6 +84,7 @@ class RefreshService extends React.Component {
   };
 
   service = (membershipType = this.props.profile.membershipType, membershipId = this.props.profile.membershipId) => {
+    return;
 
     if (!this.activeWithinTimespan(TIMEOUT)) {
       return;
@@ -100,13 +97,12 @@ class RefreshService extends React.Component {
     } else {
       this.running = true;
     }
-  
+
     // just for the console.warn
     // let time = new Date();
     // console.log("refreshing profile data", time, this.props);
-    
-    getProfile(membershipType, membershipId, this.props.profile.characterId, (callback) => {
 
+    getProfile(membershipType, membershipId, this.props.profile.characterId, callback => {
       if (!callback.loading && callback.error) {
         if (callback.error === 'fetch') {
           // TO DO: error count - fail after 3
@@ -125,10 +121,9 @@ class RefreshService extends React.Component {
       } else if (!callback.loading) {
         this.running = false;
       } else {
-
       }
     });
-  }
+  };
 }
 
 function mapStateToProps(state, ownProps) {
