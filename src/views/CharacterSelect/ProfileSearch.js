@@ -5,17 +5,13 @@ import * as destinyEnums from '../../utils/destinyEnums';
 import * as ls from '../../utils/localStorage';
 import errorHandler from '../../utils/errorHandler';
 import PropTypes from 'prop-types';
-import bungie from '../../utils/bungie';
+import * as bungie from '../../utils/bungie';
 
 import './styles.css';
 
 const SearchResult = p => (
   <li className='linked'>
-    <a
-      onClick={e => {
-        p.onProfileClick(p.profile.membershipType, p.profile.membershipId, p.profile.displayName);
-      }}
-    >
+    <a onClick={() => p.onProfileClick(p.profile.membershipType, p.profile.membershipId, p.profile.displayName)}>
       <span className={`destiny-platform_${destinyEnums.PLATFORMS[p.profile.membershipType].toLowerCase()}`} />
       {p.profile.displayName}
     </a>

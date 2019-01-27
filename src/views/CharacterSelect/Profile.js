@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import { withNamespaces } from 'react-i18next';
 
 import Characters from '../../components/Characters';
-
 import './styles.css';
-import PropTypes from 'prop-types';
 
 class Profile extends React.Component {
   render() {

@@ -1,7 +1,7 @@
 import store from './reduxStore';
 import * as responseUtils from './responseUtils';
 
-import bungie from './bungie';
+import * as bungie from './bungie';
 
 async function getProfile() {
   const { membershipType, membershipId } = store.getState().profile;

@@ -12,7 +12,7 @@ import './components/PresentationNode.css';
 import './utils/i18n';
 import { isProfileRoute } from './utils/globals';
 import dexie from './utils/dexie';
-import bungie from './utils/bungie';
+import * as bungie from './utils/bungie';
 import GoogleAnalytics from './components/GoogleAnalytics';
 
 import Loading from './components/Loading';

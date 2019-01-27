@@ -13,26 +13,16 @@ async function apiRequest(path) {
   return request.Response;
 }
 
-const manifestIndex = async () => apiRequest('/Platform/Destiny2/Manifest/');
+export const manifestIndex = async () => apiRequest('/Platform/Destiny2/Manifest/');
 
-const settings = async () => apiRequest(`/Platform/Settings/`);
+export const settings = async () => apiRequest(`/Platform/Settings/`);
 
-const milestones = async () => apiRequest('/Platform/Destiny2/Milestones/');
+export const milestones = async () => apiRequest('/Platform/Destiny2/Milestones/');
 
-const manifest = async version => fetch(`https://www.bungie.net${version}`).then(a => a.json());
+export const manifest = async version => fetch(`https://www.bungie.net${version}`).then(a => a.json());
 
-const memberProfile = async (membershipType, membershipId, components) => apiRequest(`/Platform/Destiny2/${membershipType}/Profile/${membershipId}/?components=${components}`);
+export const memberProfile = async (membershipType, membershipId, components) => apiRequest(`/Platform/Destiny2/${membershipType}/Profile/${membershipId}/?components=${components}`);
 
-const memberGroups = async (membershipType, membershipId) => apiRequest(`/Platform/GroupV2/User/${membershipType}/${membershipId}/0/1/`);
+export const memberGroups = async (membershipType, membershipId) => apiRequest(`/Platform/GroupV2/User/${membershipType}/${membershipId}/0/1/`);
 
-const playerSearch = async (membershipType, displayName) => apiRequest(`/Platform/Destiny2/SearchDestinyPlayer/${membershipType}/${encodeURIComponent(displayName)}/`);
-
-export default {
-  manifestIndex,
-  settings,
-  milestones,
-  manifest,
-  memberProfile,
-  memberGroups,
-  playerSearch
-};
+export const playerSearch = async (membershipType, displayName) => apiRequest(`/Platform/Destiny2/SearchDestinyPlayer/${membershipType}/${encodeURIComponent(displayName)}/`);
