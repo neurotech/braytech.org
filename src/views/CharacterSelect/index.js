@@ -6,7 +6,6 @@ import cx from 'classnames';
 import { withNamespaces } from 'react-i18next';
 
 import getProfile from '../../utils/getProfile';
-import setProfile from '../../utils/setProfile';
 import Characters from '../../components/Characters';
 import Globals from '../../utils/globals';
 import * as destinyEnums from '../../utils/destinyEnums';
@@ -15,6 +14,7 @@ import errorHandler from '../../utils/errorHandler';
 import Spinner from '../../components/Spinner';
 
 import './styles.css';
+import store from '../../utils/reduxStore';
 
 class CharacterSelect extends React.Component {
   constructor(props) {
@@ -24,11 +24,7 @@ class CharacterSelect extends React.Component {
       search: {
         results: false
       },
-      profile: {
-        data: false
-      },
-      error: false,
-      loading: true
+      error: props.error
     };
   }
 
@@ -66,30 +62,22 @@ class CharacterSelect extends React.Component {
   };
 
   characterClick = characterId => {
+    ls.set('setting.profile', {
+      membershipType: this.props.profile.membershipType,
+      membershipId: this.props.profile.membershipId,
+      characterId
+    });
 
-    let membershipType = this.state.profile.data.profile.profile.data.userInfo.membershipType;
-    let membershipId = this.state.profile.data.profile.profile.data.userInfo.membershipId;
-    let data = this.state.profile.data;
-    let setAsDefaultProfile = true;
-
-    setProfile(membershipType, membershipId, characterId, data, setAsDefaultProfile);
-  };
-
-  getProfileCallback = state => {
-    this.setState(prev => ({
-      search: { ...prev.search },
-      profile: {
-        data: state.data
-      },
-      error: state.error,
-      loading: state.loading
-    }));
+    store.dispatch({
+      type: 'CHARACTER_CHOSEN',
+      payload: characterId
+    });
   };
 
   resultClick = (membershipType, membershipId, displayName) => {
     window.scrollTo(0, 0);
 
-    getProfile(membershipType, membershipId, false, this.getProfileCallback);
+    getProfile(membershipType, membershipId);
 
     if (displayName) {
       ls.update('history.profiles', { membershipType: membershipType, membershipId: membershipId, displayName: displayName }, true, 6);
@@ -101,8 +89,8 @@ class CharacterSelect extends React.Component {
 
     if (this.props.user.data) {
       this.setState({ profile: { data: this.props.user.data }, loading: false });
-    } else if (this.props.user.membershipId && !this.state.profile.data) {
-      getProfile(this.props.user.membershipType, this.props.user.membershipId, this.props.user.characterId, this.getProfileCallback);
+    } else if (this.props.user.membershipId && !this.props.profile.data) {
+      getProfile(this.props.user.membershipType, this.props.user.membershipId);
     } else {
       this.setState({ loading: false });
     }
@@ -142,18 +130,18 @@ class CharacterSelect extends React.Component {
     }
 
     const { from } = this.props.location.state || { from: { pathname: '/' } };
-    
-    if (this.state.profile.data) {
+
+    if (this.props.profile.data) {
       let clan = null;
-      if (this.state.profile.data.groups.results.length === 1) {
-        clan = <div className='clan'>{this.state.profile.data.groups.results[0].group.name}</div>;
+      if (this.props.profile.data.groups.results.length === 1) {
+        clan = <div className='clan'>{this.props.profile.data.groups.results[0].group.name}</div>;
       }
 
       let timePlayed = (
         <div className='timePlayed'>
           {Math.floor(
-            Object.keys(this.state.profile.data.profile.characters.data).reduce((sum, key) => {
-              return sum + parseInt(this.state.profile.data.profile.characters.data[key].minutesPlayedTotal);
+            Object.keys(this.props.profile.data.profile.characters.data).reduce((sum, key) => {
+              return sum + parseInt(this.props.profile.data.profile.characters.data[key].minutesPlayedTotal);
             }, 0) / 1440
           )}{' '}
           {t('days on the grind')}
@@ -164,11 +152,11 @@ class CharacterSelect extends React.Component {
         <>
           <div className='user'>
             <div className='info'>
-              <div className='displayName'>{this.state.profile.data.profile.profile.data.userInfo.displayName}</div>
+              <div className='displayName'>{this.props.profile.data.profile.profile.data.userInfo.displayName}</div>
               {clan}
               {timePlayed}
             </div>
-            <Characters data={this.state.profile.data} manifest={this.props.manifest} location={{ ...from }} characterClick={this.characterClick} />
+            <Characters data={this.props.profile.data} manifest={this.props.manifest} location={{ ...from }} characterClick={this.characterClick} />
           </div>
         </>
       );
@@ -185,10 +173,10 @@ class CharacterSelect extends React.Component {
     }
 
     return (
-      <div className={cx('view', this.props.theme.selected, { loading: this.state.loading })} id='get-profile'>
+      <div className={cx('view', this.props.theme.selected, { loading: this.props.loading })} id='get-profile'>
         {reverse ? (
           <div className='profile'>
-            {this.state.loading ? <Spinner /> : null}
+            {this.props.loading ? <Spinner /> : null}
             {profileElement}
           </div>
         ) : null}
@@ -229,7 +217,7 @@ class CharacterSelect extends React.Component {
         </div>
         {!reverse ? (
           <div className='profile'>
-            {this.state.loading ? <Spinner /> : null}
+            {this.props.loading ? <Spinner /> : null}
             {profileElement}
           </div>
         ) : null}
@@ -241,13 +229,13 @@ class CharacterSelect extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     profile: state.profile,
-    theme: state.theme
+    theme: state.theme,
+    error: state.profile.error,
+    loading: state.profile.loading
   };
 }
 
 export default compose(
-  connect(
-    mapStateToProps
-  ),
+  connect(mapStateToProps),
   withNamespaces()
 )(CharacterSelect);

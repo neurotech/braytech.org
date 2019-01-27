@@ -3,55 +3,40 @@ import * as responseUtils from './responseUtils';
 
 import bungie from './bungie';
 
-async function getProfile(membershipType, membershipId, characterId = false, stateCallback) {
-  const state = store.getState();
+async function getProfile(membershipType, membershipId) {
+  store.dispatch({ type: 'PROFILE_LOADING', payload: { membershipType, membershipId } });
 
-  stateCallback({
-    data: state.profile.data,
-    characterId: characterId,
-    loading: true,
-    error: false
-  });
+  let profile,
+    milestones,
+    groups = false;
 
-  // prettier-ignore
-  let [profile, milestones, groups] = await Promise.all([
-    bungie.memberProfile(membershipType, membershipId, '100,104,200,202,204,205,300,301,302,303,304,305,800,900'),
-    bungie.milestones(),
-    bungie.memberGroups(membershipType, membershipId)
-  ]);
-
-  if (!profile || !milestones || !groups) {
-    stateCallback({
-      data: state.profile.data,
-      characterId: characterId,
-      loading: false,
-      error: 'fetch'
-    });
+  try {
+    // prettier-ignore
+    [profile, milestones, groups] = await Promise.all([
+      bungie.memberProfile(membershipType, membershipId, '100,104,200,202,204,205,300,301,302,303,304,305,800,900'),
+      bungie.milestones(),
+      bungie.memberGroups(membershipType, membershipId)
+    ]);
+  } catch (error) {
+    store.dispatch({ type: 'PROFILE_LOAD_ERROR', payload: `${error}` });
     return;
   }
 
   if (!profile.characterProgressions.data) {
-    stateCallback({
-      data: state.profile.data,
-      characterId: characterId,
-      loading: false,
-      error: 'privacy'
-    });
+    store.dispatch({ type: 'PROFILE_LOAD_ERROR', payload: 'private' });
     return;
   }
 
   profile = responseUtils.profileScrubber(profile);
   groups = responseUtils.groupScrubber(groups);
 
-  stateCallback({
-    data: {
+  store.dispatch({
+    type: 'PROFILE_LOADED',
+    payload: {
       profile,
       groups,
       milestones
-    },
-    characterId: characterId,
-    loading: false,
-    error: false
+    }
   });
 }
 
