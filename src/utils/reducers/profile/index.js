@@ -20,10 +20,13 @@ export default function profileReducer(state = defaultState, action) {
         characterId: action.payload
       };
     case 'PROFILE_MEMBERSHIP_SELECT':
+      const reset = action.payload.membershipId !== state.membershipId || action.payload.membershipType !== state.membershipType;
       return {
         ...state,
         membershipId: action.payload.membershipId,
-        membershipType: action.payload.membershipType
+        membershipType: action.payload.membershipType,
+        data: reset ? false : state.data,
+        characterId: reset ? false : state.characterId
       };
     case 'PROFILE_LOADING':
       return {
