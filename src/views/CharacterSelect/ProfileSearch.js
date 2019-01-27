@@ -1,69 +1,30 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
-import Globals from '../../utils/globals';
 import * as destinyEnums from '../../utils/destinyEnums';
 import * as ls from '../../utils/localStorage';
 import errorHandler from '../../utils/errorHandler';
 import PropTypes from 'prop-types';
+import bungie from '../../utils/bungie';
 
 import './styles.css';
 
-const ProfileSearchResults = withNamespaces()(props => (
-  <div className='results'>
-    <ul className='list'>
-      {props.results.length > 0 ? (
-        props.results.map(result => (
-          <li className='linked' key={result.membershipId}>
-            <a
-              onClick={e => {
-                this.onResultClick(result.membershipType, result.membershipId, result.displayName);
-              }}
-            >
-              <span className={`destiny-platform_${destinyEnums.PLATFORMS[result.membershipType].toLowerCase()}`} />
-              {result.displayName}
-            </a>
-          </li>
-        ))
-      ) : (
-        <li className='no-profiles'>{props.t('No profiles found')}</li>
-      )}
-    </ul>
-  </div>
-));
+const SearchResult = p => (
+  <li className='linked'>
+    <a
+      onClick={e => {
+        p.onProfileClick(p.profile.membershipType, p.profile.membershipId, p.profile.displayName);
+      }}
+    >
+      <span className={`destiny-platform_${destinyEnums.PLATFORMS[p.profile.membershipType].toLowerCase()}`} />
+      {p.profile.displayName}
+    </a>
+  </li>
+);
 
-ProfileSearchResults.propTypes = {
-  onResultClick: PropTypes.func.isRequired,
-  results: PropTypes.array.isRequired
-};
-
-const ProfileHistory = withNamespaces()(props => (
-  <>
-    <div className='sub-header sub'>
-      <div>{props.t('Previous')}</div>
-    </div>
-    <div className='results'>
-      <ul className='list'>
-        {props.history.map(result => (
-          <li className='linked' key={result.membershipId}>
-            <a
-              onClick={e => {
-                props.onResultClick(result.membershipType, result.membershipId, result.displayName);
-              }}
-            >
-              <span className={`destiny-platform_${destinyEnums.PLATFORMS[result.membershipType].toLowerCase()}`} />
-              {result.displayName}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </>
-));
-
-ProfileHistory.propTypes = {
-  onResultClick: PropTypes.func.isRequired,
-  history: PropTypes.array.isRequired
+SearchResult.propTypes = {
+  onProfileClick: PropTypes.func.isRequired,
+  profile: PropTypes.object
 };
 
 class ProfileSearch extends React.Component {
@@ -76,62 +37,69 @@ class ProfileSearch extends React.Component {
     };
   }
 
-  searchDestinyPlayer = e => {
+  onSearchInput = e => {
     let membershipType = '-1';
     let displayName = e.target.value;
 
     clearTimeout(this.inputTimeout);
-    this.inputTimeout = setTimeout(() => {
-      fetch(`https://www.bungie.net/Platform/Destiny2/SearchDestinyPlayer/${membershipType}/${encodeURIComponent(displayName)}/`, {
-        headers: {
-          'X-API-Key': Globals.key.bungie
-        }
-      })
-        .then(response => {
-          return response.json();
-        })
-        .then(SearchResponse => {
-          if (SearchResponse.ErrorCode !== 1) {
-            console.log(SearchResponse);
-            this.setState({ error: SearchResponse.ErrorCode });
-            return;
-          }
-          this.setState({
-            results: SearchResponse.Response,
-            error: false
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    this.inputTimeout = setTimeout(async () => {
+      const results = await bungie.playerSearch(membershipType, displayName);
+
+      this.setState({
+        results,
+        error: false
+      });
     }, 1000);
   };
 
-  render() {
-    const { t, onResultClick } = this.props;
+  profileList = profiles => profiles.map(p => <SearchResult key={p.membershipId} onProfileClick={this.props.onProfileClick} profile={p} />);
 
-    let profileHistory = ls.get('history.profiles') || [];
+  render() {
+    const { t } = this.props;
+    const { results } = this.state;
+
+    let history = ls.get('history.profiles') || [];
 
     return (
       <div className='search'>
         {this.state.error && errorHandler(this.state.error)}
+
         <div className='sub-header sub'>
           <div>{t('Search for player')}</div>
         </div>
+
         <div className='form'>
           <div className='field'>
-            <input onInput={this.searchDestinyPlayer} type='text' placeholder={t('insert gamertag')} spellCheck='false' />
+            <input onInput={this.onSearchInput} type='text' placeholder={t('insert gamertag')} spellCheck='false' />
           </div>
         </div>
-        {this.state.results && <ProfileSearchResults results={this.state.results} onResultClick={onResultClick} />}
-        {profileHistory.length > 0 && <ProfileHistory history={profileHistory} onResultClick={onResultClick} />}
+
+        {this.state.results && (
+          <div className='results'>
+            <ul className='list'>
+              {this.profileList(results)}
+              {results.length === 0 && <li className='no-profiles'>{t('No profiles found')}</li>}
+            </ul>
+          </div>
+        )}
+
+        {history.length > 0 && (
+          <>
+            <div className='sub-header sub'>
+              <div>{t('Previous')}</div>
+            </div>
+            <div className='results'>
+              <ul className='list'>{this.profileList(history)}</ul>
+            </div>
+          </>
+        )}
       </div>
     );
   }
 }
 
 ProfileSearch.propTypes = {
-  onResultClick: PropTypes.func.isRequired
+  onProfileClick: PropTypes.func.isRequired
 };
 
 export default withNamespaces()(ProfileSearch);

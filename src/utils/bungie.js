@@ -25,11 +25,14 @@ const memberProfile = async (membershipType, membershipId, components) => apiReq
 
 const memberGroups = async (membershipType, membershipId) => apiRequest(`/Platform/GroupV2/User/${membershipType}/${membershipId}/0/1/`);
 
+const playerSearch = async (membershipType, displayName) => apiRequest(`/Platform/Destiny2/SearchDestinyPlayer/${membershipType}/${encodeURIComponent(displayName)}/`);
+
 export default {
   manifestIndex,
   settings,
   milestones,
   manifest,
   memberProfile,
-  memberGroups
+  memberGroups,
+  playerSearch
 };
