@@ -88,13 +88,7 @@ class CharacterSelect extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
 
-    if (this.props.user.data) {
-      this.setState({ profile: { data: this.props.user.data }, loading: false });
-    } else if (this.props.user.membershipId && !this.props.profile.data) {
-      getProfile(this.props.user.membershipType, this.props.user.membershipId);
-    } else {
-      this.setState({ loading: false });
-    }
+    if (this.props.profile.membershipId && !this.props.profile.data) getProfile();
   }
 
   render() {
@@ -171,7 +165,11 @@ class CharacterSelect extends React.Component {
     let errorNotices = null;
     if (this.state.error) {
       errorNotices = errorHandler(this.state.error);
+    } else if (this.props.profile.error) {
+      errorNotices = errorHandler(this.props.profile.error);
     }
+
+    const loadingProfile = !this.props.profile.data && this.props.profile.membershipId && !this.props.profile.error;
 
     return (
       <div className={cx('view', this.props.theme.selected, { loading: this.props.loading })} id='get-profile'>
@@ -218,7 +216,7 @@ class CharacterSelect extends React.Component {
         </div>
         {!reverse ? (
           <div className='profile'>
-            {this.props.loading ? <Spinner /> : null}
+            {loadingProfile && <Spinner />}
             {profileElement}
           </div>
         ) : null}
@@ -230,9 +228,7 @@ class CharacterSelect extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     profile: state.profile,
-    theme: state.theme,
-    error: state.profile.error,
-    loading: state.profile.loading
+    theme: state.theme
   };
 }
 

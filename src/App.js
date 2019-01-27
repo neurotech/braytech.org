@@ -158,7 +158,7 @@ class App extends React.Component {
                   <div className='main'>
                     <Route path='/' render={route => <Header route={route} {...this.state} {...this.props} manifest={this.manifest} />} />
                     <Switch>
-                      <Route path='/character-select' render={route => <CharacterSelect location={route.location} user={this.props.profile} viewport={this.state.viewport} manifest={this.manifest} />} />
+                      <Route path='/character-select' render={route => <CharacterSelect location={route.location} viewport={this.state.viewport} manifest={this.manifest} />} />
                       <Route path='/account' exact render={route => <Account manifest={this.manifest} />} />
                       <Route path='/clan/:view?/:subView?' exact render={route => <Clan manifest={this.manifest} view={route.match.params.view} subView={route.match.params.subView} />} />
                       {/* <Route path='/character' exact render={() => <Character viewport={this.state.viewport} manifest={this.manifest} />} /> */}
@@ -194,7 +194,7 @@ class App extends React.Component {
                   <div className='main'>
                     <Route path='/' render={route => <Header route={route} {...this.state} {...this.props} manifest={this.manifest} />} />
                     <Switch>
-                      <Route path='/character-select' render={route => <CharacterSelect location={route.location} user={this.props.profile} viewport={this.state.viewport} manifest={this.manifest} />} />
+                      <Route path='/character-select' render={route => <CharacterSelect location={route.location} viewport={this.state.viewport} manifest={this.manifest} />} />
                       <Route
                         path='/account'
                         exact
