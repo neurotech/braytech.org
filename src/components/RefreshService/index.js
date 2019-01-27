@@ -82,46 +82,17 @@ class RefreshService extends React.Component {
     }
   };
 
-  service = (membershipType = this.props.profile.membershipType, membershipId = this.props.profile.membershipId) => {
-    return;
-
+  service = () => {
     if (!this.activeWithinTimespan(TIMEOUT)) {
       return;
     }
 
-    if (this.running) {
+    if (this.props.profile.loading) {
       console.warn('RefreshService: service was called though it was already running!');
-      this.running = false;
       return;
-    } else {
-      this.running = true;
     }
 
-    // just for the console.warn
-    // let time = new Date();
-    // console.log("refreshing profile data", time, this.props);
-
-    getProfile(membershipType, membershipId, this.props.profile.characterId, callback => {
-      if (!callback.loading && callback.error) {
-        if (callback.error === 'fetch') {
-          // TO DO: error count - fail after 3
-          // console.log(membershipType, membershipId, state.profile.characterId, callback.data);
-          this.running = false;
-          // setProfile with previous data - triggers componentDidUpdate in App.js to fire this service again
-          // setProfile(membershipType, membershipId, this.props.profile.characterId, callback.data);
-        }
-        return;
-      }
-
-      if (!callback.loading && this.props.profile.membershipId === membershipId) {
-        this.running = false;
-        // setProfile with new data - triggers componentDidUpdate in App.js to fire this service again
-        // setProfile(membershipType, membershipId, this.props.profile.characterId, callback.data);
-      } else if (!callback.loading) {
-        this.running = false;
-      } else {
-      }
-    });
+    getProfile(this.props.profile.membershipType, this.props.profile.membershipId);
   };
 }
 
