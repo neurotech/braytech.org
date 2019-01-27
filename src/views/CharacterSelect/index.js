@@ -69,7 +69,7 @@ class CharacterSelect extends React.Component {
     });
 
     store.dispatch({
-      type: 'CHARACTER_CHOSEN',
+      type: 'PROFILE_CHARACTER_SELECT',
       payload: characterId
     });
   };
@@ -77,7 +77,8 @@ class CharacterSelect extends React.Component {
   resultClick = (membershipType, membershipId, displayName) => {
     window.scrollTo(0, 0);
 
-    getProfile(membershipType, membershipId);
+    store.dispatch({ type: 'PROFILE_MEMBERSHIP_SELECT', payload: { membershipType, membershipId } });
+    getProfile();
 
     if (displayName) {
       ls.update('history.profiles', { membershipType: membershipType, membershipId: membershipId, displayName: displayName }, true, 6);

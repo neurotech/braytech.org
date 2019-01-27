@@ -92,7 +92,7 @@ class RefreshService extends React.Component {
       return;
     }
 
-    getProfile(this.props.profile.membershipType, this.props.profile.membershipId);
+    getProfile();
   };
 }
 

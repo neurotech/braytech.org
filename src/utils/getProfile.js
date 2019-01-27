@@ -3,8 +3,10 @@ import * as responseUtils from './responseUtils';
 
 import bungie from './bungie';
 
-async function getProfile(membershipType, membershipId) {
-  store.dispatch({ type: 'PROFILE_LOADING', payload: { membershipType, membershipId } });
+async function getProfile() {
+  const { membershipType, membershipId } = store.getState().profile;
+
+  store.dispatch({ type: 'PROFILE_LOADING' });
 
   let profile,
     milestones,

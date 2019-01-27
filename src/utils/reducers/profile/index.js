@@ -1,10 +1,10 @@
 import * as ls from '../../localStorage';
 
-const savedProfile = ls.get('setting.profile') ? ls.get('setting.profile') : false;
+const savedProfile = ls.get('setting.profile');
 const defaultState = {
-  membershipType: savedProfile ? savedProfile.membershipType : false,
-  membershipId: savedProfile ? savedProfile.membershipId : false,
-  characterId: false,
+  membershipType: savedProfile && savedProfile.membershipType,
+  membershipId: savedProfile && savedProfile.membershipId,
+  characterId: savedProfile && savedProfile.characterId,
   data: false,
   prevData: false,
   loading: false,
@@ -14,18 +14,22 @@ const defaultState = {
 
 export default function profileReducer(state = defaultState, action) {
   switch (action.type) {
-    case 'CHARACTER_CHOSEN':
+    case 'PROFILE_CHARACTER_SELECT':
       return {
         ...state,
         characterId: action.payload
+      };
+    case 'PROFILE_MEMBERSHIP_SELECT':
+      return {
+        ...state,
+        membershipId: action.payload.membershipId,
+        membershipType: action.payload.membershipType
       };
     case 'PROFILE_LOADING':
       return {
         ...state,
         loading: true,
-        error: false,
-        membershipId: action.payload.membershipId,
-        membershipType: action.payload.membershipType
+        error: false
       };
     case 'PROFILE_LOADED':
       if (state.prevData !== action.payload) {
