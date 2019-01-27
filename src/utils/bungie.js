@@ -12,7 +12,7 @@ async function apiRequest(path) {
 
   // need a .catch()
   // if input is 'lol', then user deletes 'lol', playerSearch() is fired anyway, 
-  // and the bent response is HTML. page explodes. probably an error that should 
+  // and the api response is HTML. page explodes. probably an error that should 
   // be avoided anyway. i've added an if statement in ProfileSearch.js to check 
   // if displayName is defined. ideally, we'd handle the same way as a bungie 
   // error code where !== 1 like below?
