@@ -42,7 +42,7 @@ class ProfileSearch extends React.Component {
 
   componentWillUnmount() {
     // If we don't do this, the searchForPlayers may attempt to setState on
-    // an unmounted component. We can't cancel it effectively as it's using
+    // an unmounted component. We can't cancel it as it's using
     // fetch, which doesn't support cancels :(
     this.mounted = false;
   }
@@ -53,9 +53,12 @@ class ProfileSearch extends React.Component {
   };
 
   onSearchKeyPress = e => {
+    // If they pressed enter, ignore the debounce and search right meow.
     if (e.key === 'Enter') this.searchForPlayers.flush();
   };
 
+  // Debounced so that we don't make an API request for every single
+  // keypress - only when they stop typing.
   searchForPlayers = debounce(async () => {
     const displayName = this.state.search;
     if (!displayName) return;

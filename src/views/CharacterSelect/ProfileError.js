@@ -59,7 +59,7 @@ const GenericError = () => (
 const ProfileError = props => {
   const { error } = props;
 
-  if (error.errorCode && error.errorCode == 1601) {
+  if (error.errorCode && error.errorCode === 1601) {
     return <NoDestinyAccountError />;
   }
 
