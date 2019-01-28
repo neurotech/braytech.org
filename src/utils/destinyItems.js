@@ -60,7 +60,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
     });
   }
 
-  // console.log(item);
+  console.log(item);
 
   Object.keys(socketEntries).forEach(key => {
     let socket = socketEntries[key];
@@ -72,7 +72,11 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
     // 2218962841: legendary hammerhead mw
     // 2440389816: legendary mida mini tool vanguard mw
     // 2440389816: ???
-    let masterworkSocketHash = [11855950, 2218962841, 1666149691, 2440389816];
+    // 3013937058: sunshot
+    // 3969713706: tractor cannon
+    // 2071818427: whisper
+    // 3906162408: colony
+    let masterworkSocketHash = [11855950, 2218962841, 1666149691, 2440389816, 3013937058, 3969713706, 2071818427, 3906162408];
 
     if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && modCategoryHash.includes(categoryHash))) {
       return;
@@ -81,7 +85,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
     socket.reusablePlugItems.forEach(reusablePlug => {
       let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
       
-      // console.log(reusablePlug, plug, socket);
+      console.log(reusablePlug, plug, socket);
 
       if (plug.hash === socket.singleInitialItemHash) {
         plug.investmentStats.forEach(modifier => {
@@ -199,15 +203,15 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
           value = value < 1 ? 1 : value;
         }
 
-        value = instanceStat ? instanceStat.value : value;
         value = statModifierMasterwork ? value - statModifierMasterwork.value : value;
+        value = instanceStat ? instanceStat.value : value;
 
         statsOutput.push({
           displayAsNumeric: stat.displayAsNumeric,
           element: (
             <div key={stat.statHash} className='stat'>
               <div className='name'>{statDef.displayProperties.name}</div>
-              <div className={cx('value', { bar: !stat.displayAsNumeric, int: stat.displayAsNumeric })}>
+              <div className={cx('value', { bar: !stat.displayAsNumeric, int: stat.displayAsNumeric, masterwork: statModifierMasterwork })}>
                 {!stat.displayAsNumeric ? (
                   <>
                     <div className='bar' data-value={value} style={{ width: `${value}%` }} />
