@@ -152,7 +152,7 @@ class App extends React.Component {
                 <div className={cx('wrapper', this.props.theme.selected, { 'profile-route': isProfileRoute(route.location.pathname, true) })}>
                   <Route path='/' render={route => <NotificationApp updateAvailable={this.props.updateAvailable} />} />
                   <Route path='/' render={route => <NotificationProgress manifest={this.manifest} />} />
-                  <Route path='/' render={route => <RefreshService {...this.props} />} />
+                  {route.location.pathname !== '/character-select' && <Route path='/' render={route => <RefreshService {...this.props} />} />}
                   <Route path='/' render={route => <Tooltip {...route} manifest={this.manifest} />} />
                   <GoogleAnalytics.RouteTracker />
                   <div className='main'>
@@ -194,7 +194,7 @@ class App extends React.Component {
                   <div className='main'>
                     <Route path='/' render={route => <Header route={route} {...this.state} {...this.props} manifest={this.manifest} />} />
                     <Switch>
-                      <Route path='/character-select' render={route => <CharacterSelect location={route.location} viewport={this.state.viewport} manifest={this.manifest} />} />
+                      {route.location.pathname !== '/character-select' && <Route path='/character-select' render={route => <CharacterSelect location={route.location} viewport={this.state.viewport} manifest={this.manifest} />} />}
                       <Route
                         path='/account'
                         exact
