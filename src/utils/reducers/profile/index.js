@@ -18,20 +18,22 @@ export default function profileReducer(state = defaultState, action) {
         ...state,
         characterId: action.payload
       };
-    case 'PROFILE_MEMBERSHIP_SELECT':
+    case 'PROFILE_LOADING_NEW_MEMBERSHIP':
       const reset = action.payload.membershipId !== state.membershipId || action.payload.membershipType !== state.membershipType;
       return {
         ...state,
         membershipId: action.payload.membershipId,
         membershipType: action.payload.membershipType,
         data: reset ? false : state.data,
-        characterId: reset ? false : state.characterId
+        characterId: reset ? false : state.characterId,
+        error: false,
+        loading: true
       };
-    case 'PROFILE_LOADING':
+    case 'PROFILE_LOAD_ERROR':
       return {
         ...state,
-        loading: true,
-        error: false
+        loading: false,
+        error: action.payload
       };
     case 'PROFILE_LOADED':
       if (state.prevData !== action.payload) {
@@ -43,12 +45,6 @@ export default function profileReducer(state = defaultState, action) {
         prevData: state.data,
         loading: false,
         error: false
-      };
-    case 'PROFILE_LOAD_ERROR':
-      return {
-        ...state,
-        loading: false,
-        error: action.payload
       };
     default:
       return state;
