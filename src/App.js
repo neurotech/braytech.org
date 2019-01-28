@@ -14,6 +14,7 @@ import { isProfileRoute } from './utils/globals';
 import dexie from './utils/dexie';
 import * as bungie from './utils/bungie';
 import GoogleAnalytics from './components/GoogleAnalytics';
+import getProfile from './utils/getProfile';
 
 import Loading from './components/Loading';
 import Header from './components/Header';
@@ -39,6 +40,7 @@ import Credits from './views/Credits';
 import Resources from './views/Resources';
 import ClanBannerBuilder from './views/Resources/ClanBannerBuilder';
 import GodRolls from './views/Resources/GodRolls';
+import store from './utils/reduxStore';
 
 // Print timings of promises to console (and performance logger)
 // if we're running in development mode.
@@ -76,6 +78,12 @@ class App extends React.Component {
       manifestIndex: timed('getManifestIndex', bungie.manifestIndex()),
       bungieSettings: timed('getSettings', bungie.settings())
     };
+
+    const profile = props.profile;
+
+    if (profile && profile.membershipId && profile.membershipType) {
+      this.startupRequests.profile = timed('getProfile', getProfile(profile.membershipType, profile.membershipId));
+    }
   }
 
   updateViewport = () => {
@@ -119,6 +127,20 @@ class App extends React.Component {
     this.manifest.settings = await this.startupRequests.bungieSettings;
     this.availableLanguages = Object.keys(manifestIndex.jsonWorldContentPaths);
 
+    if (this.startupRequests.profile) {
+      try {
+        const data = await this.startupRequests.profile;
+        store.dispatch({
+          type: 'PROFILE_LOADED',
+          payload: data
+        });
+      } catch (error) {
+        // Ignore it if we can't load the profile on app boot - the user will just
+        // need to select a new profile
+        console.log(error);
+      }
+    }
+
     this.setState({ status: { code: 'ready' } });
   }
 
@@ -152,7 +174,8 @@ class App extends React.Component {
                 <div className={cx('wrapper', this.props.theme.selected, { 'profile-route': isProfileRoute(route.location.pathname, true) })}>
                   <Route path='/' render={route => <NotificationApp updateAvailable={this.props.updateAvailable} />} />
                   <Route path='/' render={route => <NotificationProgress manifest={this.manifest} />} />
-                  <Route path='/' render={route => <RefreshService {...this.props} />} />
+                  {/* Don't run the refresh service if we're currently selecting a character, as the refresh will cause the profile to continually reload itself */}
+                  {route.location.pathname !== '/character-select' && <RefreshService {...this.props} />}
                   <Route path='/' render={route => <Tooltip {...route} manifest={this.manifest} />} />
                   <GoogleAnalytics.RouteTracker />
                   <div className='main'>

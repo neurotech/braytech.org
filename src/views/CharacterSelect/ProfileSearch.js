@@ -3,9 +3,10 @@ import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import * as destinyEnums from '../../utils/destinyEnums';
 import * as ls from '../../utils/localStorage';
-import errorHandler from '../../utils/errorHandler';
 import PropTypes from 'prop-types';
 import * as bungie from '../../utils/bungie';
+import debounce from 'lodash/debounce';
+import Spinner from '../../components/Spinner';
 
 import './styles.css';
 
@@ -29,58 +30,94 @@ class ProfileSearch extends React.Component {
 
     this.state = {
       results: false,
-      error: false
+      search: '',
+      searching: false
     };
+    this.mounted = false;
   }
 
-  onSearchInput = e => {
-    let membershipType = '-1';
-    let displayName = e.target.value;
+  componentWillMount() {
+    this.mounted = true;
+  }
 
-    clearTimeout(this.inputTimeout);
-    this.inputTimeout = setTimeout(async () => {
-      if (!displayName) {
-        return;
-      }
-      const results = await bungie.playerSearch(membershipType, displayName);
+  componentWillUnmount() {
+    // If we don't do this, the searchForPlayers may attempt to setState on
+    // an unmounted component. We can't cancel it as it's using
+    // fetch, which doesn't support cancels :(
+    this.mounted = false;
+  }
 
-      this.setState({
-        results,
-        error: false
-      });
-    }, 1000);
+  onSearchChange = e => {
+    this.setState({ search: e.target.value });
+    this.searchForPlayers();
   };
 
-  profileList = profiles => profiles.map(p => <SearchResult key={p.membershipId} onProfileClick={this.props.onProfileClick} profile={p} />);
+  onSearchKeyPress = e => {
+    // If they pressed enter, ignore the debounce and search right meow.
+    if (e.key === 'Enter') this.searchForPlayers.flush();
+  };
+
+  // Debounced so that we don't make an API request for every single
+  // keypress - only when they stop typing.
+  searchForPlayers = debounce(async () => {
+    const displayName = this.state.search;
+    if (!displayName) return;
+
+    this.setState({ searching: true });
+    try {
+      const results = await bungie.playerSearch('-1', displayName);
+      if (this.mounted) this.setState({ results: results, searching: false });
+    } catch (e) {
+      // If we get an error here it's usually because somebody is being cheeky
+      // (eg entering invalid search data), so log it only.
+      console.warn(`Error while searching for ${displayName}: ${e}`);
+    }
+  }, 500);
+
+  profileList(profiles) {
+    return profiles.map(p => <SearchResult key={p.membershipId} onProfileClick={this.props.onProfileClick} profile={p} />);
+  }
+
+  resultsElement() {
+    const { results, searching } = this.state;
+
+    if (searching) {
+      return (
+        <li>
+          <Spinner />
+        </li>
+      );
+    }
+
+    if (results && results.length > 0) {
+      return this.profileList(results);
+    } else if (results) {
+      return <li className='no-profiles'>{this.props.t('No profiles found')}</li>;
+    }
+
+    return null;
+  }
 
   render() {
     const { t } = this.props;
-    const { results } = this.state;
+    const { search } = this.state;
 
     let history = ls.get('history.profiles') || [];
 
     return (
-      <div className='search'>
-        {this.state.error && errorHandler(this.state.error)}
-
+      <>
         <div className='sub-header sub'>
           <div>{t('Search for player')}</div>
         </div>
-
         <div className='form'>
           <div className='field'>
-            <input onInput={this.onSearchInput} type='text' placeholder={t('insert gamertag')} spellCheck='false' />
+            <input onChange={this.onSearchChange} type='text' placeholder={t('insert gamertag')} spellCheck='false' value={search} onKeyPress={this.onSearchKeyPress} />
           </div>
         </div>
 
-        {this.state.results && (
-          <div className='results'>
-            <ul className='list'>
-              {this.profileList(results)}
-              {results.length === 0 && <li className='no-profiles'>{t('No profiles found')}</li>}
-            </ul>
-          </div>
-        )}
+        <div className='results'>
+          <ul className='list'>{this.resultsElement()}</ul>
+        </div>
 
         {history.length > 0 && (
           <>
@@ -92,7 +129,7 @@ class ProfileSearch extends React.Component {
             </div>
           </>
         )}
-      </div>
+      </>
     );
   }
 }

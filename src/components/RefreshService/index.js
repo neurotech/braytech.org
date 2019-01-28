@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import getProfile from '../../utils/getProfile';
+import store from '../../utils/reduxStore';
 
 const AUTO_REFRESH_INTERVAL = 30 * 1000;
 const TIMEOUT = 60 * 60 * 1000;
@@ -82,17 +83,21 @@ class RefreshService extends React.Component {
     }
   };
 
-  service = () => {
+  service = async () => {
     if (!this.activeWithinTimespan(TIMEOUT)) {
       return;
     }
 
-    if (this.props.profile.loading) {
-      console.warn('RefreshService: service was called though it was already running!');
-      return;
+    const profile = this.props.profile;
+    try {
+      const data = await getProfile(profile.membershipType, profile.membershipId);
+      store.dispatch({
+        type: 'PROFILE_LOADED',
+        payload: data
+      });
+    } catch (error) {
+      console.warn(`Error while refreshing profile, ignoring: ${error}`);
     }
-
-    getProfile();
   };
 }
 

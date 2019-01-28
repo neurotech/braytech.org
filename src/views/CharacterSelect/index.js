@@ -8,6 +8,7 @@ import { withNamespaces } from 'react-i18next';
 import getProfile from '../../utils/getProfile';
 import * as ls from '../../utils/localStorage';
 import Spinner from '../../components/Spinner';
+import ProfileError from './ProfileError';
 
 import ProfileSearch from './ProfileSearch';
 import Profile from './Profile';
@@ -18,8 +19,6 @@ import store from '../../utils/reduxStore';
 class CharacterSelect extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
-
-    if (this.props.profile.membershipId && !this.props.profile.data) getProfile();
   }
 
   characterClick = characterId => {
@@ -35,37 +34,61 @@ class CharacterSelect extends React.Component {
     });
   };
 
-  profileClick = (membershipType, membershipId, displayName) => {
+  profileClick = async (membershipType, membershipId, displayName) => {
     window.scrollTo(0, 0);
 
-    store.dispatch({ type: 'PROFILE_MEMBERSHIP_SELECT', payload: { membershipType, membershipId } });
-    getProfile();
+    store.dispatch({ type: 'PROFILE_LOADING_NEW_MEMBERSHIP', payload: { membershipType, membershipId } });
+
+    try {
+      const data = await getProfile(membershipType, membershipId);
+
+      if (!data.profile.characterProgressions.data) {
+        store.dispatch({ type: 'PROFILE_LOAD_ERROR', payload: new Error('private') });
+        return;
+      }
+
+      store.dispatch({ type: 'PROFILE_LOADED', payload: data });
+    } catch (error) {
+      store.dispatch({ type: 'PROFILE_LOAD_ERROR', payload: error });
+      return;
+    }
 
     if (displayName) {
-      ls.update('history.profiles', { membershipType: membershipType, membershipId: membershipId, displayName: displayName }, true, 6);
+      ls.update(
+        'history.profiles',
+        {
+          membershipType,
+          membershipId,
+          displayName
+        },
+        true,
+        6
+      );
     }
   };
 
   render() {
     const { profile, theme, viewport, manifest } = this.props;
+    const { error, loading } = profile;
 
     const { from } = this.props.location.state || { from: { pathname: '/' } };
-
     const reverse = viewport.width <= 500;
-    const profileIsLoading = !profile.data && profile.membershipId && !profile.error;
 
     const profileCharacterSelect = (
       <div className='profile'>
-        {profileIsLoading && <Spinner />}
+        {loading && <Spinner />}
         {profile.data && <Profile profile={profile} manifest={manifest} onCharacterClick={this.characterClick} from={from} />}
       </div>
     );
 
     return (
-      <div className={cx('view', theme.selected, { loading: this.props.profile.loading })} id='get-profile'>
+      <div className={cx('view', theme.selected, { loading })} id='get-profile'>
         {reverse && profileCharacterSelect}
 
-        <ProfileSearch onProfileClick={this.profileClick} />
+        <div className='search'>
+          {error && <ProfileError error={error} />}
+          <ProfileSearch onProfileClick={this.profileClick} />
+        </div>
 
         {!reverse && profileCharacterSelect}
       </div>
