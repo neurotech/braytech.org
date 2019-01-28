@@ -62,7 +62,7 @@ class CharacterSelect extends React.Component {
     );
 
     return (
-      <div className={cx('view', theme.selected, { loading: this.props.loading })} id='get-profile'>
+      <div className={cx('view', theme.selected, { loading: this.props.profile.loading })} id='get-profile'>
         {reverse && profileCharacterSelect}
 
         <ProfileSearch onProfileClick={this.profileClick} />
