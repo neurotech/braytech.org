@@ -51,6 +51,12 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
           plugItemHash: socketEntries[key].singleInitialItemHash
         });
       }
+      // sometimes items don't include their initial plug in their plugItems array. this seems to be true for year 1 masterworks
+      if (socketEntries[key].singleInitialItemHash && !socketEntries[key].reusablePlugItems.find(plug => socketEntries[key].singleInitialItemHash === plug.plugItemHash)) {
+        socketEntries[key].reusablePlugItems.push({
+          plugItemHash: socketEntries[key].singleInitialItemHash
+        });
+      }
     });
   }
 
@@ -62,7 +68,11 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
     let categoryHash = item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false;
 
     let modCategoryHash = [3379164649, 590099826, 2685412949, 4243480345, 590099826];
-    let masterworkSocketHash = [11855950, 2218962841, 1666149691];
+    // 11855950: exotic mw?
+    // 2218962841: legendary hammerhead mw
+    // 2440389816: legendary mida mini tool vanguard mw
+    // 2440389816: ???
+    let masterworkSocketHash = [11855950, 2218962841, 1666149691, 2440389816];
 
     if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && modCategoryHash.includes(categoryHash))) {
       return;
@@ -70,6 +80,9 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
 
     socket.reusablePlugItems.forEach(reusablePlug => {
       let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
+      
+      // console.log(reusablePlug, plug, socket);
+
       if (plug.hash === socket.singleInitialItemHash) {
         plug.investmentStats.forEach(modifier => {
           let index = statModifiers.findIndex(stat => stat.statHash === modifier.statTypeHash);
@@ -81,6 +94,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
               value: modifier.value
             });
           }
+          
           if (masterworkSocketHash.includes(socket.socketTypeHash)) {
             let index = statModifiersMasterworks.findIndex(stat => stat.statHash === modifier.statTypeHash);
             if (index > -1) {
@@ -100,7 +114,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
 
     socket.reusablePlugItems.forEach(reusablePlug => {
       let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
-      console.log(plug, traitsOnly)
+      // console.log(plug, traitsOnly)
       if (traitsOnly && !plug.itemCategoryHashes.includes(3708671066)) {
         return;
       }
@@ -154,13 +168,16 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
 
     socketsOutput.push({
       categoryHash,
+      socketTypeHash: socket.socketTypeHash,
       singleInitialItem,
       plugs: socketPlugs
     });
   });
 
   let statsOutput = [];
-console.log(socketsOutput, statModifiersMasterworks)
+
+  // console.log(socketsOutput, statModifiersMasterworks)
+  
   if (item.itemType === 3) {
     statGroup.scaledStats.forEach(stat => {
       let statModifier = statModifiers.find(modifier => modifier.statHash === stat.statHash);

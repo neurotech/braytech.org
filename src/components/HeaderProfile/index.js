@@ -37,7 +37,6 @@ class HeaderProfile extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    console.log(this.props)
     if (prevProps.profile.data.updated !== this.props.profile.data.updated && this.state.lastUpdate !== this.props.profile.data.updated && !this.state.updateFlash) {
       this.setState({ lastUpdate: this.props.profile.data.updated, updateFlash: true })
     }

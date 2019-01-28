@@ -3,7 +3,6 @@ import React from 'react';
 import ObservedImage from '../../ObservedImage';
 
 const subclass = (manifest, item) => {
-console.log(item)
   return (
     <div className='perk'>
       <ObservedImage className='image icon' src={`https://www.bungie.net${item.displayProperties.icon}`} />
