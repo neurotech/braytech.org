@@ -19,7 +19,7 @@ async function getProfile() {
       bungie.memberGroups(membershipType, membershipId)
     ]);
   } catch (error) {
-    store.dispatch({ type: 'PROFILE_LOAD_ERROR', payload: `${error}` });
+    store.dispatch({ type: 'PROFILE_LOAD_ERROR', payload: error });
     return;
   }
 

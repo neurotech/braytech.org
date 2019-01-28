@@ -8,7 +8,7 @@ import { withNamespaces } from 'react-i18next';
 import getProfile from '../../utils/getProfile';
 import * as ls from '../../utils/localStorage';
 import Spinner from '../../components/Spinner';
-import errorHandler from '../../utils/errorHandler';
+import ProfileError from './ProfileError';
 
 import ProfileSearch from './ProfileSearch';
 import Profile from './Profile';
@@ -65,7 +65,7 @@ class CharacterSelect extends React.Component {
         {reverse && profileCharacterSelect}
 
         <div className='search'>
-          {profile.error && errorHandler(profile.error)}
+          {profile.error && <ProfileError error={profile.error} />}
           <ProfileSearch onProfileClick={this.profileClick} />
         </div>
 
