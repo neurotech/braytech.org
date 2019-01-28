@@ -1,6 +1,5 @@
 import store from './reduxStore';
 import * as responseUtils from './responseUtils';
-
 import * as bungie from './bungie';
 
 async function getProfile() {
