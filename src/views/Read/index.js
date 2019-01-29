@@ -14,7 +14,9 @@ class Read extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      from: this.props.location.state && this.props.location.state.from ? this.props.location.state.from : false
+    };
   }
 
   componentDidMount() {
@@ -75,7 +77,9 @@ class Read extends React.Component {
       2077211754: '0560-000000C5.png',
       3062577328: '01A3-000012F4.png',
       2026987060: '037E-00001328.png',
-      2325462143: '037E-00001323.png'
+      2325462143: '037E-00001323.png',
+      2203266100: '0560-000000CF.png',
+      756584948: '0560-000000CA.png'
     };
 
     let parentDefinition;
@@ -119,7 +123,7 @@ class Read extends React.Component {
     } else {
     }
 
-    let backLinkPath = this.props.location.state && this.props.location.state.from ? this.props.location.state.from : false;
+    let backLinkPath = this.state.from;
 
     return (
       <div className={cx('view', 'dark-mode', kind)} id='read'>

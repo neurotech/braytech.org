@@ -165,7 +165,7 @@ class NotificationProgress extends React.Component {
       let description = record.displayProperties.description !== '' ? record.displayProperties.description : false;
           description = !description && record.loreHash ? manifest.DestinyLoreDefinition[record.loreHash].displayProperties.description.slice(0, 117).trim() + '...' : description;
       return (
-        <div id='notification-progress' className={cx('record', { timedOut: this.state.progress.timedOut })}>
+        <div id='notification-progress' className={cx('record', { lore: record.loreHash, timedOut: this.state.progress.timedOut })}>
           <div className='type'>
             <div className='text'>Triumph completed</div>
           </div>

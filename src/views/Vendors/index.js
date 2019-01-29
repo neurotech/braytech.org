@@ -33,6 +33,27 @@ class Vendors extends React.Component {
       const vendorHash = this.props.match.params.hash ? this.props.match.params.hash : '3361454721';
       const vendorDefinition = manifest.DestinyVendorDefinition[vendorHash];
 
+      if (vendors[vendorHash].ErrorCode !== 1) {
+        return (
+          <div className={cx('view', this.props.theme.selected, { 'profile-route': isProfileRoute('/vendors', this.props.profile.data) })} id='vendors'>
+            <div className='pane'>
+              <div className='header'>
+                <div className='sub-header sub'>
+                  <div>{t('Vendors')}</div>
+                </div>
+                <div className='description'>
+                  <p>{t("The data driving this content is based on the developers' own character's progression and may result in visual discrepancies. It's updated every 4 hours daily and for the most part is accurate.")}</p>
+                </div>
+              </div>
+              <div className='inventories'>
+                Vendors are unavailable at the moment.
+              </div>
+            </div>
+            <div className='items' />
+          </div>
+        );
+      }
+
       // displayCategories object
       let displayCategories = {};
 
