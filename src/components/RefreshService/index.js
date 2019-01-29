@@ -2,13 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import getProfile from '../../utils/getProfile';
-import setProfile from '../../utils/setProfile';
+import store from '../../utils/reduxStore';
 
-const AUTO_REFRESH_INTERVAL = 20 * 1000;
+const AUTO_REFRESH_INTERVAL = 30 * 1000;
 const TIMEOUT = 60 * 60 * 1000;
 
 class RefreshService extends React.Component {
-
   running = false;
 
   componentDidMount() {
@@ -56,7 +55,7 @@ class RefreshService extends React.Component {
     this.clearInterval();
   }
 
-  track() {   
+  track() {
     this.lastActivityTimestamp = Date.now();
   }
 
@@ -66,10 +65,7 @@ class RefreshService extends React.Component {
 
   startInterval() {
     // console.log('starting a timer');
-    this.refreshAccountDataInterval = window.setInterval(
-      this.service,
-      AUTO_REFRESH_INTERVAL
-    );
+    this.refreshAccountDataInterval = window.setInterval(this.service, AUTO_REFRESH_INTERVAL);
   }
 
   clearInterval() {
@@ -87,48 +83,22 @@ class RefreshService extends React.Component {
     }
   };
 
-  service = (membershipType = this.props.profile.membershipType, membershipId = this.props.profile.membershipId) => {
-
+  service = async () => {
     if (!this.activeWithinTimespan(TIMEOUT)) {
       return;
     }
 
-    if (this.running) {
-      console.warn('RefreshService: service was called though it was already running!');
-      this.running = false;
-      return;
-    } else {
-      this.running = true;
+    const profile = this.props.profile;
+    try {
+      const data = await getProfile(profile.membershipType, profile.membershipId);
+      store.dispatch({
+        type: 'PROFILE_LOADED',
+        payload: data
+      });
+    } catch (error) {
+      console.warn(`Error while refreshing profile, ignoring: ${error}`);
     }
-  
-    // just for the console.warn
-    // let time = new Date();
-    // console.log("refreshing profile data", time, this.props);
-    
-    getProfile(membershipType, membershipId, this.props.profile.characterId, (callback) => {
-
-      if (!callback.loading && callback.error) {
-        if (callback.error === 'fetch') {
-          // TO DO: error count - fail after 3
-          // console.log(membershipType, membershipId, state.profile.characterId, callback.data);
-          this.running = false;
-          // setProfile with previous data - triggers componentDidUpdate in App.js to fire this service again
-          setProfile(membershipType, membershipId, this.props.profile.characterId, callback.data);
-        }
-        return;
-      }
-
-      if (!callback.loading && this.props.profile.membershipId === membershipId) {
-        this.running = false;
-        // setProfile with new data - triggers componentDidUpdate in App.js to fire this service again
-        setProfile(membershipType, membershipId, this.props.profile.characterId, callback.data);
-      } else if (!callback.loading) {
-        this.running = false;
-      } else {
-
-      }
-    });
-  }
+  };
 }
 
 function mapStateToProps(state, ownProps) {

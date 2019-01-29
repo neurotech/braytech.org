@@ -45,7 +45,7 @@ class Footer extends React.Component {
             <li>
               {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
               <a href='https://www.ko-fi.com/justrealmilk' target='_blank' rel='noopener noreferrer'>
-                {t('Buy me a Ko-fi')} ❤️
+                {t('Buy me a Ko-fi')} 🍻
               </a>
             </li>
           </ul>

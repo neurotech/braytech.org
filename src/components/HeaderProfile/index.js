@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 import packageJSON from '../../../package.json';
 
 import ObservedImage from '../../components/ObservedImage';
@@ -37,8 +37,8 @@ class HeaderProfile extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.profile.updated !== this.props.profile.updated && this.state.lastUpdate !== this.props.profile.updated && !this.state.updateFlash) {
-      this.setState({ lastUpdate: this.props.profile.updated, updateFlash: true })
+    if (prevProps.profile.data.updated !== this.props.profile.data.updated && this.state.lastUpdate !== this.props.profile.data.updated && !this.state.updateFlash) {
+      this.setState({ lastUpdate: this.props.profile.data.updated, updateFlash: true })
     }
     if (this.state.updateFlash) {
       window.setTimeout(() => {

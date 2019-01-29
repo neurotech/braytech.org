@@ -2,21 +2,24 @@ import React from 'react';
 import cx from 'classnames';
 
 import ObservedImage from '../../ObservedImage';
-import { getArmour } from '../../../utils/destinyItems';
+import { getSockets } from '../../../utils/destinyItems';
 
 const armour = (manifest, item) => {
-  let { stats, sockets } = getArmour(manifest, item.hash, false, true);
+  let { stats, sockets } = getSockets(manifest, item, false, false, true);
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 
   let intrinsic = sockets.find(socket => socket.singleInitialItem ? socket.singleInitialItem.definition.itemCategoryHashes.includes(2237038328) : false);
       intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
 
+  let powerLevel = '630';
+      powerLevel = item.itemComponents ? item.itemComponents.instance.primaryStat.value : powerLevel;
+
   return (
     <>
       <div className='damage armour'>
         <div className={cx('power')}>
-          <div className='text'>600</div>
+          <div className='text'>{powerLevel}</div>
           <div className='text'>{manifest.DestinyStatDefinition[3897883278].displayProperties.name}</div>
         </div>
       </div>
@@ -25,7 +28,7 @@ const armour = (manifest, item) => {
           <p>{sourceString}</p>
         </div>
       ) : null}
-      <div className='stats'>{stats}</div>
+      <div className='stats'>{stats.map(stat => stat.element)}</div>
       <div className={cx('sockets', { 'has-sockets': sockets.length > 0 })}>
         {intrinsic ? (
           <div className='plug intrinsic'>

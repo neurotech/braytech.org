@@ -12,7 +12,7 @@ const sparrow = (manifest, item) => {
   let description = item.displayProperties.description !== '' ? item.displayProperties.description : false;
 
   if (item.sockets) {
-    sockets = getSockets(manifest, item.hash, false, true, [1608119540]).sockets;
+    sockets = getSockets(manifest, item, false, true, [1608119540]).sockets;
   }
 
   return (
