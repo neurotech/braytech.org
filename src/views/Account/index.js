@@ -232,6 +232,7 @@ class Account extends React.Component {
 
         1666039008, // Breakneck
         1660030045, // Malfeasance
+        3074058273, // The Last Word
 
         1660030044, // Wish-Ender
 
