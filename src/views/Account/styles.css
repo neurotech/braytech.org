@@ -35,6 +35,10 @@
   background-color: rgba(255, 255, 255, 0.05);
 }
 
+#account .module .content.characters .character .list.character-bar.has-title li {
+  background-color: #7b3274;
+}
+
 #account .module .content.characters .character .list.character-bar li .emblem {
   position: relative;
   width: 38px;
@@ -68,10 +72,6 @@
   position: relative;
   width: 20px;
   height: 20px;
-}
-
-#account .module .content.characters .character .list.character-bar.has-title li {
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.05) 70%, #7b3274);
 }
 
 #account .module .content.characters .character .list.character-bar li .title {

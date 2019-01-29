@@ -37,8 +37,11 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
 
   let statModifiers = [];
   let statModifiersMasterworks = [];
+  let masterworkKillTracker = false;
 
   let socketsOutput = [];
+
+  // console.log(item);
 
   let socketEntries = item.sockets.socketEntries;
   if (item.itemComponents && item.itemComponents.sockets) {
@@ -46,6 +49,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
     Object.keys(socketEntries).forEach(key => {
       socketEntries[key].singleInitialItemHash = item.itemComponents.sockets[key].plugHash || 0;
       socketEntries[key].reusablePlugItems = item.itemComponents.sockets[key].reusablePlugs || [];
+      socketEntries[key].plugObjectives = item.itemComponents.sockets[key].plugObjectives;
       if (socketEntries[key].reusablePlugItems.length === 0 && socketEntries[key].singleInitialItemHash !== 0) {
         socketEntries[key].reusablePlugItems.push({
           plugItemHash: socketEntries[key].singleInitialItemHash
@@ -60,7 +64,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
     });
   }
 
-  console.log(item);
+  // console.log(item.itemComponents.sockets);
 
   Object.keys(socketEntries).forEach(key => {
     let socket = socketEntries[key];
@@ -76,7 +80,8 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
     // 3969713706: tractor cannon
     // 2071818427: whisper
     // 3906162408: colony
-    let masterworkSocketHash = [11855950, 2218962841, 1666149691, 2440389816, 3013937058, 3969713706, 2071818427, 3906162408];
+    // 2361479437: legendary uriels
+    let masterworkSocketHash = [11855950, 2218962841, 1666149691, 2440389816, 3013937058, 3969713706, 2071818427, 3906162408, 2361479437];
 
     if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && modCategoryHash.includes(categoryHash))) {
       return;
@@ -85,7 +90,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
     socket.reusablePlugItems.forEach(reusablePlug => {
       let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
       
-      console.log(reusablePlug, plug, socket);
+      // console.log(reusablePlug, plug, socket);
 
       if (plug.hash === socket.singleInitialItemHash) {
         plug.investmentStats.forEach(modifier => {
@@ -100,6 +105,9 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
           }
           
           if (masterworkSocketHash.includes(socket.socketTypeHash)) {
+
+            // console.log(item, reusablePlug, plug, socket);
+
             let index = statModifiersMasterworks.findIndex(stat => stat.statHash === modifier.statTypeHash);
             if (index > -1) {
               statModifiersMasterworks[index].value = statModifiersMasterworks[index].value + modifier.value;
@@ -109,10 +117,31 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
                 value: modifier.value
               });
             }
+
+            const killTracker = socketEntries.find(socket => socket.plugObjectives && socket.plugObjectives.length);
+  
+            // console.log(killTracker, socketEntries);
+          
+            if (
+              killTracker &&
+              killTracker.plugObjectives &&
+              killTracker.plugObjectives.length
+            ) {
+              const plugObjective = killTracker.plugObjectives[0];
+
+              masterworkKillTracker = {
+                plugHash: plug.hash,
+                progress: plugObjective,
+                objectiveDefinition: manifest.DestinyObjectiveDefinition[plugObjective.objectiveHash]
+              }
+            }
+
           }
         });
       }
     });
+
+    // console.log(masterworkKillTracker)
 
     let socketPlugs = [];
 
@@ -258,7 +287,8 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
 
   return {
     stats: statsOutput,
-    sockets: socketsOutput
+    sockets: socketsOutput,
+    killTracker: masterworkKillTracker || false
   };
 };
 
