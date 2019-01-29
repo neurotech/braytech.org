@@ -50,127 +50,6 @@ class Records extends React.Component {
 
     let records = [];
 
-    // if (this.props.node) {
-    //   console.log('props.node block', this);
-    //   let tertiaryDefinition = manifest.DestinyPresentationNodeDefinition[this.props.node];
-
-    //   tertiaryDefinition.children.records.forEach(child => {
-    //     let recordDefinition = manifest.DestinyRecordDefinition[child.recordHash];
-
-    //     let objectives = [];
-    //     if (recordDefinition.objectiveHashes) {
-    //       recordDefinition.objectiveHashes.forEach(hash => {
-    //         let objectiveDefinition = manifest.DestinyObjectiveDefinition[hash];
-
-    //         if (profileRecords[recordDefinition.hash]) {
-    //           let playerProgress = null;
-    //           profileRecords[recordDefinition.hash].objectives.forEach(objective => {
-    //             if (objective.objectiveHash === hash) {
-    //               playerProgress = objective;
-    //             }
-    //           });
-
-    //           objectives.push(<ProgressBar key={objectiveDefinition.hash} objectiveDefinition={objectiveDefinition} playerProgress={playerProgress} />);
-    //         } else if (characterRecords[characterId].records[recordDefinition.hash]) {
-    //           let playerProgress = null;
-    //           characterRecords[characterId].records[recordDefinition.hash].objectives.forEach(objective => {
-    //             if (objective.objectiveHash === hash) {
-    //               playerProgress = objective;
-    //             }
-    //           });
-
-    //           objectives.push(<ProgressBar key={objectiveDefinition.hash} objectiveDefinition={objectiveDefinition} playerProgress={playerProgress} />);
-    //         } else {
-    //           objectives.push(null);
-    //         }
-    //       });
-    //     }
-
-    //     let state;
-    //     if (profileRecords[recordDefinition.hash]) {
-    //       state = profileRecords[recordDefinition.hash] ? profileRecords[recordDefinition.hash].state : 0;
-    //     } else if (characterRecords[characterId].records[recordDefinition.hash]) {
-    //       state = characterRecords[characterId].records[recordDefinition.hash] ? characterRecords[characterId].records[recordDefinition.hash].state : 0;
-    //     } else {
-    //       state = 0;
-    //     }
-
-    //     if (enumerateRecordState(state).invisible) {
-    //       return;
-    //     }
-
-    //     if (enumerateRecordState(state).recordRedeemed && this.props.collectibles.hideTriumphRecords) {
-    //       return;
-    //     }
-
-    //     // if (recordDefinition.hash === 4160670554) {
-    //     //   console.log(recordDefinition, objectives, state)
-    //     // }
-
-    //     // eslint-disable-next-line eqeqeq
-    //     let ref = highlight == recordDefinition.hash ? this.scrollToRecordRef : null;
-
-    //     if (recordDefinition.redacted) {
-    //       records.push({
-    //         completed: enumerateRecordState(state).recordRedeemed,
-    //         hash: recordDefinition.hash,
-    //         element: (
-    //           <li
-    //             key={recordDefinition.hash}
-    //             ref={ref}
-    //             className={cx('redacted', {
-    //               // eslint-disable-next-line eqeqeq
-    //               highlight: highlight && highlight == recordDefinition.hash
-    //             })}
-    //           >
-    //             <div className='properties'>
-    //               <div className='icon'>
-    //                 <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${recordDefinition.displayProperties.icon}`} />
-    //               </div>
-    //               <div className='text'>
-    //                 <div className='name'>Classified record</div>
-    //                 <div className='description'>This record is classified and may be revealed at a later time.</div>
-    //               </div>
-    //             </div>
-    //           </li>
-    //         )
-    //       });
-    //     } else {
-    //       let description = recordDefinition.displayProperties.description !== '' ? recordDefinition.displayProperties.description : false;
-    //       description = !description && recordDefinition.loreHash ? manifest.DestinyLoreDefinition[recordDefinition.loreHash].displayProperties.description.slice(0, 48) + '...' : description;
-
-    //       records.push({
-    //         completed: enumerateRecordState(state).recordRedeemed,
-    //         hash: recordDefinition.hash,
-    //         element: (
-    //           <li
-    //             key={recordDefinition.hash}
-    //             ref={ref}
-    //             className={cx({
-    //               // eslint-disable-next-line eqeqeq
-    //               highlight: highlight && highlight == recordDefinition.hash,
-    //               completed: enumerateRecordState(state).recordRedeemed,
-    //               'no-description': !description
-    //             })}
-    //           >
-    //             <div className='track-this' />
-    //             <div className='properties'>
-    //               <div className='icon'>
-    //                 <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${recordDefinition.displayProperties.icon}`} />
-    //               </div>
-    //               <div className='text'>
-    //                 <div className='name'>{recordDefinition.displayProperties.name}</div>
-    //                 {recordDefinition.completionInfo.ScoreValue && recordDefinition.completionInfo.ScoreValue !== 0 ? <div className='score'>{recordDefinition.completionInfo.ScoreValue}</div> : null}
-    //                 <div className='description'>{description}</div>
-    //               </div>
-    //             </div>
-    //             <div className='objectives'>{objectives}</div>
-    //           </li>
-    //         )
-    //       });
-    //     }
-    //   });
-    // } else {
     let recordsRequested = this.props.hashes;
     recordsRequested.forEach(hash => {
       const recordDefinition = manifest.DestinyRecordDefinition[hash];
@@ -332,7 +211,6 @@ class Records extends React.Component {
         });
       }
     });
-    //}
 
     if (records.length === 0 && this.props.collectibles.hideTriumphRecords) {
       records.push({
