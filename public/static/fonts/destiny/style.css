@@ -1,8 +1,8 @@
 @font-face {
   font-family: 'destiny';
   src:
-    url('destiny.ttf?y6m4y0') format('truetype'),
-    url('destiny.woff?y6m4y0') format('woff');
+    url('destiny.ttf?kjgj3p') format('truetype'),
+    url('destiny.woff?kjgj3p') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -22,6 +22,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.destiny-tracked-triumph_lines:before {
+  content: "\e9e6";
+}
+.destiny-tracked-triumph_circle:before {
+  content: "\e9e7";
+}
+.destiny-tracked-triumph_bg:before {
+  content: "\e9e8";
+}
 .destiny-book_ghost_stories:before {
   content: "\e9e3";
 }

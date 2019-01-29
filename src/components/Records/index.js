@@ -26,7 +26,7 @@ class Records extends React.Component {
   }
 
   trackThisClick = e => {
-    let tracked = this.props.tracked;
+    let tracked = this.props.triumphs.tracked;
     let hashToTrack = parseInt(e.currentTarget.dataset.hash, 10);
     let target = tracked.indexOf(hashToTrack);
 
@@ -47,6 +47,7 @@ class Records extends React.Component {
     const characterId = this.props.profile.characterId;
 
     const highlight = this.props.highlight;
+    const tracked = this.props.triumphs.tracked;
 
     let records = [];
 
@@ -189,11 +190,11 @@ class Records extends React.Component {
                 highlight: highlight && highlight == recordDefinition.hash,
                 completed: enumerateRecordState(state).recordRedeemed,
                 unRedeemed: !enumerateRecordState(state).recordRedeemed && !enumerateRecordState(state).objectiveNotCompleted,
-                tracked: this.props.tracked.includes(recordDefinition.hash),
+                tracked: tracked.includes(recordDefinition.hash) && !enumerateRecordState(state).recordRedeemed && enumerateRecordState(state).objectiveNotCompleted,
                 'no-description': !description
               })}
             >
-              <div className='track-this' onClick={this.trackThisClick} data-hash={recordDefinition.hash} />
+              {!enumerateRecordState(state).recordRedeemed && enumerateRecordState(state).objectiveNotCompleted ? <div className='track-this' onClick={this.trackThisClick} data-hash={recordDefinition.hash}><div /></div> : null }
               <div className='properties'>
                 <div className='icon'>
                   <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${recordDefinition.displayProperties.icon}`} />
@@ -235,7 +236,7 @@ class Records extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    tracked: state.triumphs.tracked
+    triumphs: state.triumphs
   };
 }
 
