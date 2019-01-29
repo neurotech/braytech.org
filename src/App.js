@@ -10,11 +10,12 @@ import './App.css';
 import './components/PresentationNode.css';
 
 import './utils/i18n';
-import { isProfileRoute } from './utils/globals';
+import { isProfileRoute, themeOverride } from './utils/globals';
 import dexie from './utils/dexie';
 import * as bungie from './utils/bungie';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import getProfile from './utils/getProfile';
+import store from './utils/reduxStore';
 
 import Loading from './components/Loading';
 import Header from './components/Header';
@@ -34,13 +35,13 @@ import Account from './views/Account';
 // import Character from './views/Character';
 import ThisWeek from './views/ThisWeek';
 import Vendors from './views/Vendors';
+import Read from './views/Read';
 import Settings from './views/Settings';
 import Pride from './views/Pride';
 import Credits from './views/Credits';
 import Resources from './views/Resources';
 import ClanBannerBuilder from './views/Resources/ClanBannerBuilder';
 import GodRolls from './views/Resources/GodRolls';
-import store from './utils/reduxStore';
 
 // Print timings of promises to console (and performance logger)
 // if we're running in development mode.
@@ -171,7 +172,7 @@ class App extends React.Component {
           <Router>
             <Route
               render={route => (
-                <div className={cx('wrapper', this.props.theme.selected, { 'profile-route': isProfileRoute(route.location.pathname, true) })}>
+                <div className={cx('wrapper', themeOverride(route.location.pathname) ? themeOverride(route.location.pathname) : this.props.theme.selected, { 'profile-route': isProfileRoute(route.location.pathname, true) })}>
                   <Route path='/' render={route => <NotificationApp updateAvailable={this.props.updateAvailable} />} />
                   <Route path='/' render={route => <NotificationProgress manifest={this.manifest} />} />
                   {/* Don't run the refresh service if we're currently selecting a character, as the refresh will cause the profile to continually reload itself */}
@@ -179,7 +180,7 @@ class App extends React.Component {
                   <Route path='/' render={route => <Tooltip {...route} manifest={this.manifest} />} />
                   <GoogleAnalytics.RouteTracker />
                   <div className='main'>
-                    <Route path='/' render={route => <Header route={route} {...this.state} {...this.props} manifest={this.manifest} />} />
+                    <Route path='/' render={route => <Header route={route} {...this.state} {...this.props} themeOverride={themeOverride(route.location.pathname)} manifest={this.manifest} />} />
                     <Switch>
                       <Route path='/character-select' render={route => <CharacterSelect location={route.location} viewport={this.state.viewport} manifest={this.manifest} />} />
                       <Route path='/account' exact render={route => <Account manifest={this.manifest} />} />
@@ -190,6 +191,7 @@ class App extends React.Component {
                       <Route path='/triumphs/:primary?/:secondary?/:tertiary?/:quaternary?' render={route => <Triumphs {...route} manifest={this.manifest} />} />
                       <Route path='/this-week' exact render={() => <ThisWeek manifest={this.manifest} />} />
                       <Route path='/vendors/:hash?' exact render={route => <Vendors {...route} manifest={this.manifest} />} />
+                      <Route path='/read/:kind?/:hash?' exact render={route => <Read {...route} manifest={this.manifest} />} />
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />
@@ -210,12 +212,12 @@ class App extends React.Component {
           <Router>
             <Route
               render={route => (
-                <div className={cx('wrapper', this.props.theme.selected, { 'profile-route': isProfileRoute(route.location.pathname) })}>
+                <div className={cx('wrapper', themeOverride(route.location.pathname) ? themeOverride(route.location.pathname) : this.props.theme.selected, { 'profile-route': isProfileRoute(route.location.pathname) })}>
                   <Route path='/' render={route => <NotificationApp updateAvailable={this.props.updateAvailable} />} />
                   <Route path='/' render={route => <Tooltip {...route} manifest={this.manifest} />} />
                   <GoogleAnalytics.RouteTracker />
                   <div className='main'>
-                    <Route path='/' render={route => <Header route={route} {...this.state} {...this.props} manifest={this.manifest} />} />
+                    <Route path='/' render={route => <Header route={route} {...this.state} {...this.props} themeOverride={themeOverride(route.location.pathname)} manifest={this.manifest} />} />
                     <Switch>
                       <Route path='/character-select' render={route => <CharacterSelect location={route.location} viewport={this.state.viewport} manifest={this.manifest} />} />
                       <Route
@@ -301,6 +303,7 @@ class App extends React.Component {
                         )}
                       />
                       <Route path='/vendors/:hash?' exact render={route => <Vendors {...route} manifest={this.manifest} />} />
+                      <Route path='/read/:kind?/:hash?' exact render={route => <Read {...route} manifest={this.manifest} />} />
                       <Route path='/settings' exact render={() => <Settings manifest={this.manifest} availableLanguages={this.availableLanguages} />} />
                       <Route path='/pride' exact render={() => <Pride />} />
                       <Route path='/credits' exact render={() => <Credits />} />

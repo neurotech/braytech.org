@@ -59,7 +59,6 @@ class Records extends React.Component {
       let link = false;
 
       // selfLink
-
       try {
         let reverse1;
         let reverse2;
@@ -90,6 +89,11 @@ class Records extends React.Component {
         link = `/triumphs/${reverse3.hash}/${reverse2.hash}/${reverse1.hash}/${hash}`;
       } catch (e) {
         // console.log(e);
+      }
+
+      // readLink
+      if (recordDefinition.loreHash && !this.props.selfLink) {
+        link = `/read/record/${recordDefinition.hash}`;
       }
 
       if (recordDefinition.objectiveHashes) {
@@ -177,6 +181,24 @@ class Records extends React.Component {
           console.log(enumerateRecordState(state));
         }
 
+        let linkTo;
+        if (link && this.props.selfLink) {
+          linkTo = {
+            pathname: link,
+            state: {
+              from: this.props.selfLinkFrom ? this.props.selfLinkFrom : false
+            }
+          };
+        }
+        if (link && this.props.readLink) {
+          linkTo = {
+            pathname: link,
+            state: {
+              from: this.props.location.pathname
+            }
+          };
+        }
+
         records.push({
           completed: enumerateRecordState(state).recordRedeemed,
           hash: recordDefinition.hash,
@@ -185,7 +207,7 @@ class Records extends React.Component {
               key={recordDefinition.hash}
               ref={ref}
               className={cx({
-                linked: link && this.props.selfLink,
+                linked: link && linkTo,
                 // eslint-disable-next-line eqeqeq
                 highlight: highlight && highlight == recordDefinition.hash,
                 completed: enumerateRecordState(state).recordRedeemed,
@@ -206,7 +228,7 @@ class Records extends React.Component {
                 </div>
               </div>
               <div className='objectives'>{objectives}</div>
-              {link && this.props.selfLink ? <Link to={{ pathname: link, state: { from: this.props.selfLinkFrom ? this.props.selfLinkFrom : false } }} /> : null}
+              {(link && linkTo) ? <Link to={linkTo} /> : null}
             </li>
           )
         });
