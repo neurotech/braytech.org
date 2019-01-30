@@ -11,7 +11,7 @@ import Globals from '../../utils/globals';
 import ObservedImage from '../../components/ObservedImage';
 import Collectibles from '../../components/Collectibles';
 import Item from '../../components/Item';
-import RecordsAlmost from '../../components/RecordsAlmost';
+import RecordsTracked from '../../components/RecordsTracked';
 import ProgressBar from '../../components/ProgressBar';
 import * as utils from '../../utils/destinyUtils';
 
@@ -393,6 +393,14 @@ class Account extends React.Component {
       <div className={cx('view', this.props.theme.selected)} id='account'>
         <div className='module'>
           <div className='sub-header sub'>
+            <div>{t('Tracked triumphs')}</div>
+          </div>
+          <div className='content tracked'>
+            <RecordsTracked {...this.props} limit='7' pageLink />
+          </div>
+        </div>
+        <div className='module'>
+          <div className='sub-header sub'>
             <div>{t('Characters')}</div>
           </div>
           <div className='content characters'>{Characters()}</div>
@@ -405,18 +413,6 @@ class Account extends React.Component {
             <div>{t('Season')} 4+</div>
           </div>
           <div className='content strikes'>{Strikes()}</div>
-        </div>
-        <div className='module'>
-          <div className='sub-header sub'>
-            <div>{t('Seals')}</div>
-          </div>
-          <div className='content seals'>{Seals()}</div>
-          <div className='sub-header sub'>
-            <div>{t('Almost complete triumphs')}</div>
-          </div>
-          <div className='content almost'>
-            <RecordsAlmost {...this.props} limit='5' pageLink />
-          </div>
         </div>
         <div className='module'>
           <div className='sub-header sub'>

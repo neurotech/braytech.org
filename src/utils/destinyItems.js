@@ -225,7 +225,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
         let investmentStat = item.investmentStats.find(investment => investment.statTypeHash === stat.statHash);
         let scaledStats = statGroup.scaledStats.find(scale => scale.statHash === stat.statHash);
 
-        let interpolatatedModifier = scaledStats ? interpolate(investmentStat.value + modifier, scaledStats.displayInterpolation) : modifier;
+        let interpolatatedModifier = scaledStats && investmentStat ? interpolate(investmentStat.value + modifier, scaledStats.displayInterpolation) : modifier;
 
         let value = interpolatatedModifier;
         if (stat.hash === 3871231066) {
