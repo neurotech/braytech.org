@@ -42,170 +42,172 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
   let socketsOutput = [];
 
   // console.log(item);
-
-  let socketEntries = item.sockets.socketEntries;
-  if (item.itemComponents && item.itemComponents.sockets) {
-    mods = true;
-    Object.keys(socketEntries).forEach(key => {
-      socketEntries[key].singleInitialItemHash = item.itemComponents.sockets[key].plugHash || 0;
-      socketEntries[key].reusablePlugItems = item.itemComponents.sockets[key].reusablePlugs || [];
-      socketEntries[key].plugObjectives = item.itemComponents.sockets[key].plugObjectives;
-      if (socketEntries[key].reusablePlugItems.length === 0 && socketEntries[key].singleInitialItemHash !== 0) {
-        socketEntries[key].reusablePlugItems.push({
-          plugItemHash: socketEntries[key].singleInitialItemHash
-        });
-      }
-      // sometimes items don't include their initial plug in their plugItems array. this seems to be true for year 1 masterworks
-      if (socketEntries[key].singleInitialItemHash && !socketEntries[key].reusablePlugItems.find(plug => socketEntries[key].singleInitialItemHash === plug.plugItemHash)) {
-        socketEntries[key].reusablePlugItems.push({
-          plugItemHash: socketEntries[key].singleInitialItemHash
-        });
-      }
-    });
-  }
-
-  // console.log(item.itemComponents.sockets);
-
-  Object.keys(socketEntries).forEach(key => {
-    let socket = socketEntries[key];
-
-    let categoryHash = item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false;
-
-    let modCategoryHash = [3379164649, 590099826, 2685412949, 4243480345, 590099826];
-    // 11855950: exotic mw?
-    // 2218962841: legendary hammerhead mw
-    // 2440389816: legendary mida mini tool vanguard mw
-    // 2440389816: ???
-    // 3013937058: sunshot
-    // 3969713706: tractor cannon
-    // 2071818427: whisper
-    // 3906162408: colony
-    // 2361479437: legendary uriels
-    let masterworkSocketHash = [11855950, 2218962841, 1666149691, 2440389816, 3013937058, 3969713706, 2071818427, 3906162408, 2361479437];
-
-    if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && modCategoryHash.includes(categoryHash))) {
-      return;
+  
+  if (item.sockets) {
+    let socketEntries = item.sockets.socketEntries;
+    if (item.itemComponents && item.itemComponents.sockets) {
+      mods = true;
+      Object.keys(socketEntries).forEach(key => {
+        socketEntries[key].singleInitialItemHash = item.itemComponents.sockets[key].plugHash || 0;
+        socketEntries[key].reusablePlugItems = item.itemComponents.sockets[key].reusablePlugs || [];
+        socketEntries[key].plugObjectives = item.itemComponents.sockets[key].plugObjectives;
+        if (socketEntries[key].reusablePlugItems.length === 0 && socketEntries[key].singleInitialItemHash !== 0) {
+          socketEntries[key].reusablePlugItems.push({
+            plugItemHash: socketEntries[key].singleInitialItemHash
+          });
+        }
+        // sometimes items don't include their initial plug in their plugItems array. this seems to be true for year 1 masterworks
+        if (socketEntries[key].singleInitialItemHash && !socketEntries[key].reusablePlugItems.find(plug => socketEntries[key].singleInitialItemHash === plug.plugItemHash)) {
+          socketEntries[key].reusablePlugItems.push({
+            plugItemHash: socketEntries[key].singleInitialItemHash
+          });
+        }
+      });
     }
 
-    socket.reusablePlugItems.forEach(reusablePlug => {
-      let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
-      
-      // console.log(reusablePlug, plug, socket);
+    // console.log(item.itemComponents.sockets);
 
-      if (plug.hash === socket.singleInitialItemHash) {
-        plug.investmentStats.forEach(modifier => {
-          let index = statModifiers.findIndex(stat => stat.statHash === modifier.statTypeHash);
-          if (index > -1) {
-            statModifiers[index].value = statModifiers[index].value + modifier.value;
-          } else {
-            statModifiers.push({
-              statHash: modifier.statTypeHash,
-              value: modifier.value
-            });
-          }
-          
-          if (masterworkSocketHash.includes(socket.socketTypeHash)) {
+    Object.keys(socketEntries).forEach(key => {
+      let socket = socketEntries[key];
 
-            // console.log(item, reusablePlug, plug, socket);
+      let categoryHash = item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))) ? item.sockets.socketCategories.find(category => category.socketIndexes.includes(parseInt(key, 10))).socketCategoryHash : false;
 
-            let index = statModifiersMasterworks.findIndex(stat => stat.statHash === modifier.statTypeHash);
+      let modCategoryHash = [3379164649, 590099826, 2685412949, 4243480345, 590099826];
+      // 11855950: exotic mw?
+      // 2218962841: legendary hammerhead mw
+      // 2440389816: legendary mida mini tool vanguard mw
+      // 2440389816: ???
+      // 3013937058: sunshot
+      // 3969713706: tractor cannon
+      // 2071818427: whisper
+      // 3906162408: colony
+      // 2361479437: legendary uriels
+      let masterworkSocketHash = [11855950, 2218962841, 1666149691, 2440389816, 3013937058, 3969713706, 2071818427, 3906162408, 2361479437];
+
+      if (socketExclusions.includes(socket.singleInitialItemHash) || (!mods && modCategoryHash.includes(categoryHash))) {
+        return;
+      }
+
+      socket.reusablePlugItems.forEach(reusablePlug => {
+        let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
+        
+        // console.log(reusablePlug, plug, socket);
+
+        if (plug.hash === socket.singleInitialItemHash) {
+          plug.investmentStats.forEach(modifier => {
+            let index = statModifiers.findIndex(stat => stat.statHash === modifier.statTypeHash);
             if (index > -1) {
-              statModifiersMasterworks[index].value = statModifiersMasterworks[index].value + modifier.value;
+              statModifiers[index].value = statModifiers[index].value + modifier.value;
             } else {
-              statModifiersMasterworks.push({
+              statModifiers.push({
                 statHash: modifier.statTypeHash,
                 value: modifier.value
               });
             }
+            
+            if (masterworkSocketHash.includes(socket.socketTypeHash)) {
 
-            const killTracker = socketEntries.find(socket => socket.plugObjectives && socket.plugObjectives.length);
-  
-            // console.log(killTracker, socketEntries);
-          
-            if (
-              killTracker &&
-              killTracker.plugObjectives &&
-              killTracker.plugObjectives.length
-            ) {
-              const plugObjective = killTracker.plugObjectives[0];
+              // console.log(item, reusablePlug, plug, socket);
 
-              masterworkKillTracker = {
-                plugHash: plug.hash,
-                progress: plugObjective,
-                objectiveDefinition: manifest.DestinyObjectiveDefinition[plugObjective.objectiveHash]
+              let index = statModifiersMasterworks.findIndex(stat => stat.statHash === modifier.statTypeHash);
+              if (index > -1) {
+                statModifiersMasterworks[index].value = statModifiersMasterworks[index].value + modifier.value;
+              } else {
+                statModifiersMasterworks.push({
+                  statHash: modifier.statTypeHash,
+                  value: modifier.value
+                });
               }
+
+              const killTracker = socketEntries.find(socket => socket.plugObjectives && socket.plugObjectives.length);
+    
+              // console.log(killTracker, socketEntries);
+            
+              if (
+                killTracker &&
+                killTracker.plugObjectives &&
+                killTracker.plugObjectives.length
+              ) {
+                const plugObjective = killTracker.plugObjectives[0];
+
+                masterworkKillTracker = {
+                  plugHash: plug.hash,
+                  progress: plugObjective,
+                  objectiveDefinition: manifest.DestinyObjectiveDefinition[plugObjective.objectiveHash]
+                }
+              }
+
             }
+          });
+        }
+      });
 
-          }
-        });
-      }
-    });
+      // console.log(masterworkKillTracker)
 
-    // console.log(masterworkKillTracker)
+      let socketPlugs = [];
 
-    let socketPlugs = [];
+      socket.reusablePlugItems.forEach(reusablePlug => {
+        let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
+        // console.log(plug, traitsOnly)
+        if (traitsOnly && !plug.itemCategoryHashes.includes(3708671066)) {
+          return;
+        }
+        if (initialOnly && plug.hash !== socket.singleInitialItemHash) {
+          return;
+        }
 
-    socket.reusablePlugItems.forEach(reusablePlug => {
-      let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
-      // console.log(plug, traitsOnly)
-      if (traitsOnly && !plug.itemCategoryHashes.includes(3708671066)) {
-        return;
-      }
-      if (initialOnly && plug.hash !== socket.singleInitialItemHash) {
-        return;
-      }
-
-      socketPlugs.push({
-        active: plug.hash === socket.singleInitialItemHash,
-        definition: plug,
-        element: (
-          <div key={plug.hash} className={cx('plug', 'tooltip', { 'is-intrinsic': plug.itemCategoryHashes.includes(2237038328), 'is-active': plug.hash === socket.singleInitialItemHash })} data-itemhash={plug.hash}>
-            <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
-            <div className='text'>
-              <div className='name'>{plug.displayProperties.name}</div>
-              <div className='description'>{plug.itemTypeDisplayName}</div>
+        socketPlugs.push({
+          active: plug.hash === socket.singleInitialItemHash,
+          definition: plug,
+          element: (
+            <div key={plug.hash} className={cx('plug', 'tooltip', { 'is-intrinsic': plug.itemCategoryHashes.includes(2237038328), 'is-active': plug.hash === socket.singleInitialItemHash })} data-itemhash={plug.hash}>
+              <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
+              <div className='text'>
+                <div className='name'>{plug.displayProperties.name}</div>
+                <div className='description'>{plug.itemTypeDisplayName}</div>
+              </div>
             </div>
-          </div>
-        )
+          )
+        });
+      });
+
+      let singleInitialItem = false;
+      if (socket.singleInitialItemHash !== 0) {
+        let plug = manifest.DestinyInventoryItemDefinition[socket.singleInitialItemHash];
+        singleInitialItem = {
+          definition: plug,
+          element: (
+            <div key={plug.hash} className={cx('plug', 'tooltip', { 'is-intrinsic': plug.itemCategoryHashes.includes(2237038328), 'is-active': plug.hash === socket.singleInitialItemHash })} data-itemhash={plug.hash}>
+              <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
+              <div className='text'>
+                <div className='name'>{plug.displayProperties.name}</div>
+                <div className='description'>{plug.itemTypeDisplayName}</div>
+              </div>
+            </div>
+          )
+        };
+      }
+
+      if (socket.singleInitialItemHash !== 0 && !socketPlugs.find(plug => plug.definition.hash === socket.singleInitialItemHash)) {
+        socketPlugs.unshift(singleInitialItem);
+      }
+
+      if (!singleInitialItem && socketPlugs.length === 0) {
+        return;
+      }
+
+      if (singleInitialItem && traitsOnly && !singleInitialItem.definition.itemCategoryHashes.includes(3708671066)) {
+        return;
+      }
+
+      socketsOutput.push({
+        categoryHash,
+        socketTypeHash: socket.socketTypeHash,
+        singleInitialItem,
+        plugs: socketPlugs
       });
     });
-
-    let singleInitialItem = false;
-    if (socket.singleInitialItemHash !== 0) {
-      let plug = manifest.DestinyInventoryItemDefinition[socket.singleInitialItemHash];
-      singleInitialItem = {
-        definition: plug,
-        element: (
-          <div key={plug.hash} className={cx('plug', 'tooltip', { 'is-intrinsic': plug.itemCategoryHashes.includes(2237038328), 'is-active': plug.hash === socket.singleInitialItemHash })} data-itemhash={plug.hash}>
-            <ObservedImage className={cx('image', 'icon')} src={`${Globals.url.bungie}${plug.displayProperties.icon}`} />
-            <div className='text'>
-              <div className='name'>{plug.displayProperties.name}</div>
-              <div className='description'>{plug.itemTypeDisplayName}</div>
-            </div>
-          </div>
-        )
-      };
-    }
-
-    if (socket.singleInitialItemHash !== 0 && !socketPlugs.find(plug => plug.definition.hash === socket.singleInitialItemHash)) {
-      socketPlugs.unshift(singleInitialItem);
-    }
-
-    if (!singleInitialItem && socketPlugs.length === 0) {
-      return;
-    }
-
-    if (singleInitialItem && traitsOnly && !singleInitialItem.definition.itemCategoryHashes.includes(3708671066)) {
-      return;
-    }
-
-    socketsOutput.push({
-      categoryHash,
-      socketTypeHash: socket.socketTypeHash,
-      singleInitialItem,
-      plugs: socketPlugs
-    });
-  });
+  }
 
   let statsOutput = [];
 

@@ -148,5 +148,10 @@
     "date": "2019-01-30T22:34:34.099Z",
     "version": "1.3.21",
     "content": "## Changes\n- Redesigned Triumphs root view\n- Patched a Tooltip bug\n- Fully realised tracked triumphs\n- Brought Collections root view into line with other styling"
+  },
+  {
+    "date": "2019-01-30T23:16:20.072Z",
+    "version": "1.3.22",
+    "content": "## Changes\n- Bug fixes"
   }
 ]

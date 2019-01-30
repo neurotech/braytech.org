@@ -12,7 +12,7 @@ class Root extends React.Component {
     return (
       <>
         <div className='almost-complete'>
-          <div className='sub-header'>
+          <div className='sub-header sub'>
             <div>{t('Tracked triumphs')}</div>
           </div>
           <RecordsTracked {...this.props} limit='100' selfLinkFrom='/triumphs/tracked' />

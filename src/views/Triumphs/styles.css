@@ -25,23 +25,23 @@
 }
 
 #triumphs.root .almost-complete .list.record-items li:not(:last-child) a,
-#triumphs.root .tracked .list.record-items li:not(:last-child) a {
+#triumphs.root .tracked .list.record-items li:not(.none-tracked):not(:last-child) a {
   position: absolute;
 }
 
 #triumphs.root .almost-complete .list.record-items li:last-child,
-#triumphs.root .tracked .list.record-items li:last-child {
+#triumphs.root .tracked .list.record-items li:not(.none-tracked):last-child {
   height: 38px;
   background-color: initial;
 }
 
 #triumphs.root .almost-complete .list.record-items li.linked:last-child,
-#triumphs.root .tracked .list.record-items li.linked:last-child {
+#triumphs.root .tracked .list.record-items li.linked:not(.none-tracked):last-child {
   background-color: rgba(255, 255, 255, 0.15);
 }
 
 #triumphs.root .almost-complete .list.record-items li.linked:last-child:hover,
-#triumphs.root .tracked .list.record-items li.linked:last-child:hover {
+#triumphs.root .tracked .list.record-items li.linked:not(.none-tracked):last-child:hover {
   background-color: rgba(255, 255, 255, 0.4);
   color: rgba(255, 255, 255, 1);
   z-index: 2;

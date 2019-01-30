@@ -29,7 +29,7 @@ class RecordsTracked extends React.Component {
             </div>
           </li>
         ) : null}
-        {pageLink && hashes.length < 1 ? (
+        {pageLink && (this.props.location && this.props.location.pathname !== '/triumphs') && hashes.length < 1 ? (
           <li key='pageLink' className='linked'>
             <Link to={{ pathname: '/triumphs', state: { from: '/triumphs' } }}>See all triumphs</Link>
           </li>
