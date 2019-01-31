@@ -40,21 +40,7 @@ const data = require(`./__fixtures__/data.json`);
 const dataShallow = require(`./__fixtures__/data.shallow.json`);
 const t = a => a;
 
-const lists = [
-  'regionChests',
-  'lostSectors',
-  'adventures',
-  'corruptedEggs',
-  'amkaharaBones',
-  'catStatues',
-  'sleeperNodes',
-  'ghostScans',
-  'latentMemories',
-  'caydesJournals',
-  'ghostStories',
-  'awokenOfTheReef',
-  'forsakenPrince'
-];
+const lists = ['regionChests', 'lostSectors', 'adventures', 'corruptedEggs', 'amkaharaBones', 'catStatues', 'sleeperNodes', 'ghostScans', 'latentMemories', 'caydesJournals', 'ghostStories', 'awokenOfTheReef', 'forsakenPrince'];
 
 lists.forEach(l => {
   test(`Checklist ${l} matches snapshot`, () => {

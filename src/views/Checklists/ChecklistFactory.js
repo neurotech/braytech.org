@@ -127,13 +127,7 @@ class ChecklistFactory {
     items = sortBy(items, i => [i.hash]);
 
     const checklist = (
-      <Checklist
-        name={this.t("Cayde's Journals")}
-        binding={this.t('Profile bound')}
-        progressDescription={this.t('Journals recovered')}
-        totalItems={items.length}
-        completedItems={items.filter(i => i.completed).length}
-      >
+      <Checklist name={this.t("Cayde's Journals")} binding={this.t('Profile bound')} progressDescription={this.t('Journals recovered')} totalItems={items.length} completedItems={items.filter(i => i.completed).length}>
         {items.map(i => (
           <ChecklistItem key={i.hash} completed={i.completed}>
             <ReactMarkdown className='text' source={i.item.displayProperties.description} />

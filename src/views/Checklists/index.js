@@ -45,33 +45,11 @@ export class Checklists extends React.Component {
   render() {
     const { t } = this.props;
 
-    const f = new ChecklistFactory(
-      t,
-      this.props.profile.data.profile,
-      this.props.manifest,
-      this.props.profile.characterId,
-      this.props.collectibles.hideChecklistItems
-    );
+    const f = new ChecklistFactory(t, this.props.profile.data.profile, this.props.manifest, this.props.profile.characterId, this.props.collectibles.hideChecklistItems);
 
-    const lists = [
-      f.regionChests(),
-      f.lostSectors(),
-      f.adventures(),
-      f.corruptedEggs(),
-      f.amkaharaBones(),
-      f.catStatues(),
-      f.sleeperNodes(),
-      f.ghostScans(),
-      f.latentMemories(),
-      f.ghostStories(),
-      f.awokenOfTheReef(),
-      f.forsakenPrince()
-    ];
+    const lists = [f.regionChests(), f.lostSectors(), f.adventures(), f.corruptedEggs(), f.amkaharaBones(), f.catStatues(), f.sleeperNodes(), f.ghostScans(), f.latentMemories(), f.ghostStories(), f.awokenOfTheReef(), f.forsakenPrince()];
 
-    if (
-      Object.values(this.props.profile.data.profile.profileProgression.data.checklists[2448912219]).filter(i => i)
-        .length === 4
-    ) {
+    if (Object.values(this.props.profile.data.profile.profileProgression.data.checklists[2448912219]).filter(i => i).length === 4) {
       lists.push(f.caydesJournals());
     }
 
