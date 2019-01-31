@@ -164,7 +164,7 @@ class ChecklistFactory {
       name: this.t('Forsaken Prince'),
       icon: 'destiny-book_forsaken_prince',
       items: this.m.presentationItems(655926402),
-      progressDescription: this.t('Data caches decrypted') // I have no idea what these things are that we're scanning?
+      progressDescription: this.t('Data caches decrypted')
     });
   }
 }
