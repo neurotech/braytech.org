@@ -106,7 +106,7 @@ class App extends React.Component {
       await timed('setUpManifest', this.setUpManifest());
     } catch (error) {
       console.log(error);
-      this.setState({ status: { code: 'error', detail: error } });
+      this.setState({ status: { code: 'error_setUpManifest', detail: error } });
     }
   }
 
@@ -130,6 +130,7 @@ class App extends React.Component {
 
     if (this.startupRequests.profile) {
       try {
+        this.setState({ status: { code: 'fetchProfile' } });
         const data = await this.startupRequests.profile;
         store.dispatch({
           type: 'PROFILE_LOADED',
