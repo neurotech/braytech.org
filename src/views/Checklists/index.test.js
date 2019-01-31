@@ -61,7 +61,6 @@ test(`Checklists matches shallow snapshot`, () => {
     },
     profile: { characterId, data: dataShallow },
     theme: {},
-    showAllItems: true,
     collectibles: {},
     manifest,
     t
