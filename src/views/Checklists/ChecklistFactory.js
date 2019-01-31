@@ -1,11 +1,9 @@
 import sortBy from 'lodash/sortBy';
 import React from 'react';
-import find from 'lodash/find';
 
 import Checklist from './Checklist';
 import ChecklistItem from './ChecklistItem';
 import ChecklistFactoryHelpers from './ChecklistFactoryHelpers';
-import mappings from '../../data/mappings';
 
 import ReactMarkdown from 'react-markdown';
 

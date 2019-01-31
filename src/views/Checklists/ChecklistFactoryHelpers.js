@@ -111,7 +111,7 @@ class ChecklistFactoryHelpers {
       .map(hash => {
         const item = this.manifest.DestinyRecordDefinition[hash];
         const profileRecord = this.profile.profileRecords.data.records[hash];
-        if (!profileRecord) return;
+        if (!profileRecord) return false;
         const completed = profileRecord.objectives[0].complete;
 
         const mapping = mappings.records[hash];
