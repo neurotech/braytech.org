@@ -271,24 +271,24 @@
 
 
 
-#account .module .almost .list.record-items {
+#account .module .tracked .list.record-items {
   grid-template-columns: 1fr;
 }
 
-#account .module .almost .list.record-items li:not(:last-child) a {
+#account .module .tracked .list.record-items li:not(:last-child) a {
   position: absolute;
 }
 
-#account .module .almost .list.record-items li:last-child {
+#account .module .tracked .list.record-items li:not(.none-tracked):last-child {
   height: 38px;
   background-color: initial;
 }
 
-#account .module .almost .list.record-items li.linked:last-child {
+#account .module .tracked .list.record-items li.linked:not(.none-tracked):last-child {
   background-color: rgba(255, 255, 255, 0.15);
 }
 
-#account .module .almost .list.record-items li.linked:last-child:hover {
+#account .module .tracked .list.record-items li.linked:not(.none-tracked):last-child:hover {
   background-color: rgba(255, 255, 255, 0.4);
   color: rgba(255, 255, 255, 1);
   z-index: 2;

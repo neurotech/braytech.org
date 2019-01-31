@@ -96,9 +96,10 @@ class Collectibles extends React.Component {
             state = scope.state;
           }
 
-          if (enumerateCollectibleState(state).invisible) {
+          if (this.props.collectibles.hideInvisibleCollectibles && enumerateCollectibleState(state).invisible) {
             return;
           }
+
           // eslint-disable-next-line eqeqeq
           let ref = highlight == collectibleDefinition.hash ? this.scrollToRecordRef : null;
 
@@ -198,7 +199,7 @@ class Collectibles extends React.Component {
           state = scope.state;
         }
 
-        if (enumerateCollectibleState(state).invisible) {
+        if (this.props.collectibles.hideInvisibleCollectibles && enumerateCollectibleState(state).invisible) {
           return;
         }
 
@@ -229,7 +230,8 @@ class Collectibles extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile
+    profile: state.profile,
+    collectibles: state.collectibles
   };
 }
 

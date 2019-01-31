@@ -40,64 +40,69 @@ class Records extends React.Component {
   }
 
   render() {
-    const manifest = this.props.manifest;
+    const { manifest, hashes, highlight, profile, triumphs, collectibles, ordered, limit, selfLink, selfLinkFrom, readLink } = this.props;
+    const recordsRequested = hashes;
+    const characterRecords = profile.data.profile.characterRecords.data;
+    const profileRecords = profile.data.profile.profileRecords.data.records;
+    const characterId = profile.characterId;
+    const tracked = triumphs.tracked;
 
-    const characterRecords = this.props.profile.data.profile.characterRecords.data;
-    const profileRecords = this.props.profile.data.profile.profileRecords.data.records;
-    const characterId = this.props.profile.characterId;
-
-    const highlight = this.props.highlight;
-    const tracked = this.props.triumphs.tracked;
-
-    let records = [];
-
-    let recordsRequested = this.props.hashes;
+    let recordsOutput = [];
     recordsRequested.forEach(hash => {
       const recordDefinition = manifest.DestinyRecordDefinition[hash];
 
       let objectives = [];
+      let completionValueTotal = 0;
+      let progressValueTotal = 0;
       let link = false;
 
       // selfLink
+      if (selfLink) {
+        try {
+          let reverse1;
+          let reverse2;
+          let reverse3;
 
-      try {
-        let reverse1;
-        let reverse2;
-        let reverse3;
+          manifest.DestinyRecordDefinition[hash].presentationInfo.parentPresentationNodeHashes.forEach(element => {
+            if (manifest.DestinyPresentationNodeDefinition[1652422747].children.presentationNodes.filter(el => el.presentationNodeHash === element).length > 0) {
+              return; // if hash is a child of seals, skip it
+            }
+            if (reverse1) {
+              return;
+            }
+            reverse1 = manifest.DestinyPresentationNodeDefinition[element];
+          });
 
-        manifest.DestinyRecordDefinition[hash].presentationInfo.parentPresentationNodeHashes.forEach(element => {
-          if (manifest.DestinyPresentationNodeDefinition[1652422747].children.presentationNodes.filter(el => el.presentationNodeHash === element).length > 0) {
-            return; // if hash is a child of seals, skip it
+          let iteratees = reverse1.presentationInfo ? reverse1.presentationInfo.parentPresentationNodeHashes : reverse1.parentNodeHashes;
+          iteratees.forEach(element => {
+            if (reverse2) {
+              return;
+            }
+            reverse2 = manifest.DestinyPresentationNodeDefinition[element];
+          });
+
+          if (reverse2 && reverse2.parentNodeHashes) {
+            reverse3 = manifest.DestinyPresentationNodeDefinition[reverse2.parentNodeHashes[0]];
           }
-          if (reverse1) {
-            return;
-          }
-          reverse1 = manifest.DestinyPresentationNodeDefinition[element];
-        });
 
-        let iteratees = reverse1.presentationInfo ? reverse1.presentationInfo.parentPresentationNodeHashes : reverse1.parentNodeHashes;
-        iteratees.forEach(element => {
-          if (reverse2) {
-            return;
-          }
-          reverse2 = manifest.DestinyPresentationNodeDefinition[element];
-        });
-
-        if (reverse2 && reverse2.parentNodeHashes) {
-          reverse3 = manifest.DestinyPresentationNodeDefinition[reverse2.parentNodeHashes[0]];
+          link = `/triumphs/${reverse3.hash}/${reverse2.hash}/${reverse1.hash}/${hash}`;
+        } catch (e) {
+          // console.log(e);
         }
+      }
 
-        link = `/triumphs/${reverse3.hash}/${reverse2.hash}/${reverse1.hash}/${hash}`;
-      } catch (e) {
-        // console.log(e);
+      // readLink
+      if (recordDefinition.loreHash && !selfLink && readLink) {
+        link = `/read/record/${recordDefinition.hash}`;
       }
 
       if (recordDefinition.objectiveHashes) {
         recordDefinition.objectiveHashes.forEach(hash => {
           let objectiveDefinition = manifest.DestinyObjectiveDefinition[hash];
-
+          
+          let playerProgress = null;
           if (profileRecords[recordDefinition.hash]) {
-            let playerProgress = null;
+            
             profileRecords[recordDefinition.hash].objectives.forEach(objective => {
               if (objective.objectiveHash === hash) {
                 playerProgress = objective;
@@ -111,7 +116,6 @@ class Records extends React.Component {
 
             objectives.push(<ProgressBar key={objectiveDefinition.hash} objectiveDefinition={objectiveDefinition} playerProgress={playerProgress} />);
           } else if (characterRecords[characterId].records[recordDefinition.hash]) {
-            let playerProgress = null;
             characterRecords[characterId].records[recordDefinition.hash].objectives.forEach(objective => {
               if (objective.objectiveHash === hash) {
                 playerProgress = objective;
@@ -122,8 +126,19 @@ class Records extends React.Component {
           } else {
             objectives.push(null);
           }
+
+          if (playerProgress) {
+            let v = parseInt(playerProgress.completionValue, 10);
+            let p = parseInt(playerProgress.progress, 10);
+
+            completionValueTotal = completionValueTotal + v;
+            progressValueTotal = progressValueTotal + (p > v ? v : p); // prevents progress values that are greater than the completion value from affecting the average
+          }
         });
       }
+
+      let progressDistance = progressValueTotal / completionValueTotal;
+          progressDistance = Number.isNaN(progressDistance) ? 0 : progressDistance;
 
       let state;
       if (profileRecords[recordDefinition.hash]) {
@@ -138,7 +153,7 @@ class Records extends React.Component {
         return;
       }
 
-      if (enumerateRecordState(state).recordRedeemed && this.props.collectibles && this.props.collectibles.hideTriumphRecords) {
+      if (enumerateRecordState(state).recordRedeemed && collectibles && collectibles.hideTriumphRecords) {
         return;
       }
 
@@ -146,8 +161,9 @@ class Records extends React.Component {
       let ref = highlight == recordDefinition.hash ? this.scrollToRecordRef : null;
 
       if (recordDefinition.redacted) {
-        records.push({
+        recordsOutput.push({
           completed: enumerateRecordState(state).recordRedeemed,
+          progressDistance,
           hash: recordDefinition.hash,
           element: (
             <li
@@ -177,15 +193,34 @@ class Records extends React.Component {
           console.log(enumerateRecordState(state));
         }
 
-        records.push({
+        let linkTo;
+        if (link && selfLink) {
+          linkTo = {
+            pathname: link,
+            state: {
+              from: selfLinkFrom ? selfLinkFrom : false
+            }
+          };
+        }
+        if (link && readLink) {
+          linkTo = {
+            pathname: link,
+            state: {
+              from: this.props.location.pathname
+            }
+          };
+        }
+
+        recordsOutput.push({
           completed: enumerateRecordState(state).recordRedeemed,
+          progressDistance,
           hash: recordDefinition.hash,
           element: (
             <li
               key={recordDefinition.hash}
               ref={ref}
               className={cx({
-                linked: link && this.props.selfLink,
+                linked: link && linkTo,
                 // eslint-disable-next-line eqeqeq
                 highlight: highlight && highlight == recordDefinition.hash,
                 completed: enumerateRecordState(state).recordRedeemed,
@@ -206,15 +241,15 @@ class Records extends React.Component {
                 </div>
               </div>
               <div className='objectives'>{objectives}</div>
-              {link && this.props.selfLink ? <Link to={{ pathname: link, state: { from: this.props.selfLinkFrom ? this.props.selfLinkFrom : false } }} /> : null}
+              {(link && linkTo) ? <Link to={linkTo} /> : null}
             </li>
           )
         });
       }
     });
 
-    if (records.length === 0 && this.props.collectibles.hideTriumphRecords) {
-      records.push({
+    if (recordsRequested.length > 0 && recordsOutput.length === 0 && collectibles.hideTriumphRecords) {
+      recordsOutput.push({
         element: (
           <li key='lol' className='all-completed'>
             <div className='properties'>
@@ -228,9 +263,19 @@ class Records extends React.Component {
       });
     }
 
-    records = this.props.ordered ? orderBy(records, [item => item.completed], ['asc']) : records;
+    if (ordered === 'progress') {
+      recordsOutput = orderBy(recordsOutput, [item => item.progressDistance], ['desc']);
+    } else if (ordered) {
+      recordsOutput = orderBy(recordsOutput, [item => item.completed], ['asc']);
+    } else {
+      
+    }
 
-    return records.map(obj => obj.element);
+    if (limit) {
+      recordsOutput = recordsOutput.slice(0, limit);
+    }
+
+    return recordsOutput.map(obj => obj.element);
   }
 }
 

@@ -73,8 +73,13 @@ class HeaderStandard extends React.Component {
       </div>
     );
 
+    let selectedTheme = this.props.theme.selected;
+    if (this.props.themeOverride) {
+      selectedTheme = this.props.themeOverride;
+    }
+
     return (
-      <div id='header' className={cx('standard', this.props.theme.selected, { navOpen: this.state.mobileNavOpen, isIndex: this.props.isIndex })}>
+      <div id='header' className={cx('standard', selectedTheme, { navOpen: this.state.mobileNavOpen, isIndex: this.props.isIndex })}>
         <div className='braytech'>
           <div className='logo'>
             <Link to='/'>
