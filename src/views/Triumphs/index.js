@@ -43,7 +43,7 @@ class Triumphs extends React.Component {
   componentDidUpdate(prevProps) {
     if (
       (!this.props.match.params.quaternary && prevProps.location.pathname !== this.props.location.pathname) 
-      || (!prevProps.match.params.quaternary && this.props.location.pathname === '/triumphs/almost-complete')
+      || (!prevProps.match.params.quaternary && this.props.location.pathname === '/triumphs/almost-complete' && prevProps.location.pathname !== this.props.location.pathname)
     ) {
       window.scrollTo(0, 0);
     }

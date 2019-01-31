@@ -151,8 +151,13 @@ class App extends React.Component {
     const manifest = await timed('downloadManifest', bungie.manifest(version));
 
     this.setState({ status: { code: 'setManifest' } });
-    await timed('clearTable', dexie.table('manifest').clear());
-    await timed('storeManifest', dexie.table('manifest').add({ version: version, value: manifest }));
+    try {
+      await timed('clearTable', dexie.table('manifest').clear());
+      await timed('storeManifest', dexie.table('manifest').add({ version: version, value: manifest }));
+    } catch(error) {
+      // Can't write a manifest if we're in private mode in safari
+      console.warn(`Error while trying to store the manifest in indexeddb: ${error}`)
+    }
     return manifest;
   }
 
