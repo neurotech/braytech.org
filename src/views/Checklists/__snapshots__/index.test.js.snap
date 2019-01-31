@@ -4085,7 +4085,7 @@ Array [
           <div
             className="description"
           >
-            Lore scanned
+            Data caches decrypted
           </div>
           <div
             className="fraction"
@@ -16533,7 +16533,9 @@ exports[`Checklists matches shallow snapshot 1`] = `
           href="/"
           onClick={[Function]}
         >
-          <div />
+          <div
+            className="destiny-book_ghost_stories"
+          />
           <div
             className="name"
           >
@@ -16550,7 +16552,9 @@ exports[`Checklists matches shallow snapshot 1`] = `
           href="/"
           onClick={[Function]}
         >
-          <div />
+          <div
+            className="destiny-book_awoken_reef"
+          />
           <div
             className="name"
           >
@@ -16567,7 +16571,9 @@ exports[`Checklists matches shallow snapshot 1`] = `
           href="/"
           onClick={[Function]}
         >
-          <div />
+          <div
+            className="destiny-book_forsaken_prince"
+          />
           <div
             className="name"
           >
@@ -17409,7 +17415,7 @@ exports[`Checklists matches shallow snapshot 1`] = `
               <div
                 className="description"
               >
-                Lore scanned
+                Data caches decrypted
               </div>
               <div
                 className="fraction"
