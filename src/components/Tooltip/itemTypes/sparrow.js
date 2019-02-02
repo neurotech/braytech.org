@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 
-import Globals from '../../../utils/globals';
 import { getSockets } from '../../../utils/destinyItems';
 
 const sparrow = (manifest, item) => {
