@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import { withNamespaces } from 'react-i18next';
+import packageJSON from '../../../package.json';
 
 import './styles.css';
 
@@ -14,12 +15,12 @@ class Footer extends React.Component {
 
   render() {
     const darkPaths = ['/character-select'];
-    const {t} = this.props;
-    if (this.props.route.location.pathname !== '/') {
+    const { t } = this.props;
+    // if (this.props.route.location.pathname !== '/') {
       return (
         <div id='footer' className={cx({ dark: darkPaths.includes(this.props.route.location.pathname) })}>
           <div>
-            © 2019 Tom Chapman
+            © 2019 Tom Chapman <span>{packageJSON.version}</span>
           </div>
           <ul>
             <li>
@@ -51,9 +52,9 @@ class Footer extends React.Component {
           </ul>
         </div>
       );
-    } else {
-      return null;
-    }
+    // } else {
+    //   return null;
+    // }
   }
 }
 

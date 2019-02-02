@@ -125,7 +125,8 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-#loading.dark-mode .status {
+#loading.dark-mode .status,
+#loading.dark-mode .status:not(.error) > .message {
   color: rgba(255, 255, 255, 0.4);
 }
 

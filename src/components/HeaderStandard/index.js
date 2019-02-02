@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
-import packageJSON from '../../../package.json';
 
 import './styles.css';
 
@@ -79,12 +78,12 @@ class HeaderStandard extends React.Component {
     }
 
     return (
-      <div id='header' className={cx('standard', selectedTheme, { navOpen: this.state.mobileNavOpen, isIndex: this.props.isIndex })}>
+      <div id='header' className={cx('standard', selectedTheme, { navOpen: this.state.mobileNavOpen })}>
         <div className='braytech'>
           <div className='logo'>
             <Link to='/'>
               <span className='destiny-clovis_bray_device' />
-              Braytech {packageJSON.version}
+              Braytech
             </Link>
           </div>
           {!viewsInline ? (

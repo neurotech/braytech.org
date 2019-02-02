@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
-// import Moment from 'react-moment';
-import packageJSON from '../../../package.json';
 
 import ObservedImage from '../../components/ObservedImage';
 import ProgressBar from '../../components/ProgressBar';
@@ -104,15 +102,13 @@ class HeaderProfile extends React.Component {
       </div>
     );
 
-    // {this.props.refreshService.config.enabled ? <> / <Moment interval={1000} durationFromNow>{this.props.profile.updated}</Moment></> : null}
-
     return (
       <div id='header' className={cx('profile-header', this.props.theme.selected, { navOpen: this.state.mobileNavOpen })}>
         <div className='braytech'>
           <div className='logo'>
             <Link to='/'>
               <span className='destiny-clovis_bray_device' />
-              Braytech {packageJSON.version}
+              Braytech
             </Link>
           </div>
           {!viewsInline ? (
