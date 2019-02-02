@@ -33,7 +33,9 @@ const ListButton = p => (
 );
 
 ListButton.propTypes = {
-  list: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  icon: PropTypes.string,
   visible: PropTypes.bool
 };
 
