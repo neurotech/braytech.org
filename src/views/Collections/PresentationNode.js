@@ -88,14 +88,14 @@ class PresentationNode extends React.Component {
     });
 
     return (
-      <div className="node">
-        <div className="header">
-          <div className="name">
+      <div className='node'>
+        <div className='header'>
+          <div className='name'>
             {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
             {primaryDefinition.displayProperties.name} <span>{primaryDefinition.children.presentationNodes.length !== 1 ? <>// {secondaryDefinition.displayProperties.name}</> : null}</span>
           </div>
         </div>
-        <div className="children">
+        <div className='children'>
           <ul
             className={cx('list', 'primary', {
               'single-primary': primaryDefinition.children.presentationNodes.length === 1
@@ -103,10 +103,10 @@ class PresentationNode extends React.Component {
           >
             {primaryChildren}
           </ul>
-          <ul className="list secondary">{secondaryChildren}</ul>
+          <ul className='list secondary'>{secondaryChildren}</ul>
         </div>
-        <div className="collectibles">
-          <ul className="list tertiary collection-items">
+        <div className='collectibles'>
+          <ul className='list tertiary collection-items'>
             <Collectibles {...this.props} {...this.state} node={tertiaryHash} highlight={quaternaryHash} />
           </ul>
         </div>

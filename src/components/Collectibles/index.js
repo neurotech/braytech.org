@@ -235,6 +235,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default compose(
-  connect(mapStateToProps)
-)(Collectibles);
+export default compose(connect(mapStateToProps))(Collectibles);

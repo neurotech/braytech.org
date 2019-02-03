@@ -9,11 +9,11 @@ const armour = (manifest, item) => {
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 
-  let intrinsic = sockets.find(socket => socket.singleInitialItem ? socket.singleInitialItem.definition.itemCategoryHashes.includes(2237038328) : false);
-      intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
+  let intrinsic = sockets.find(socket => (socket.singleInitialItem ? socket.singleInitialItem.definition.itemCategoryHashes.includes(2237038328) : false));
+  intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
 
   let powerLevel = '630';
-      powerLevel = item.itemComponents ? item.itemComponents.instance.primaryStat.value : powerLevel;
+  powerLevel = item.itemComponents ? item.itemComponents.instance.primaryStat.value : powerLevel;
 
   return (
     <>
@@ -39,9 +39,7 @@ const armour = (manifest, item) => {
             </div>
           </div>
         ) : null}
-        {sockets.length > 0 ? sockets
-          .map(socket => socket.plugs.filter(plug => !plug.definition.itemCategoryHashes.includes(2237038328)).map(plug => plug.element))
-        : null}
+        {sockets.length > 0 ? sockets.map(socket => socket.plugs.filter(plug => !plug.definition.itemCategoryHashes.includes(2237038328)).map(plug => plug.element)) : null}
       </div>
     </>
   );

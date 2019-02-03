@@ -78,8 +78,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default compose(
-  connect(
-    mapStateToProps
-  ),
+  connect(mapStateToProps),
   withNamespaces()
 )(Characters);

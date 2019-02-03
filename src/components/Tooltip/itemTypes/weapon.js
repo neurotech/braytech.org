@@ -11,14 +11,14 @@ const weapon = (manifest, item) => {
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 
-  let intrinsic = sockets.find(socket => socket.singleInitialItem ? socket.singleInitialItem.definition.itemCategoryHashes.includes(2237038328) : false);
-      intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
+  let intrinsic = sockets.find(socket => (socket.singleInitialItem ? socket.singleInitialItem.definition.itemCategoryHashes.includes(2237038328) : false));
+  intrinsic = intrinsic ? manifest.DestinySandboxPerkDefinition[intrinsic.singleInitialItem.definition.perks[0].perkHash] : false;
 
   let powerLevel = '630';
-      powerLevel = item.itemComponents && item.itemComponents.instance ? item.itemComponents.instance.primaryStat.value : powerLevel;
+  powerLevel = item.itemComponents && item.itemComponents.instance ? item.itemComponents.instance.primaryStat.value : powerLevel;
 
   let damageTypeHash = item.damageTypeHashes[0];
-      damageTypeHash = item.itemComponents && item.itemComponents.instance ? item.itemComponents.instance.damageTypeHash : damageTypeHash;
+  damageTypeHash = item.itemComponents && item.itemComponents.instance ? item.itemComponents.instance.damageTypeHash : damageTypeHash;
 
   return (
     <>
@@ -58,8 +58,12 @@ const weapon = (manifest, item) => {
           </div>
         ) : null}
         {sockets.length > 0
-          ? sockets
-              .map(socket => socket.plugs.filter(plug => !plug.definition.itemCategoryHashes.includes(2237038328)).filter(plug => plug.definition.plug.plugCategoryHash !== 2947756142).map(plug => plug.element))
+          ? sockets.map(socket =>
+              socket.plugs
+                .filter(plug => !plug.definition.itemCategoryHashes.includes(2237038328))
+                .filter(plug => plug.definition.plug.plugCategoryHash !== 2947756142)
+                .map(plug => plug.element)
+            )
           : null}
       </div>
     </>

@@ -39,7 +39,6 @@ class RecordsAlmost extends React.Component {
     });
 
     Object.entries(profileRecords).forEach(([key, record]) => {
-
       if (manifest.DestinyRecordDefinition[key].redacted) {
         return;
       }
@@ -119,7 +118,7 @@ class RecordsAlmost extends React.Component {
             <Link to={{ pathname: '/triumphs/almost-complete', state: { from: '/triumphs' } }}>See next 100</Link>
           </li>
         )
-      })
+      });
     }
 
     return (
@@ -138,6 +137,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default compose(
-  connect(mapStateToProps)
-)(RecordsAlmost);
+export default compose(connect(mapStateToProps))(RecordsAlmost);

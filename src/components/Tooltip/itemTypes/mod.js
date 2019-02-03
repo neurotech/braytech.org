@@ -4,7 +4,6 @@ import cx from 'classnames';
 import ObservedImage from '../../ObservedImage';
 
 const mod = (manifest, item) => {
-
   let plugs = [];
   item.perks.forEach(perk => {
     let plug = manifest.DestinySandboxPerkDefinition[perk.perkHash];
@@ -33,9 +32,11 @@ const mod = (manifest, item) => {
     <>
       {stats.length > 0 ? <div className='stats'>{stats}</div> : null}
       <div className={cx('sockets', { 'has-sockets': plugs.length > 0 })}>{plugs.length > 0 ? plugs : null}</div>
-      {item.itemSubType === 21 ? <div className='description'>
-        <pre>{item.displayProperties.description}</pre>
-      </div> : null}
+      {item.itemSubType === 21 ? (
+        <div className='description'>
+          <pre>{item.displayProperties.description}</pre>
+        </div>
+      ) : null}
     </>
   );
 };

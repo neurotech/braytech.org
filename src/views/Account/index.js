@@ -40,7 +40,6 @@ class Account extends React.Component {
     const Characters = () => {
       let charactersEl = [];
       characters.forEach(character => {
-        
         // console.log(character);
 
         let equipment = characterEquipment[character.characterId].items;
@@ -242,7 +241,7 @@ class Account extends React.Component {
         3875807583, // Whisper of the Worm
         3142437750, // A Thousand Wings
 
-        1469913803, // Harbinger's Echo
+        1469913803 // Harbinger's Echo
       ];
 
       return (

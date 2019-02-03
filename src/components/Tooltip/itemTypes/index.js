@@ -17,7 +17,6 @@ import ui from './ui';
 import sandboxPerk from './sandboxPerk';
 
 export default (profile, manifest, props) => {
-
   const itemComponents = profile.data ? profile.data.profile.itemComponents : false;
 
   if (!props.table) {

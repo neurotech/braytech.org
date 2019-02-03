@@ -28,7 +28,7 @@ class Root extends React.Component {
     if (profileCollectibles.recentCollectibleHashes) {
       profileCollectibles.recentCollectibleHashes.forEach(child => {
         let collectibleDefinition = manifest.DestinyCollectibleDefinition[child];
-  
+
         recentlyDiscovered.push(
           <li key={collectibleDefinition.hash} className={cx('item', 'tooltip')} data-itemhash={collectibleDefinition.itemHash}>
             <div className='icon'>

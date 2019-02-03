@@ -155,29 +155,29 @@ export function ammoTypeToString(type) {
 }
 
 function stringToIconsWrapper(string) {
-  return <span className={`destiny-${string}`} />
+  return <span className={`destiny-${string}`} />;
 }
 
 export function stringToIcons(string) {
   let array = [];
 
   let equivalents = {
-    "[Sniper Rifle]": "sniper_rifle",
-    "[Headshot]": "headshot",
-    "[Auto Rifle]": "auto_rifle",
-    "[Pulse Rifle]": "pulse_rifle",
-    "[Scout Rifle]": "scout_rifle",
-    "[Hand Cannon]": "hand_cannon",
-    "[Sidearm]": "sidearm",
-    "[SMG]": "smg",
-    "[Shotgun]": "shotgun",
-    "[Fusion Rifle]": "fusion_rifle",
-    "[Linear Fusion Rifle]": "wire_rifle",
-    "[Trace Rifle]": "beam_weapon",
-    "[Rocker Launcher]": "rocket_launcher",
-    "[Sword]": "sword_heavy",
-    "[Grenade Launcher]": "grenade_launcher"
-  }
+    '[Sniper Rifle]': 'sniper_rifle',
+    '[Headshot]': 'headshot',
+    '[Auto Rifle]': 'auto_rifle',
+    '[Pulse Rifle]': 'pulse_rifle',
+    '[Scout Rifle]': 'scout_rifle',
+    '[Hand Cannon]': 'hand_cannon',
+    '[Sidearm]': 'sidearm',
+    '[SMG]': 'smg',
+    '[Shotgun]': 'shotgun',
+    '[Fusion Rifle]': 'fusion_rifle',
+    '[Linear Fusion Rifle]': 'wire_rifle',
+    '[Trace Rifle]': 'beam_weapon',
+    '[Rocker Launcher]': 'rocket_launcher',
+    '[Sword]': 'sword_heavy',
+    '[Grenade Launcher]': 'grenade_launcher'
+  };
 
   array = string.split(/(\[.*?\])/g);
 
@@ -214,10 +214,7 @@ export function isWellRested(characterProgression, manifest) {
 
   const progress = legendProgress.weeklyProgress;
 
-  const requiredXP =
-    xpRequiredForLevel(legendProgress.level, legendProgressDef) +
-    xpRequiredForLevel(legendProgress.level - 1, legendProgressDef) +
-    xpRequiredForLevel(legendProgress.level - 2, legendProgressDef);
+  const requiredXP = xpRequiredForLevel(legendProgress.level, legendProgressDef) + xpRequiredForLevel(legendProgress.level - 1, legendProgressDef) + xpRequiredForLevel(legendProgress.level - 2, legendProgressDef);
 
   // Have you gained XP equal to three full levels worth of XP?
   return {
