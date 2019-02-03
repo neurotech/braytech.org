@@ -13,6 +13,7 @@ import Roster from '../../components/Roster';
 import Spinner from '../../components/Spinner';
 import ProgressBar from '../../components/ProgressBar';
 import Checkbox from '../../components/Checkbox';
+import manifest from '../../utils/manifest';
 
 import './about.css';
 
@@ -78,7 +79,6 @@ class AboutView extends React.Component {
   }
 
   render() {
-    const manifest = this.props.manifest;
     const groups = this.props.profile.data.groups;
     const clan = groups.results.length > 0 ? groups.results[0].group : false;
     const { t } = this.props;
@@ -186,7 +186,7 @@ class AboutView extends React.Component {
                 <div>{t('Clan roster')}</div>
                 {this.state.membersResponse ? <div>{this.state.membersResponse.Response.results.filter(member => member.isOnline).length} online</div> : null}
               </div>
-              {this.state.membersResponse ? <Roster mini linked isOnline members={this.state.membersResponse} manifest={manifest} /> : <Spinner />}
+              {this.state.membersResponse ? <Roster mini linked isOnline members={this.state.membersResponse} /> : <Spinner />}
             </div>
           </div>
         </div>
@@ -218,8 +218,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default compose(
-  connect(
-    mapStateToProps
-  ),
+  connect(mapStateToProps),
   withNamespaces()
 )(AboutView);

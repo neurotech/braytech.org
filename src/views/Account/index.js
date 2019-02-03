@@ -14,6 +14,7 @@ import Item from '../../components/Item';
 import RecordsTracked from '../../components/RecordsTracked';
 import ProgressBar from '../../components/ProgressBar';
 import * as utils from '../../utils/destinyUtils';
+import manifest from '../../utils/manifest';
 
 import './styles.css';
 
@@ -26,7 +27,6 @@ class Account extends React.Component {
 
   render() {
     const { t } = this.props;
-    const manifest = this.props.manifest;
     const characterId = this.props.profile.characterId;
 
     const characters = this.props.profile.data.profile.characters.data;
@@ -40,7 +40,6 @@ class Account extends React.Component {
     const Characters = () => {
       let charactersEl = [];
       characters.forEach(character => {
-        
         // console.log(character);
 
         let equipment = characterEquipment[character.characterId].items;
@@ -60,7 +59,7 @@ class Account extends React.Component {
           legs: equipment.find(item => item.inventory.bucketTypeHash === 20886954)
         };
 
-        let wellRested = utils.isWellRested(this.props.profile.data.profile.characterProgressions.data[character.characterId], manifest);
+        let wellRested = utils.isWellRested(this.props.profile.data.profile.characterProgressions.data[character.characterId]);
 
         charactersEl.push(
           <div key={character.characterId} className='character'>
@@ -73,7 +72,7 @@ class Account extends React.Component {
                   src={`https://www.bungie.net${character.emblemPath ? character.emblemPath : `/img/misc/missing_icon_d2.png`}`}
                 />
                 <div className='level'>{character.baseCharacterLevel}</div>
-                <div className='class'>{utils.classHashToString(character.classHash, manifest, character.genderType)}</div>
+                <div className='class'>{utils.classHashToString(character.classHash, character.genderType)}</div>
                 <div className='light'>{character.light}</div>
                 <div className='wellRested'>{wellRested.wellRested ? <ObservedImage className='image icon tooltip' data-itemhash='1519921522' data-table='DestinySandboxPerkDefinition' src={Globals.url.bungie + manifest.DestinySandboxPerkDefinition[1519921522].displayProperties.icon} /> : null}</div>
                 {character.titleRecordHash ? <div className='title'>{manifest.DestinyRecordDefinition[character.titleRecordHash].titleInfo.titlesByGenderHash[character.genderHash]}</div> : null}
@@ -112,7 +111,7 @@ class Account extends React.Component {
                       } else {
                         return (
                           <li key={item.itemInstanceId} className={cx({ 'is-subclass': item.inventory.bucketTypeHash === 3284755031 })}>
-                            <Item manifest={manifest} data={{ itemHash: item.hash, itemInstanceId: item.itemInstanceId, itemState: item.state }} />
+                            <Item data={{ itemHash: item.hash, itemInstanceId: item.itemInstanceId, itemState: item.state }} />
                           </li>
                         );
                       }
@@ -242,7 +241,7 @@ class Account extends React.Component {
         3875807583, // Whisper of the Worm
         3142437750, // A Thousand Wings
 
-        1469913803, // Harbinger's Echo
+        1469913803 // Harbinger's Echo
       ];
 
       return (
@@ -429,7 +428,8 @@ function mapStateToProps(state, ownProps) {
   return {
     profile: state.profile,
     collectibles: state.collectibles,
-    theme: state.theme
+    theme: state.theme,
+    manifest: state.manifest
   };
 }
 

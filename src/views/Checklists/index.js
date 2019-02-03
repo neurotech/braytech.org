@@ -63,10 +63,10 @@ export class Checklists extends React.Component {
   };
 
   render() {
-    const { t, profile, manifest, collectibles, theme } = this.props;
+    const { t, profile, collectibles, theme } = this.props;
     const { page, itemsPerPage } = this.state;
 
-    const f = new ChecklistFactory(t, profile.data.profile, manifest, profile.characterId, collectibles.hideChecklistItems);
+    const f = new ChecklistFactory(t, profile.data.profile, profile.characterId, collectibles.hideChecklistItems);
 
     const lists = [
       f.regionChests(), //
@@ -117,7 +117,6 @@ export class Checklists extends React.Component {
 }
 Checklists.propTypes = {
   profile: PropTypes.object.isRequired,
-  manifest: PropTypes.object.isRequired,
   collectibles: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   viewport: PropTypes.object.isRequired

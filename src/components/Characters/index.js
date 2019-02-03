@@ -13,7 +13,6 @@ import './styles.css';
 class Characters extends React.Component {
   constructor(props) {
     super(props);
-    this.manifest = props.manifest;
     this.state = {};
   }
 
@@ -37,8 +36,8 @@ class Characters extends React.Component {
             })}
             src={`https://www.bungie.net${character.emblemBackgroundPath ? character.emblemBackgroundPath : `/img/misc/missing_icon_d2.png`}`}
           />
-          <div className='class'>{utils.classHashToString(character.classHash, this.manifest, character.genderType)}</div>
-          <div className='species'>{utils.raceHashToString(character.raceHash, this.manifest, character.genderType)}</div>
+          <div className='class'>{utils.classHashToString(character.classHash, character.genderType)}</div>
+          <div className='species'>{utils.raceHashToString(character.raceHash, character.genderType)}</div>
           <div className='light'>{character.light}</div>
           <div className='level'>
             {t('Level')} {character.baseCharacterLevel}
@@ -78,8 +77,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default compose(
-  connect(
-    mapStateToProps
-  ),
+  connect(mapStateToProps),
   withNamespaces()
 )(Characters);

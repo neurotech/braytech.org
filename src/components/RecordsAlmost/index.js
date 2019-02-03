@@ -1,11 +1,11 @@
 import React from 'react';
-import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import orderBy from 'lodash/orderBy';
 
 import Records from '../Records';
+import manifest from '../../utils/manifest';
 import { enumerateRecordState } from '../../utils/destinyEnums';
 
 class RecordsAlmost extends React.Component {
@@ -16,10 +16,6 @@ class RecordsAlmost extends React.Component {
   }
 
   render() {
-    const manifest = this.props.manifest;
-    const characterId = this.props.profile.characterId;
-
-    const characterRecords = this.props.profile.data.profile.characterRecords.data;
     const profileRecords = this.props.profile.data.profile.profileRecords.data.records;
 
     let almost = [];
@@ -39,7 +35,6 @@ class RecordsAlmost extends React.Component {
     });
 
     Object.entries(profileRecords).forEach(([key, record]) => {
-
       if (manifest.DestinyRecordDefinition[key].redacted) {
         return;
       }
@@ -119,7 +114,7 @@ class RecordsAlmost extends React.Component {
             <Link to={{ pathname: '/triumphs/almost-complete', state: { from: '/triumphs' } }}>See next 100</Link>
           </li>
         )
-      })
+      });
     }
 
     return (
@@ -138,6 +133,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default compose(
-  connect(mapStateToProps)
-)(RecordsAlmost);
+export default connect(mapStateToProps)(RecordsAlmost);

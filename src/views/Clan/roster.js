@@ -2,12 +2,9 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
 import cx from 'classnames';
-import Moment from 'react-moment';
 import Globals from '../../utils/globals';
 import assign from 'lodash/assign';
-import ClanBanner from '../../components/ClanBanner';
 import Roster from '../../components/Roster';
 import Spinner from '../../components/Spinner';
 import { withNamespaces } from 'react-i18next';
@@ -17,7 +14,7 @@ import './roster.css';
 class RosterView extends React.Component {
   constructor(props) {
     super(props);
-    const {t} = this.props;
+    const { t } = this.props;
     this.state = {
       membersResponse: false,
       rosterKeepFresh: false
@@ -36,7 +33,7 @@ class RosterView extends React.Component {
         rosterKeepFresh: true
       });
     }
-  }
+  };
 
   groupFetch = async groupId => {
     let requests = [
@@ -88,8 +85,7 @@ class RosterView extends React.Component {
   }
 
   render() {
-    const manifest = this.props.manifest;
-    const {t} = this.props;
+    const { t } = this.props;
     const groups = this.props.profile.data.groups;
     const clan = groups.results.length > 0 ? groups.results[0].group : false;
 
@@ -104,13 +100,18 @@ class RosterView extends React.Component {
                   <div className='tag'>[{clan.clanInfo.clanCallsign}]</div>
                 </div>
                 {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
-                <div className='memberCount'>// {clan.memberCount} {t('members')}</div>
+                <div className='memberCount'>
+                  // {clan.memberCount} {t('members')}
+                </div>
                 <div className='motto'>{clan.motto}</div>
               </div>
               <div className='views'>
                 <ul className='list'>
                   <li className='linked'>
-                    <NavLink to='/clan' exact> {t('About')}</NavLink>
+                    <NavLink to='/clan' exact>
+                      {' '}
+                      {t('About')}
+                    </NavLink>
                   </li>
                   <li className='linked'>
                     <NavLink to='/clan/roster'> {t('Roster')}</NavLink>
@@ -163,8 +164,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default compose(
-  connect(
-    mapStateToProps
-  ),
+  connect(mapStateToProps),
   withNamespaces()
 )(RosterView);

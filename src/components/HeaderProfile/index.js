@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
+import manifest from '../../utils/manifest';
 import ObservedImage from '../../components/ObservedImage';
 import ProgressBar from '../../components/ProgressBar';
 import { classHashToString } from '../../utils/destinyUtils';
@@ -14,7 +15,7 @@ class HeaderProfile extends React.Component {
     this.state = {
       mobileNavOpen: false,
       lastUpdate: false,
-      updateFlash: false,
+      updateFlash: false
     };
 
     this.updateFlash = false;
@@ -36,18 +37,16 @@ class HeaderProfile extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.profile.data.updated !== this.props.profile.data.updated && this.state.lastUpdate !== this.props.profile.data.updated && !this.state.updateFlash) {
-      this.setState({ lastUpdate: this.props.profile.data.updated, updateFlash: true })
+      this.setState({ lastUpdate: this.props.profile.data.updated, updateFlash: true });
     }
     if (this.state.updateFlash) {
       window.setTimeout(() => {
-        this.setState({ updateFlash: false })
+        this.setState({ updateFlash: false });
       }, 1000);
     }
   }
 
   render() {
-    const manifest = this.props.manifest;
-
     let characterId = this.props.profile.characterId;
     let profile = this.props.profile.data.profile.profile.data;
     let characters = this.props.profile.data.profile.characters.data;
@@ -146,7 +145,7 @@ class HeaderProfile extends React.Component {
                   />
                   <div className='displayName'>{profile.userInfo.displayName}</div>
                   <div className='basics'>
-                    {character.baseCharacterLevel} / {classHashToString(character.classHash, this.props.manifest, character.genderType)} / <span className='light'>{character.light}</span>
+                    {character.baseCharacterLevel} / {classHashToString(character.classHash, character.genderType)} / <span className='light'>{character.light}</span>
                   </div>
                   <ProgressBar
                     classNames={{

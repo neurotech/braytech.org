@@ -5,10 +5,11 @@ import cx from 'classnames';
 import Moment from 'react-moment';
 import orderBy from 'lodash/orderBy';
 import Globals from '../../utils/globals';
-import rgbToHsl from '../../utils/rgbToHsl';
+
 import Spinner from '../../components/Spinner';
 import ObservedImage from '../../components/ObservedImage';
 
+import manifest from '../../utils/manifest';
 import { classTypeToString } from '../../utils/destinyUtils';
 
 import './styles.css';
@@ -218,7 +219,6 @@ class Roster extends React.Component {
 
   render() {
     const { t } = this.props;
-    const manifest = this.props.manifest;
     const mini = this.props.mini;
     const linked = this.props.linked;
     const isOnline = this.props.isOnline;
@@ -324,7 +324,15 @@ class Roster extends React.Component {
                   <div className='displayName'>{member.member.destinyUserInfo.displayName}</div>
                   <div className='triumphScore'>{member.profile.profileRecords.data.score}</div>
                   <div className='clanXp'>
-                    <span>{Object.values(member.profile.characterProgressions.data).reduce((sum, member) => { return sum + member.progressions[540048094].weeklyProgress }, 0)}</span> / {Object.values(member.profile.characterProgressions.data).reduce((sum, member) => { return sum + 5000 }, 0)}
+                    <span>
+                      {Object.values(member.profile.characterProgressions.data).reduce((sum, member) => {
+                        return sum + member.progressions[540048094].weeklyProgress;
+                      }, 0)}
+                    </span>{' '}
+                    /{' '}
+                    {Object.values(member.profile.characterProgressions.data).reduce((sum, member) => {
+                      return sum + 5000;
+                    }, 0)}
                   </div>
                   <div className='character'>{character}</div>
                   <div className='activity'>

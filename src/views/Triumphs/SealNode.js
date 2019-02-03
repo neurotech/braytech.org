@@ -2,24 +2,15 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withNamespaces } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
+import manifest from '../../utils/manifest';
 import ObservedImage from '../../components/ObservedImage';
 import Records from '../../components/Records';
 
 class SealNode extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
   render() {
     const { t } = this.props;
-    const manifest = this.props.manifest;
     const characterId = this.props.profile.characterId;
 
     const characters = this.props.profile.data.profile.characters.data;

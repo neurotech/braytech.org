@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { withNamespaces } from 'react-i18next';
 import cx from 'classnames';
 
+import manifest from '../../utils/manifest';
 import ObservedImage from '../ObservedImage';
 import { enumerateRecordState } from '../../utils/destinyEnums';
 
@@ -48,7 +49,7 @@ class NotificationProgress extends React.Component {
     if (!this.timer && !this.state.progress.timedOut && this.state.progress.hash) {
       this.timer = setTimeout((prevState = this.state) => {
         this.timer = false;
-        console.log('timed out')
+        console.log('timed out');
         this.setState({
           progress: {
             type: prevState.progress.type,
@@ -58,10 +59,9 @@ class NotificationProgress extends React.Component {
         });
       }, 10000);
     }
-  }
+  };
 
   componentDidUpdate(prevProps) {
-
     this.timeOut();
 
     const fresh = this.props.profile.data;
@@ -115,7 +115,7 @@ class NotificationProgress extends React.Component {
         }
       });
 
-      if (this.state.progress.timedOut && progress.type && (this.state.progress.hash !== progress.hash)) {
+      if (this.state.progress.timedOut && progress.type && this.state.progress.hash !== progress.hash) {
         this.setState({
           progress: progress
         });
@@ -124,7 +124,7 @@ class NotificationProgress extends React.Component {
   }
 
   render() {
-    const { t, manifest } = this.props;
+    const { t } = this.props;
 
     if (this.state.progress.type === 'record') {
       let record = manifest.DestinyRecordDefinition[this.state.progress.hash];
@@ -163,7 +163,7 @@ class NotificationProgress extends React.Component {
       }
 
       let description = record.displayProperties.description !== '' ? record.displayProperties.description : false;
-          description = !description && record.loreHash ? manifest.DestinyLoreDefinition[record.loreHash].displayProperties.description.slice(0, 117).trim() + '...' : description;
+      description = !description && record.loreHash ? manifest.DestinyLoreDefinition[record.loreHash].displayProperties.description.slice(0, 117).trim() + '...' : description;
       return (
         <div id='notification-progress' className={cx('record', { lore: record.loreHash, timedOut: this.state.progress.timedOut })}>
           <div className='type'>
@@ -175,7 +175,7 @@ class NotificationProgress extends React.Component {
               <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${record.displayProperties.icon}`} noConstraints />
               <div className='description'>{description}</div>
             </div>
-            { this.state.progress.number > 1 ? <div className='more'>And {this.state.progress.number - 1} more</div> : null }
+            {this.state.progress.number > 1 ? <div className='more'>And {this.state.progress.number - 1} more</div> : null}
           </div>
           {link ? <Link to={link} /> : null}
         </div>
@@ -194,8 +194,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default compose(
-  connect(
-    mapStateToProps
-  ),
+  connect(mapStateToProps),
   withNamespaces()
 )(NotificationProgress);
