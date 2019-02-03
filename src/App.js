@@ -43,7 +43,7 @@ import Resources from './views/Resources';
 import ClanBannerBuilder from './views/Resources/ClanBannerBuilder';
 import GodRolls from './views/Resources/GodRolls';
 
-import CharacterRoute from './CharacterRoute';
+import CharacterRoute from './utils/CharacterRoute';
 
 // Print timings of promises to console (and performance logger)
 // if we're running in development mode.
