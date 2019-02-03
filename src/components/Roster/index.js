@@ -5,10 +5,11 @@ import cx from 'classnames';
 import Moment from 'react-moment';
 import orderBy from 'lodash/orderBy';
 import Globals from '../../utils/globals';
-import rgbToHsl from '../../utils/rgbToHsl';
+
 import Spinner from '../../components/Spinner';
 import ObservedImage from '../../components/ObservedImage';
 
+import manifest from '../../utils/manifest';
 import { classTypeToString } from '../../utils/destinyUtils';
 
 import './styles.css';
@@ -218,7 +219,6 @@ class Roster extends React.Component {
 
   render() {
     const { t } = this.props;
-    const manifest = this.props.manifest;
     const mini = this.props.mini;
     const linked = this.props.linked;
     const isOnline = this.props.isOnline;

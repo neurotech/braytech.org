@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import cx from 'classnames';
+
+import manifest from '../../utils/manifest';
 
 import ObservedImage from '../../components/ObservedImage';
 import { enumerateCollectibleState, enumerateItemState } from '../../utils/destinyEnums';
@@ -10,7 +11,7 @@ import './styles.css';
 
 class Item extends React.Component {
   render() {
-    const { manifest, data, profile } = this.props;
+    const { data, profile } = this.props;
 
     let hash = data.itemHash;
     let itemDefinition = manifest.DestinyInventoryItemDefinition[hash];

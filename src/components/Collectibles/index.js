@@ -1,9 +1,9 @@
 import React from 'react';
-import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
+import manifest from '../../utils/manifest';
 import ObservedImage from '../../components/ObservedImage';
 import { enumerateCollectibleState } from '../../utils/destinyEnums';
 
@@ -25,7 +25,6 @@ class Collectibles extends React.Component {
   }
 
   render() {
-    const manifest = this.props.manifest;
     const characterId = this.props.profile.characterId;
 
     const characterCollectibles = this.props.profile.data.profile.characterCollectibles.data;
@@ -235,4 +234,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default compose(connect(mapStateToProps))(Collectibles);
+export default connect(mapStateToProps)(Collectibles);

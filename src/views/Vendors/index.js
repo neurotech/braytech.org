@@ -5,6 +5,7 @@ import { withNamespaces } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
+import manifest from '../../utils/manifest';
 import { isProfileRoute } from '../../utils/globals';
 import getVendors from '../../utils/getVendors';
 import Spinner from '../../components/Spinner';
@@ -27,7 +28,7 @@ class Vendors extends React.Component {
   }
 
   render() {
-    const { t, manifest, vendors } = this.props;
+    const { t, vendors } = this.props;
 
     if (vendors) {
       const vendorHash = this.props.match.params.hash ? this.props.match.params.hash : '3361454721';
@@ -95,7 +96,7 @@ class Vendors extends React.Component {
                 {category.items.map(item => {
                   return (
                     <li key={item.itemHash}>
-                      <Item data={item} manifest={manifest} />
+                      <Item data={item} />
                     </li>
                   );
                 })}

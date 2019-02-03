@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
+import manifest from '../../utils/manifest';
 import ObservedImage from '../../components/ObservedImage';
 import ProgressBar from '../../components/ProgressBar';
 import { classHashToString } from '../../utils/destinyUtils';
@@ -46,8 +47,6 @@ class HeaderProfile extends React.Component {
   }
 
   render() {
-    const manifest = this.props.manifest;
-
     let characterId = this.props.profile.characterId;
     let profile = this.props.profile.data.profile.profile.data;
     let characters = this.props.profile.data.profile.characters.data;
@@ -146,7 +145,7 @@ class HeaderProfile extends React.Component {
                   />
                   <div className='displayName'>{profile.userInfo.displayName}</div>
                   <div className='basics'>
-                    {character.baseCharacterLevel} / {classHashToString(character.classHash, this.props.manifest, character.genderType)} / <span className='light'>{character.light}</span>
+                    {character.baseCharacterLevel} / {classHashToString(character.classHash, character.genderType)} / <span className='light'>{character.light}</span>
                   </div>
                   <ProgressBar
                     classNames={{

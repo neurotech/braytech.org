@@ -3,9 +3,10 @@ import cx from 'classnames';
 
 import ObservedImage from '../../ObservedImage';
 import { getSockets } from '../../../utils/destinyItems';
+import manifest from '../../../utils/manifest';
 
-const armour = (manifest, item) => {
-  let { stats, sockets } = getSockets(manifest, item, false, false, true);
+const armour = item => {
+  let { stats, sockets } = getSockets(item, false, false, true);
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;
 

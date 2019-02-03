@@ -6,6 +6,7 @@ import cx from 'classnames';
 
 import ObservedImage from '../ObservedImage';
 import ProgressBar from '../ProgressBar';
+import manifest from '../../utils/manifest';
 import { enumerateRecordState } from '../../utils/destinyEnums';
 
 import './styles.css';
@@ -40,7 +41,7 @@ class Records extends React.Component {
   };
 
   render() {
-    const { manifest, hashes, highlight, profile, triumphs, collectibles, ordered, limit, selfLink, selfLinkFrom, readLink } = this.props;
+    const { hashes, highlight, profile, triumphs, collectibles, ordered, limit, selfLink, selfLinkFrom, readLink } = this.props;
     const recordsRequested = hashes;
     const characterRecords = profile.data.profile.characterRecords.data;
     const profileRecords = profile.data.profile.profileRecords.data.records;
