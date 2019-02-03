@@ -11,15 +11,12 @@ class PresentationNode extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      
-    };
-
+    this.state = {};
   }
 
   render() {
     const manifest = this.props.manifest;
-    
+
     let primaryHash = this.props.primaryHash;
 
     let primaryDefinition = manifest.DestinyPresentationNodeDefinition[primaryHash];
@@ -83,14 +80,14 @@ class PresentationNode extends React.Component {
     });
 
     return (
-      <div className="node">
-        <div className="header">
-          <div className="name">
+      <div className='node'>
+        <div className='header'>
+          <div className='name'>
             {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
             {primaryDefinition.displayProperties.name} <span>{primaryDefinition.children.presentationNodes.length !== 1 ? <>// {secondaryDefinition.displayProperties.name}</> : null}</span>
           </div>
         </div>
-        <div className="children">
+        <div className='children'>
           <ul
             className={cx('list', 'primary', {
               'single-primary': primaryDefinition.children.presentationNodes.length === 1
@@ -98,10 +95,10 @@ class PresentationNode extends React.Component {
           >
             {primaryChildren}
           </ul>
-          <ul className="list secondary">{secondaryChildren}</ul>
+          <ul className='list secondary'>{secondaryChildren}</ul>
         </div>
-        <div className="records">
-          <ul className="list tertiary record-items">
+        <div className='records'>
+          <ul className='list tertiary record-items'>
             <Records {...this.props} hashes={tertiaryDefinition.children.records.map(child => child.recordHash)} highlight={quaternaryHash} readLink={primaryHash === '564676571'} />
           </ul>
         </div>
@@ -117,6 +114,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default compose(
-  connect(mapStateToProps),
-)(PresentationNode);
+export default compose(connect(mapStateToProps))(PresentationNode);

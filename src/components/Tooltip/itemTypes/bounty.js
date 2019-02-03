@@ -18,11 +18,9 @@ const bounty = (manifest, item) => {
       complete: false,
       progress: 0,
       objectiveHash: objectiveDefinition.hash
-    }
+    };
 
-    objectives.push(
-      <ProgressBar key={objectiveDefinition.hash} objectiveDefinition={objectiveDefinition} playerProgress={playerProgress} />
-    );
+    objectives.push(<ProgressBar key={objectiveDefinition.hash} objectiveDefinition={objectiveDefinition} playerProgress={playerProgress} />);
   });
 
   item.value.itemValue.forEach(value => {

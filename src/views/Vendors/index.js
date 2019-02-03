@@ -45,9 +45,7 @@ class Vendors extends React.Component {
                   <p>{t("The data driving this content is based on the developers' own character's progression and may result in visual discrepancies. It's updated every 4 hours daily and for the most part is accurate.")}</p>
                 </div>
               </div>
-              <div className='inventories'>
-                Vendors are unavailable at the moment.
-              </div>
+              <div className='inventories'>Vendors are unavailable at the moment.</div>
             </div>
             <div className='items' />
           </div>

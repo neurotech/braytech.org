@@ -36,11 +36,11 @@ class Settings extends React.Component {
     //     hideChecklistItems: false
     //   };
     // } else {
-      newState = {
-        hideTriumphRecords: state === 'hideTriumphRecords' ? !currentState.hideTriumphRecords : currentState.hideTriumphRecords,
-        hideChecklistItems: state === 'hideChecklistItems' ? !currentState.hideChecklistItems : currentState.hideChecklistItems,
-        hideInvisibleCollectibles: state === 'hideInvisibleCollectibles' ? !currentState.hideInvisibleCollectibles : currentState.hideInvisibleCollectibles
-      };
+    newState = {
+      hideTriumphRecords: state === 'hideTriumphRecords' ? !currentState.hideTriumphRecords : currentState.hideTriumphRecords,
+      hideChecklistItems: state === 'hideChecklistItems' ? !currentState.hideChecklistItems : currentState.hideChecklistItems,
+      hideInvisibleCollectibles: state === 'hideInvisibleCollectibles' ? !currentState.hideInvisibleCollectibles : currentState.hideInvisibleCollectibles
+    };
     // }
 
     this.props.setCollectibleDisplayState(newState);
@@ -70,7 +70,7 @@ class Settings extends React.Component {
   render() {
     const { t, availableLanguages } = this.props;
 
-    const complete = ['en', 'de', 'pt-br']
+    const complete = ['en', 'de', 'pt-br'];
     let languageButtons = availableLanguages.map(code => {
       let langInfo = getLanguageInfo(code);
       return (

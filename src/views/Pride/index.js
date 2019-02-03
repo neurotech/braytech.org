@@ -14,13 +14,10 @@ class Pride extends React.Component {
   }
 
   componentDidMount() {
-    
     window.scrollTo(0, 0);
   }
 
-  componentWillUnmount() {
-    
-  }
+  componentWillUnmount() {}
 
   render() {
     return (
@@ -43,14 +40,11 @@ class Pride extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    theme: state.theme,
+    theme: state.theme
   };
 }
 
 export default compose(
-  connect(
-    mapStateToProps
-  ),
+  connect(mapStateToProps),
   withNamespaces()
 )(Pride);
-

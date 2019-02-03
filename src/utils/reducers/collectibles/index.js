@@ -12,8 +12,8 @@ export default function collectiblesReducer(state = defaultState, action) {
   switch (action.type) {
     case 'SET_COLLECTIBLES':
       ls.set('setting.collectibleDisplayState', action.payload);
-      return action.payload
+      return action.payload;
     default:
-      return state
+      return state;
   }
 }

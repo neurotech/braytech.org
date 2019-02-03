@@ -37,7 +37,7 @@ class Records extends React.Component {
     }
 
     this.props.setTrackedTriumphs(tracked);
-  }
+  };
 
   render() {
     const { manifest, hashes, highlight, profile, triumphs, collectibles, ordered, limit, selfLink, selfLinkFrom, readLink } = this.props;
@@ -99,10 +99,9 @@ class Records extends React.Component {
       if (recordDefinition.objectiveHashes) {
         recordDefinition.objectiveHashes.forEach(hash => {
           let objectiveDefinition = manifest.DestinyObjectiveDefinition[hash];
-          
+
           let playerProgress = null;
           if (profileRecords[recordDefinition.hash]) {
-            
             profileRecords[recordDefinition.hash].objectives.forEach(objective => {
               if (objective.objectiveHash === hash) {
                 playerProgress = objective;
@@ -138,7 +137,7 @@ class Records extends React.Component {
       }
 
       let progressDistance = progressValueTotal / completionValueTotal;
-          progressDistance = Number.isNaN(progressDistance) ? 0 : progressDistance;
+      progressDistance = Number.isNaN(progressDistance) ? 0 : progressDistance;
 
       let state;
       if (profileRecords[recordDefinition.hash]) {
@@ -229,7 +228,11 @@ class Records extends React.Component {
                 'no-description': !description
               })}
             >
-              {!enumerateRecordState(state).recordRedeemed && enumerateRecordState(state).objectiveNotCompleted ? <div className='track-this' onClick={this.trackThisClick} data-hash={recordDefinition.hash}><div /></div> : null }
+              {!enumerateRecordState(state).recordRedeemed && enumerateRecordState(state).objectiveNotCompleted ? (
+                <div className='track-this' onClick={this.trackThisClick} data-hash={recordDefinition.hash}>
+                  <div />
+                </div>
+              ) : null}
               <div className='properties'>
                 <div className='icon'>
                   <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${recordDefinition.displayProperties.icon}`} />
@@ -241,7 +244,7 @@ class Records extends React.Component {
                 </div>
               </div>
               <div className='objectives'>{objectives}</div>
-              {(link && linkTo) ? <Link to={linkTo} /> : null}
+              {link && linkTo ? <Link to={linkTo} /> : null}
             </li>
           )
         });
@@ -268,7 +271,6 @@ class Records extends React.Component {
     } else if (ordered) {
       recordsOutput = orderBy(recordsOutput, [item => item.completed], ['asc']);
     } else {
-      
     }
 
     if (limit) {

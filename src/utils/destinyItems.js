@@ -42,7 +42,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
   let socketsOutput = [];
 
   // console.log(item);
-  
+
   if (item.sockets) {
     let socketEntries = item.sockets.socketEntries;
     if (item.itemComponents && item.itemComponents.sockets) {
@@ -90,7 +90,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
 
       socket.reusablePlugItems.forEach(reusablePlug => {
         let plug = manifest.DestinyInventoryItemDefinition[reusablePlug.plugItemHash];
-        
+
         // console.log(reusablePlug, plug, socket);
 
         if (plug.hash === socket.singleInitialItemHash) {
@@ -104,9 +104,8 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
                 value: modifier.value
               });
             }
-            
-            if (masterworkSocketHash.includes(socket.socketTypeHash)) {
 
+            if (masterworkSocketHash.includes(socket.socketTypeHash)) {
               // console.log(item, reusablePlug, plug, socket);
 
               let index = statModifiersMasterworks.findIndex(stat => stat.statHash === modifier.statTypeHash);
@@ -120,23 +119,18 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
               }
 
               const killTracker = socketEntries.find(socket => socket.plugObjectives && socket.plugObjectives.length);
-    
+
               // console.log(killTracker, socketEntries);
-            
-              if (
-                killTracker &&
-                killTracker.plugObjectives &&
-                killTracker.plugObjectives.length
-              ) {
+
+              if (killTracker && killTracker.plugObjectives && killTracker.plugObjectives.length) {
                 const plugObjective = killTracker.plugObjectives[0];
 
                 masterworkKillTracker = {
                   plugHash: plug.hash,
                   progress: plugObjective,
                   objectiveDefinition: manifest.DestinyObjectiveDefinition[plugObjective.objectiveHash]
-                }
+                };
               }
-
             }
           });
         }
@@ -212,7 +206,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
   let statsOutput = [];
 
   // console.log(socketsOutput, statModifiersMasterworks)
-  
+
   if (item.itemType === 3) {
     statGroup.scaledStats.forEach(stat => {
       let statModifier = statModifiers.find(modifier => modifier.statHash === stat.statHash);
@@ -223,7 +217,7 @@ export const getSockets = (manifest, item, traitsOnly = false, mods = true, init
         let modifier = statModifier ? statModifier.value : 0;
 
         let instanceStat = item.itemComponents && item.itemComponents.stats ? Object.values(item.itemComponents.stats).find(s => s.statHash === stat.statHash) : false;
-        
+
         let investmentStat = item.investmentStats.find(investment => investment.statTypeHash === stat.statHash);
         let scaledStats = statGroup.scaledStats.find(scale => scale.statHash === stat.statHash);
 

@@ -14,7 +14,7 @@ class HeaderProfile extends React.Component {
     this.state = {
       mobileNavOpen: false,
       lastUpdate: false,
-      updateFlash: false,
+      updateFlash: false
     };
 
     this.updateFlash = false;
@@ -36,11 +36,11 @@ class HeaderProfile extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.profile.data.updated !== this.props.profile.data.updated && this.state.lastUpdate !== this.props.profile.data.updated && !this.state.updateFlash) {
-      this.setState({ lastUpdate: this.props.profile.data.updated, updateFlash: true })
+      this.setState({ lastUpdate: this.props.profile.data.updated, updateFlash: true });
     }
     if (this.state.updateFlash) {
       window.setTimeout(() => {
-        this.setState({ updateFlash: false })
+        this.setState({ updateFlash: false });
       }, 1000);
     }
   }

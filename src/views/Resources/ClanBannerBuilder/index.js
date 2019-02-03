@@ -47,7 +47,6 @@ class ClanBannerBuilder extends React.Component {
   };
 
   componentDidMount() {
-    
     window.scrollTo(0, 0);
 
     this.clanBannerManifestFetch().then(clanBannerManifest => {
@@ -59,9 +58,7 @@ class ClanBannerBuilder extends React.Component {
     });
   }
 
-  componentWillUnmount() {
-    
-  }
+  componentWillUnmount() {}
 
   render() {
     const { t } = this.props;

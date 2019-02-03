@@ -1,11 +1,13 @@
 import * as ls from '../../localStorage';
 
-const defaultState = ls.get('setting.refreshService') ? ls.get('setting.refreshService') : {
-  config: {
-    enabled: true,
-    frequency: 20
-  }
-};
+const defaultState = ls.get('setting.refreshService')
+  ? ls.get('setting.refreshService')
+  : {
+      config: {
+        enabled: true,
+        frequency: 20
+      }
+    };
 
 export default function profileReducer(state = defaultState, action) {
   switch (action.type) {
@@ -17,8 +19,8 @@ export default function profileReducer(state = defaultState, action) {
       return {
         ...state,
         ...action.payload
-      }
+      };
     default:
-      return state
+      return state;
   }
 }
