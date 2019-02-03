@@ -4,8 +4,9 @@ import cx from 'classnames';
 import ObservedImage from '../../ObservedImage';
 import { damageTypeToString, ammoTypeToString } from '../../../utils/destinyUtils';
 import { getSockets } from '../../../utils/destinyItems';
+import manifest from '../../../utils/manifest';
 
-const weapon = (manifest, item) => {
+const weapon = item => {
   let { stats, sockets, killTracker } = getSockets(item, false, false, true);
   // let ornaments = getOrnaments(manifest, item.hash);
 
