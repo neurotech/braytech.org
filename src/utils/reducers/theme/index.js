@@ -11,8 +11,8 @@ export default function themeReducer(state = lsState, action) {
       });
       return {
         selected: action.payload
-      }
+      };
     default:
-      return state
+      return state;
   }
 }

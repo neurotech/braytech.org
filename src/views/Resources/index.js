@@ -17,29 +17,24 @@ class Resources extends React.Component {
   }
 
   componentDidMount() {
-    
     window.scrollTo(0, 0);
   }
 
-  componentWillUnmount() {
-    
-  }
+  componentWillUnmount() {}
 
   render() {
     const { t } = this.props;
     return (
       <div className={cx('view', this.props.theme.selected)} id='resources'>
         <div className='resource'>
-          <ObservedImage className='image' src='/static/images/clan-banner-builder.jpg'></ObservedImage>
+          <ObservedImage className='image' src='/static/images/clan-banner-builder.jpg' />
           <div className='properties'>
-            <div className='name'>
-              {t('Clan Banner Builder')}
-            </div>
+            <div className='name'>{t('Clan Banner Builder')}</div>
             <div className='description'>
               <p>{t('Collaborate with clan members on a new clan banner.')}</p>
             </div>
           </div>
-          <Link to='/resources/clan-banner-builder'></Link>
+          <Link to='/resources/clan-banner-builder' />
         </div>
       </div>
     );

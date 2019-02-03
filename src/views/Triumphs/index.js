@@ -17,9 +17,7 @@ class Triumphs extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      
-    };
+    this.state = {};
 
     this.toggleCompleted = this.toggleCompleted.bind(this);
   }
@@ -29,7 +27,7 @@ class Triumphs extends React.Component {
     let newState = {
       hideTriumphRecords: !currentState.hideTriumphRecords,
       hideChecklistItems: currentState.hideChecklistItems
-    }
+    };
 
     this.props.setCollectibleDisplayState(newState);
   };
@@ -41,16 +39,13 @@ class Triumphs extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      (!this.props.match.params.quaternary && prevProps.location.pathname !== this.props.location.pathname) 
-      || (!prevProps.match.params.quaternary && this.props.location.pathname === '/triumphs/almost-complete' && prevProps.location.pathname !== this.props.location.pathname)
-    ) {
+    if ((!this.props.match.params.quaternary && prevProps.location.pathname !== this.props.location.pathname) || (!prevProps.match.params.quaternary && this.props.location.pathname === '/triumphs/almost-complete' && prevProps.location.pathname !== this.props.location.pathname)) {
       window.scrollTo(0, 0);
     }
   }
 
   render() {
-    const {t} = this.props;
+    const { t } = this.props;
     let primaryHash = this.props.match.params.primary ? this.props.match.params.primary : false;
 
     let toggleCompletedLink = (
@@ -65,7 +60,6 @@ class Triumphs extends React.Component {
           <>
             <i className='uniF16B' />
             {t('Hide redeemed')}
-            
           </>
         )}
       </a>
@@ -178,6 +172,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withNamespaces()
 )(Triumphs);

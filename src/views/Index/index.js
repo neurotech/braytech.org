@@ -59,6 +59,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default compose(
-  connect(mapStateToProps)
-)(Index);
+export default compose(connect(mapStateToProps))(Index);

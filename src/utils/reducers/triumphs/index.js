@@ -1,8 +1,10 @@
 import * as ls from '../../localStorage';
 
-const defaultState = ls.get('setting.triumphs') ? ls.get('setting.triumphs') : {
-  tracked: []
-};
+const defaultState = ls.get('setting.triumphs')
+  ? ls.get('setting.triumphs')
+  : {
+      tracked: []
+    };
 
 export default function triumphsReducer(state = defaultState, action) {
   switch (action.type) {
@@ -14,8 +16,8 @@ export default function triumphsReducer(state = defaultState, action) {
       return {
         ...state,
         tracked: action.payload
-      }
+      };
     default:
-      return state
+      return state;
   }
 }

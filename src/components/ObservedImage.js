@@ -55,7 +55,6 @@ class ObservedImage extends React.Component {
             if (this.observer) {
               this.observer = this.observer.disconnect();
             }
-            
           };
 
           this.image.src = src;
