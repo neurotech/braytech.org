@@ -49,7 +49,7 @@ class RosterView extends React.Component {
               <p>{t('Pulsing blueberries are freshly acquired members from the last 2 weeks.')}</p>
             </div>
           </div>
-          <div className='members'>{!groupMembers.loading ? <Roster /> : <Spinner />}</div>
+          <div className='members'>{!groupMembers.loading ? <Roster linked /> : <Spinner />}</div>
         </div>
       </div>
     );

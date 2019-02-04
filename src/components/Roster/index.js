@@ -72,14 +72,20 @@ class Roster extends React.Component {
           </>
         );
 
+        let displayName = (
+          <>
+            <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${lastCharacter.emblemPath}`} />
+            <div className='displayName'>{member.destinyUserInfo.displayName}</div>
+          </>
+        );
+
         members.push({
           isOnline: member.isOnline,
           lastPlayed: new Date(lastPlayed).getTime(),
           lastActivity: lastActivity && member.isOnline ? lastActivity.currentActivityHash : 0,
           element: (
-            <li key={member.destinyUserInfo.membershipId} className={cx({ linked: linked, isOnline: member.isOnline, blueberry: blueberry, thisIsYou: member.destinyUserInfo.membershipId == this.props.membershipId })}>
-              <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${lastCharacter.emblemPath}`} />
-              <div className='displayName'>{member.destinyUserInfo.displayName}</div>
+            <li key={member.destinyUserInfo.membershipId} className={cx({ isOnline: member.isOnline, blueberry: blueberry, thisIsYou: member.destinyUserInfo.membershipId === this.props.member.membershipId.toString() })}>
+              {linked ? <Link className='memberLink' to='/clan/roster'>{displayName}</Link> : displayName}
               <div className='triumphScore'>{member.profile.profileRecords.data.score}</div>
               <div className='clanXp'>
                 <span>

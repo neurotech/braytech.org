@@ -46,8 +46,6 @@ class Clan extends React.Component {
       const groupMembersResponse = await bungie.groupMembers(group.groupId);
       let memberResponses = await this.getMembers(groupMembersResponse.results);
 
-      console.log(memberResponses);
-
       store.dispatch({
         type: 'GROUP_MEMBERS_LOADED',
         payload: memberResponses
