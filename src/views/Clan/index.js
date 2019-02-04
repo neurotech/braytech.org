@@ -37,13 +37,14 @@ class Clan extends React.Component {
 
   async componentDidMount() {
     const { member, groupMembers } = this.props;
+    const group = member.data.groups.results.length > 0 ? member.data.groups.results[0].group : false;
 
-    if (member.data.groups.results[0].group.groupId && groupMembers.responses.length === 0) {
+    if (group.groupId && groupMembers.responses.length === 0) {
       store.dispatch({
         type: 'GROUP_MEMBERS_LOADING'
       });
 
-      const groupMembersResponse = await bungie.groupMembers(member.data.groups.results[0].group.groupId);
+      const groupMembersResponse = await bungie.groupMembers(group.groupId);
       let memberResponses = await this.getMembers(groupMembersResponse.results);
 
       console.log(memberResponses);
@@ -56,20 +57,20 @@ class Clan extends React.Component {
   }
 
   render() {
-    // return null;
-    // if (this.props.view === 'roster') {
-    //   return <RosterView {...this.props} />;
-    // } else if (this.props.view === 'stats') {
-    //   return <StatsView {...this.props} />;
-    // } else {
+    const { t, member, theme } = this.props;
+    const group = member.data.groups.results.length > 0 ? member.data.groups.results[0].group : false;
 
-    const { t } = this.props;
-
-    if (1 === 1) {
-      return <AboutView {...this.props} />;
+    if (group) {
+      if (this.props.view === 'roster') {
+        return <RosterView {...this.props} group={group} />;
+      } else if (this.props.view === 'stats') {
+        // return <StatsView {...this.props} group={group} />;
+      } else {
+        return <AboutView {...this.props} group={group} />;
+      }
     } else {
       return (
-        <div className={cx('view', this.props.theme.selected)} id='clan'>
+        <div className={cx('view', theme.selected)} id='clan'>
           <div className='no-clan'>
             <div className='properties'>
               <div className='name'>{t('No clan affiliation')}</div>

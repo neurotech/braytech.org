@@ -1,10 +1,7 @@
 import React from 'react';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import cx from 'classnames';
-import { withNamespaces } from 'react-i18next';
 
 import * as bungie from '../../utils/bungie';
 import ClanBanner from '../../components/ClanBanner';
@@ -26,18 +23,17 @@ class AboutView extends React.Component {
   }
 
   async componentDidMount() {
-    const groupId = this.props.member.data.groups.results[0].group.groupId;
+    const groupId = this.props.group.groupId;
     const groupWeeklyRewardState = await bungie.groupWeeklyRewardState(groupId);
 
     this.setState({ weeklyRewardState: groupWeeklyRewardState });
   }
 
   render() {
-    const { t, member, groupMembers, theme } = this.props;
-    const clan = member.data.groups.results[0].group;
+    const { t, member, group, groupMembers, theme } = this.props;
     const weeklyRewardState = this.state.weeklyRewardState;
 
-    const clanLevel = clan.clanInfo.d2ClanProgressions[584850370];
+    const clanLevel = group.clanInfo.d2ClanProgressions[584850370];
     const weeklyPersonalContribution = member.data.profile.characterProgressions.data[member.characterId].progressions[540048094];
 
     const weeklyClanEngramsDefinition = manifest.DestinyMilestoneDefinition[4253138191].rewards[1064137897].rewardEntries;
@@ -50,20 +46,20 @@ class AboutView extends React.Component {
       <div className={cx('view', theme.selected)} id='clan'>
         <div className='about'>
           <div className='banner'>
-            <ClanBanner bannerData={clan.clanInfo.clanBannerData} />
+            <ClanBanner bannerData={group.clanInfo.clanBannerData} />
           </div>
           <div className='overview'>
             <div className='clan-properties'>
               <div className='name'>
-                {clan.name}
-                <div className='tag'>[{clan.clanInfo.clanCallsign}]</div>
+                {group.name}
+                <div className='tag'>[{group.clanInfo.clanCallsign}]</div>
               </div>
               {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
               <div className='memberCount'>
-                // {clan.memberCount} {t('members')}
+                // {group.memberCount} {t('members')}
               </div>
-              <div className='motto'>{clan.motto}</div>
-              <ReactMarkdown className='bio' escapeHtml disallowedTypes={['image', 'imageReference']} source={clan.about} />
+              <div className='motto'>{group.motto}</div>
+              <ReactMarkdown className='bio' escapeHtml disallowedTypes={['image', 'imageReference']} source={group.about} />
             </div>
             <div className='sub-header sub'>
               <div>{t('Season')} 5</div>
@@ -147,15 +143,4 @@ class AboutView extends React.Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    member: state.member,
-    groupMembers: state.groupMembers,
-    theme: state.theme
-  };
-}
-
-export default compose(
-  connect(mapStateToProps),
-  withNamespaces()
-)(AboutView);
+export default AboutView;
