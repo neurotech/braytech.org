@@ -36,6 +36,8 @@ export const memberGroups = async (membershipType, membershipId) => apiRequest(`
 
 export const groupMembers = async groupId => apiRequest(`/Platform/GroupV2/${groupId}/Members/`);
 
+export const groupWeeklyRewardState = async groupId => apiRequest(`/Platform/Destiny2/Clan/${groupId}/WeeklyRewardState/`);
+
 // export const groupMembershipData = async (membershipType, membershipId) => apiRequest(`/Platform/GroupV2/User/${membershipType}/${membershipId}/0/1/`);
 
 export const playerSearch = async (membershipType, displayName) => apiRequest(`/Platform/Destiny2/SearchDestinyPlayer/${membershipType}/${encodeURIComponent(displayName)}/`);
