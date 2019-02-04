@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 import { withNamespaces } from 'react-i18next';
 
-import getProfile from '../../utils/getProfile';
+import store from '../../utils/reduxStore';
+import getMember from '../../utils/getMember';
 import * as ls from '../../utils/localStorage';
 import Spinner from '../../components/Spinner';
 import ProfileError from './ProfileError';
@@ -14,7 +15,6 @@ import ProfileSearch from './ProfileSearch';
 import Profile from './Profile';
 
 import './styles.css';
-import store from '../../utils/reduxStore';
 
 class CharacterSelect extends React.Component {
   componentDidMount() {
@@ -23,13 +23,13 @@ class CharacterSelect extends React.Component {
 
   characterClick = characterId => {
     ls.set('setting.profile', {
-      membershipType: this.props.profile.membershipType,
-      membershipId: this.props.profile.membershipId,
+      membershipType: this.props.member.membershipType,
+      membershipId: this.props.member.membershipId,
       characterId
     });
 
     store.dispatch({
-      type: 'PROFILE_CHARACTER_SELECT',
+      type: 'MEMBER_CHARACTER_SELECT',
       payload: characterId
     });
   };
@@ -37,19 +37,19 @@ class CharacterSelect extends React.Component {
   profileClick = async (membershipType, membershipId, displayName) => {
     window.scrollTo(0, 0);
 
-    store.dispatch({ type: 'PROFILE_LOADING_NEW_MEMBERSHIP', payload: { membershipType, membershipId } });
+    store.dispatch({ type: 'MEMBER_LOADING_NEW_MEMBERSHIP', payload: { membershipType, membershipId } });
 
     try {
-      const data = await getProfile(membershipType, membershipId);
+      const data = await getMember(membershipType, membershipId);
 
       if (!data.profile.characterProgressions.data) {
-        store.dispatch({ type: 'PROFILE_LOAD_ERROR', payload: new Error('private') });
+        store.dispatch({ type: 'MEMBER_LOAD_ERROR', payload: new Error('private') });
         return;
       }
 
-      store.dispatch({ type: 'PROFILE_LOADED', payload: data });
+      store.dispatch({ type: 'MEMBER_LOADED', payload: data });
     } catch (error) {
-      store.dispatch({ type: 'PROFILE_LOAD_ERROR', payload: error });
+      store.dispatch({ type: 'MEMBER_LOAD_ERROR', payload: error });
       return;
     }
 
@@ -70,7 +70,7 @@ class CharacterSelect extends React.Component {
   render() {
     const { member, theme, viewport } = this.props;
     const { error, loading } = member;
-
+console.log(member)
     const { from } = this.props.location.state || { from: { pathname: '/' } };
     const reverse = viewport.width <= 500;
 

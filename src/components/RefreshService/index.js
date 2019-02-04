@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import getProfile from '../../utils/getProfile';
+import getMember from '../../utils/getMember';
 import store from '../../utils/reduxStore';
 
 const AUTO_REFRESH_INTERVAL = 30 * 1000;
@@ -90,9 +90,9 @@ class RefreshService extends React.Component {
 
     const member = this.props.member;
     try {
-      const data = await getProfile(member.membershipType, member.membershipId);
+      const data = await getMember(member.membershipType, member.membershipId);
       store.dispatch({
-        type: 'PROFILE_LOADED',
+        type: 'MEMBER_LOADED',
         payload: data
       });
     } catch (error) {

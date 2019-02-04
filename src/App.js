@@ -14,7 +14,7 @@ import { isProfileRoute, themeOverride } from './utils/globals';
 import dexie from './utils/dexie';
 import * as bungie from './utils/bungie';
 import GoogleAnalytics from './components/GoogleAnalytics';
-import getProfile from './utils/getProfile';
+import getMember from './utils/getMember';
 import store from './utils/reduxStore';
 import manifest from './utils/manifest';
 
@@ -85,7 +85,7 @@ class App extends React.Component {
     const member = props.member;
 
     if (member && member.membershipId && member.membershipType) {
-      this.startupRequests.member = timed('getProfile', getProfile(member.membershipType, member.membershipId));
+      this.startupRequests.member = timed('getMember', getMember(member.membershipType, member.membershipId));
     }
   }
 
@@ -136,7 +136,7 @@ class App extends React.Component {
         this.setState({ status: { code: 'fetchProfile' } });
         const data = await this.startupRequests.member;
         store.dispatch({
-          type: 'PROFILE_LOADED',
+          type: 'MEMBER_LOADED',
           payload: data
         });
       } catch (error) {

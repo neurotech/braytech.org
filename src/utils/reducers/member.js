@@ -11,14 +11,14 @@ const defaultState = {
   error: false
 };
 
-export default function profileReducer(state = defaultState, action) {
+export default function memberReducer(state = defaultState, action) {
   switch (action.type) {
-    case 'PROFILE_CHARACTER_SELECT':
+    case 'MEMBER_CHARACTER_SELECT':
       return {
         ...state,
         characterId: action.payload
       };
-    case 'PROFILE_LOADING_NEW_MEMBERSHIP':
+    case 'MEMBER_LOADING_NEW_MEMBERSHIP':
       const reset = action.payload.membershipId !== state.membershipId || action.payload.membershipType !== state.membershipType;
       return {
         ...state,
@@ -29,13 +29,13 @@ export default function profileReducer(state = defaultState, action) {
         error: false,
         loading: true
       };
-    case 'PROFILE_LOAD_ERROR':
+    case 'MEMBER_LOAD_ERROR':
       return {
         ...state,
         loading: false,
         error: action.payload
       };
-    case 'PROFILE_LOADED':
+    case 'MEMBER_LOADED':
       if (state.prevData !== action.payload) {
         action.payload.updated = new Date().getTime();
       }
