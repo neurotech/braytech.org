@@ -25,7 +25,6 @@ class Clan extends React.Component {
       members.map(async member => {
         member.profile = await bungie.memberProfile(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '100,200,202,204,900');
         if (!member.profile.characterProgressions.data) {
-          member.profile = false;
           return member;
         }
         member.profile = responseUtils.profileScrubber(member.profile);
@@ -64,7 +63,7 @@ class Clan extends React.Component {
       if (this.props.view === 'roster') {
         return <RosterView {...this.props} group={group} />;
       } else if (this.props.view === 'stats') {
-        // return <StatsView {...this.props} group={group} />;
+        return <StatsView {...this.props} group={group} />;
       } else {
         return <AboutView {...this.props} group={group} />;
       }

@@ -56,7 +56,7 @@ class AboutView extends React.Component {
               </div>
               {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
               <div className='memberCount'>
-                // {group.memberCount} {t('members')}
+                // {group.memberCount} {t('members')} / {groupMembers.responses.filter(member => member.isOnline).length} {t('online')}
               </div>
               <div className='motto'>{group.motto}</div>
               <ReactMarkdown className='bio' escapeHtml disallowedTypes={['image', 'imageReference']} source={group.about} />
