@@ -27,15 +27,15 @@ class Account extends React.Component {
 
   render() {
     const { t } = this.props;
-    const characterId = this.props.profile.characterId;
+    const characterId = this.props.member.characterId;
 
-    const characters = this.props.profile.data.profile.characters.data;
-    const characterEquipment = this.props.profile.data.profile.characterEquipment.data;
-    const characterProgressions = this.props.profile.data.profile.characterProgressions.data;
-    const profileRecords = this.props.profile.data.profile.profileRecords.data.records;
-    const characterRecords = this.props.profile.data.profile.characterRecords.data;
+    const characters = this.props.member.data.profile.characters.data;
+    const characterEquipment = this.props.member.data.profile.characterEquipment.data;
+    const characterProgressions = this.props.member.data.profile.characterProgressions.data;
+    const profileRecords = this.props.member.data.profile.profileRecords.data.records;
+    const characterRecords = this.props.member.data.profile.characterRecords.data;
     const genderHash = characters.find(character => character.characterId === characterId).genderHash;
-    const itemComponents = this.props.profile.data.profile.itemComponents;
+    const itemComponents = this.props.member.data.profile.itemComponents;
 
     const Characters = () => {
       let charactersEl = [];
@@ -59,7 +59,7 @@ class Account extends React.Component {
           legs: equipment.find(item => item.inventory.bucketTypeHash === 20886954)
         };
 
-        let wellRested = utils.isWellRested(this.props.profile.data.profile.characterProgressions.data[character.characterId]);
+        let wellRested = utils.isWellRested(this.props.member.data.profile.characterProgressions.data[character.characterId]);
 
         charactersEl.push(
           <div key={character.characterId} className='character'>
@@ -426,7 +426,7 @@ class Account extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     collectibles: state.collectibles,
     theme: state.theme,
     manifest: state.manifest

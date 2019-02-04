@@ -65,7 +65,7 @@ class AboutView extends React.Component {
   };
 
   componentDidMount() {
-    const groups = this.props.profile.data.groups;
+    const groups = this.props.member.data.groups;
     const clan = groups.results.length > 0 ? groups.results[0].group : false;
 
     if (clan) {
@@ -79,13 +79,13 @@ class AboutView extends React.Component {
   }
 
   render() {
-    const groups = this.props.profile.data.groups;
+    const groups = this.props.member.data.groups;
     const clan = groups.results.length > 0 ? groups.results[0].group : false;
     const { t } = this.props;
 
     if (clan) {
       const clanLevel = clan.clanInfo.d2ClanProgressions[584850370];
-      const weeklyPersonalContribution = this.props.profile.data.profile.characterProgressions.data[this.props.profile.characterId].progressions[540048094];
+      const weeklyPersonalContribution = this.props.member.data.profile.characterProgressions.data[this.props.member.characterId].progressions[540048094];
 
       const weeklyClanEngramsDefinition = manifest.DestinyMilestoneDefinition[4253138191].rewards[1064137897].rewardEntries;
       let rewardState = null;
@@ -212,7 +212,7 @@ class AboutView extends React.Component {
 function mapStateToProps(state, ownProps) {
   console.log(state, ownProps);
   return {
-    profile: state.profile,
+    member: state.member,
     theme: state.theme
   };
 }

@@ -41,11 +41,11 @@ class Records extends React.Component {
   };
 
   render() {
-    const { hashes, highlight, profile, triumphs, collectibles, ordered, limit, selfLink, selfLinkFrom, readLink } = this.props;
+    const { hashes, highlight, member, triumphs, collectibles, ordered, limit, selfLink, selfLinkFrom, readLink } = this.props;
     const recordsRequested = hashes;
-    const characterRecords = profile.data.profile.characterRecords.data;
-    const profileRecords = profile.data.profile.profileRecords.data.records;
-    const characterId = profile.characterId;
+    const characterRecords = member.data.profile.characterRecords.data;
+    const profileRecords = member.data.profile.profileRecords.data.records;
+    const characterId = member.characterId;
     const tracked = triumphs.tracked;
 
     let recordsOutput = [];

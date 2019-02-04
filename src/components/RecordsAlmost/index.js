@@ -16,7 +16,7 @@ class RecordsAlmost extends React.Component {
   }
 
   render() {
-    const profileRecords = this.props.profile.data.profile.profileRecords.data.records;
+    const profileRecords = this.props.member.data.profile.profileRecords.data.records;
 
     let almost = [];
     let ignores = [];
@@ -129,7 +129,7 @@ class RecordsAlmost extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile
+    member: state.member
   };
 }
 

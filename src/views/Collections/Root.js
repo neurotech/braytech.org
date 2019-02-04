@@ -10,10 +10,10 @@ import { enumerateCollectibleState } from '../../utils/destinyEnums';
 class Root extends React.Component {
   render() {
     const { t } = this.props;
-    const characterId = this.props.profile.characterId;
+    const characterId = this.props.member.characterId;
 
-    const characterCollectibles = this.props.profile.data.profile.characterCollectibles.data;
-    const profileCollectibles = this.props.profile.data.profile.profileCollectibles.data;
+    const characterCollectibles = this.props.member.data.profile.characterCollectibles.data;
+    const profileCollectibles = this.props.member.data.profile.profileCollectibles.data;
 
     const parent = manifest.DestinyPresentationNodeDefinition[manifest.settings.destiny2CoreSettings.collectionRootNode];
     const parentBadges = manifest.DestinyPresentationNodeDefinition[manifest.settings.destiny2CoreSettings.badgesRootNode];

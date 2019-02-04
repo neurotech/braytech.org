@@ -143,7 +143,7 @@ class Tooltip extends React.Component {
       this.target_bindings();
     }
 
-    if (this.props.vendors !== prevProps.vendors || this.props.profile.data !== prevProps.profile.data) {
+    if (this.props.vendors !== prevProps.vendors || this.props.member.data !== prevProps.member.data) {
       this.target_bindings();
     }
 
@@ -163,9 +163,9 @@ class Tooltip extends React.Component {
   }
 
   render() {
-    const { profile } = this.props;
+    const { member } = this.props;
     if (this.state.hash) {
-      let render = itemTypes(profile, { hash: this.state.hash, itemInstanceId: this.state.itemInstanceId, itemState: this.state.itemState, table: this.state.table });
+      let render = itemTypes(member, { hash: this.state.hash, itemInstanceId: this.state.itemInstanceId, itemState: this.state.itemState, table: this.state.table });
 
       return (
         <div id='tooltip' ref={this.tooltip} style={{ top: `${this.mouseMoveXY.y}px`, left: `${this.mouseMoveXY.x}px` }}>
@@ -180,7 +180,7 @@ class Tooltip extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     vendors: state.vendors
   };
 }

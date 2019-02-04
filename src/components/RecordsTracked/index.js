@@ -41,7 +41,6 @@ class RecordsTracked extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
     triumphs: state.triumphs
   };
 }

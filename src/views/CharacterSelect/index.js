@@ -68,8 +68,8 @@ class CharacterSelect extends React.Component {
   };
 
   render() {
-    const { profile, theme, viewport } = this.props;
-    const { error, loading } = profile;
+    const { member, theme, viewport } = this.props;
+    const { error, loading } = member;
 
     const { from } = this.props.location.state || { from: { pathname: '/' } };
     const reverse = viewport.width <= 500;
@@ -77,7 +77,7 @@ class CharacterSelect extends React.Component {
     const profileCharacterSelect = (
       <div className='profile'>
         {loading && <Spinner />}
-        {profile.data && <Profile profile={profile} onCharacterClick={this.characterClick} from={from} />}
+        {member.data && <Profile member={member} onCharacterClick={this.characterClick} from={from} />}
       </div>
     );
 
@@ -98,7 +98,7 @@ class CharacterSelect extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     theme: state.theme
   };
 }

@@ -12,7 +12,9 @@ class Clan extends React.Component {
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    
+  }
 
   render() {
     if (this.props.view === 'roster') {

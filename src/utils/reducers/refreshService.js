@@ -1,4 +1,4 @@
-import * as ls from '../../localStorage';
+import * as ls from '../localStorage';
 
 const defaultState = ls.get('setting.refreshService')
   ? ls.get('setting.refreshService')

@@ -11,11 +11,11 @@ import Records from '../../components/Records';
 class SealNode extends React.Component {
   render() {
     const { t } = this.props;
-    const characterId = this.props.profile.characterId;
+    const characterId = this.props.member.characterId;
 
-    const characters = this.props.profile.data.profile.characters.data;
+    const characters = this.props.member.data.profile.characters.data;
     const genderHash = characters.find(character => character.characterId === characterId).genderHash;
-    const profileRecords = this.props.profile.data.profile.profileRecords.data.records;
+    const profileRecords = this.props.member.data.profile.profileRecords.data.records;
 
     const sealBars = {
       2588182977: {
@@ -124,7 +124,7 @@ class SealNode extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     theme: state.theme,
     collectibles: state.collectibles
   };

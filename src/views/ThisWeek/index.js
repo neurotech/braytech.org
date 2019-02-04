@@ -19,7 +19,7 @@ class ThisWeek extends React.Component {
 
   render() {
     const { t } = this.props;
-    const milestones = this.props.profile.data.milestones;
+    const milestones = this.props.member.data.milestones;
 
     const resetTime = '17:00:00Z';
 
@@ -548,7 +548,7 @@ class ThisWeek extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     collectibles: state.collectibles,
     theme: state.theme
   };

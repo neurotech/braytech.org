@@ -41,13 +41,13 @@ class Read extends React.Component {
   };
 
   recordState = hash => {
-    if (!this.props.profile.data) {
+    if (!this.props.member.data) {
       return 0;
     }
 
-    const characterRecords = this.props.profile.data.profile.characterRecords.data;
-    const profileRecords = this.props.profile.data.profile.profileRecords.data.records;
-    const characterId = this.props.profile.characterId;
+    const characterRecords = this.props.member.data.profile.characterRecords.data;
+    const profileRecords = this.props.member.data.profile.profileRecords.data.records;
+    const characterId = this.props.member.characterId;
 
     let state;
     if (profileRecords[hash]) {
@@ -184,7 +184,7 @@ class Read extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     theme: state.theme,
-    profile: state.profile
+    member: state.member
   };
 }
 

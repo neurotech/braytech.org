@@ -15,7 +15,7 @@ class RefreshService extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.profile.data !== this.props.profile.data || prevProps.refreshService.config.enabled !== this.props.refreshService.config.enabled) {
+    if (prevProps.member.data !== this.props.member.data || prevProps.refreshService.config.enabled !== this.props.refreshService.config.enabled) {
       if (prevProps.refreshService.config.enabled !== this.props.refreshService.config.enabled) {
         if (this.props.refreshService.config.enabled) {
           this.init();
@@ -88,9 +88,9 @@ class RefreshService extends React.Component {
       return;
     }
 
-    const profile = this.props.profile;
+    const member = this.props.member;
     try {
-      const data = await getProfile(profile.membershipType, profile.membershipId);
+      const data = await getProfile(member.membershipType, member.membershipId);
       store.dispatch({
         type: 'PROFILE_LOADED',
         payload: data
@@ -103,7 +103,7 @@ class RefreshService extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     refreshService: state.refreshService
   };
 }

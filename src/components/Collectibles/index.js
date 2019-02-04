@@ -25,10 +25,10 @@ class Collectibles extends React.Component {
   }
 
   render() {
-    const characterId = this.props.profile.characterId;
+    const characterId = this.props.member.characterId;
 
-    const characterCollectibles = this.props.profile.data.profile.characterCollectibles.data;
-    const profileCollectibles = this.props.profile.data.profile.profileCollectibles.data;
+    const characterCollectibles = this.props.member.data.profile.characterCollectibles.data;
+    const profileCollectibles = this.props.member.data.profile.profileCollectibles.data;
 
     const highlight = this.props.highlight;
     let collectibles = [];
@@ -229,7 +229,7 @@ class Collectibles extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     collectibles: state.collectibles
   };
 }

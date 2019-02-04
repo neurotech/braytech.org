@@ -84,7 +84,7 @@ class Header extends React.Component {
 
     views = process.env.NODE_ENV !== 'development' ? views.filter(view => !view.dev) : views;
 
-    if (this.props.profile.data && this.props.profile.characterId && isProfileRoute(this.props.route.location.pathname, true)) {
+    if (this.props.member.data && this.props.member.characterId && isProfileRoute(this.props.route.location.pathname, true)) {
       return <HeaderProfile {...this.props} views={views} />;
     } else {
       return <HeaderStandard {...this.props} views={views} isIndex={this.props.route.location.pathname === '/' ? true : false} />;
@@ -94,7 +94,7 @@ class Header extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     refreshService: state.refreshService,
     theme: state.theme
   };

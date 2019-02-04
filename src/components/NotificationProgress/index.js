@@ -64,15 +64,15 @@ class NotificationProgress extends React.Component {
   componentDidUpdate(prevProps) {
     this.timeOut();
 
-    const fresh = this.props.profile.data;
-    const stale = this.props.profile.prevData ? this.props.profile.prevData : false;
-    const characterId = this.props.profile.characterId;
+    const fresh = this.props.member.data;
+    const stale = this.props.member.prevData ? this.props.member.prevData : false;
+    const characterId = this.props.member.characterId;
 
     if (!stale) {
       return;
     }
 
-    if (prevProps.profile.membershipId !== this.props.profile.membershipId) {
+    if (prevProps.member.membershipId !== this.props.member.membershipId) {
       return;
     }
 
@@ -188,7 +188,7 @@ class NotificationProgress extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     theme: state.theme
   };
 }

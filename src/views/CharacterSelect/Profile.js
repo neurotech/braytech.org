@@ -8,26 +8,26 @@ import './styles.css';
 
 class Profile extends React.Component {
   render() {
-    const { t, profile, from } = this.props;
+    const { t, member, from } = this.props;
 
-    const groups = profile.data.groups.results;
+    const groups = member.data.groups.results;
 
     const timePlayed = Math.floor(
-      Object.keys(profile.data.profile.characters.data).reduce((sum, key) => {
-        return sum + parseInt(profile.data.profile.characters.data[key].minutesPlayedTotal);
+      Object.keys(member.data.profile.characters.data).reduce((sum, key) => {
+        return sum + parseInt(member.data.profile.characters.data[key].minutesPlayedTotal);
       }, 0) / 1440
     );
 
     return (
       <div className='user'>
         <div className='info'>
-          <div className='displayName'>{profile.data.profile.profile.data.userInfo.displayName}</div>
+          <div className='displayName'>{member.data.profile.profile.data.userInfo.displayName}</div>
           {groups.length === 1 && <div className='clan'>{groups[0].group.name}</div>}
           <div className='timePlayed'>
             {timePlayed} {t('days on the grind')}
           </div>{' '}
         </div>
-        <Characters data={profile.data} location={{ ...from }} characterClick={this.props.onCharacterClick} />
+        <Characters data={member.data} location={{ ...from }} characterClick={this.props.onCharacterClick} />
       </div>
     );
   }
@@ -36,7 +36,7 @@ class Profile extends React.Component {
 Profile.propTypes = {
   onCharacterClick: PropTypes.func.isRequired,
   from: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
+  member: PropTypes.object.isRequired
 };
 
 export default withNamespaces()(Profile);

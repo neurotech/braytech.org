@@ -157,7 +157,7 @@ class Triumphs extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     collectibles: state.collectibles,
     theme: state.theme
   };

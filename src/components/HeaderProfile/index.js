@@ -36,8 +36,8 @@ class HeaderProfile extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.profile.data.updated !== this.props.profile.data.updated && this.state.lastUpdate !== this.props.profile.data.updated && !this.state.updateFlash) {
-      this.setState({ lastUpdate: this.props.profile.data.updated, updateFlash: true });
+    if (prevProps.member.data.updated !== this.props.member.data.updated && this.state.lastUpdate !== this.props.member.data.updated && !this.state.updateFlash) {
+      this.setState({ lastUpdate: this.props.member.data.updated, updateFlash: true });
     }
     if (this.state.updateFlash) {
       window.setTimeout(() => {
@@ -47,10 +47,10 @@ class HeaderProfile extends React.Component {
   }
 
   render() {
-    let characterId = this.props.profile.characterId;
-    let profile = this.props.profile.data.profile.profile.data;
-    let characters = this.props.profile.data.profile.characters.data;
-    let characterProgressions = this.props.profile.data.profile.characterProgressions.data;
+    let characterId = this.props.member.characterId;
+    let profile = this.props.member.data.profile.profile.data;
+    let characters = this.props.member.data.profile.characters.data;
+    let characterProgressions = this.props.member.data.profile.characterProgressions.data;
 
     let character = characters.find(character => character.characterId === characterId);
 

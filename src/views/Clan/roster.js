@@ -69,7 +69,7 @@ class RosterView extends React.Component {
   };
 
   componentDidMount() {
-    const groups = this.props.profile.data.groups;
+    const groups = this.props.member.data.groups;
     const clan = groups.results.length > 0 ? groups.results[0].group : false;
 
     window.scrollTo(0, 0);
@@ -86,7 +86,7 @@ class RosterView extends React.Component {
 
   render() {
     const { t } = this.props;
-    const groups = this.props.profile.data.groups;
+    const groups = this.props.member.data.groups;
     const clan = groups.results.length > 0 ? groups.results[0].group : false;
 
     if (clan) {
@@ -158,7 +158,7 @@ class RosterView extends React.Component {
 function mapStateToProps(state, ownProps) {
   console.log(state, ownProps);
   return {
-    profile: state.profile,
+    member: state.member,
     theme: state.theme
   };
 }

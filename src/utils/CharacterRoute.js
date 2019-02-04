@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
-const CharacterRoute = ({ render, component, children, profile, ...rest }) => {
-  if (!profile.data || !profile.characterId) {
+const CharacterRoute = ({ render, component, children, member, ...rest }) => {
+  if (!member.data || !member.characterId) {
     return (
       <Route
         {...rest}
@@ -24,7 +24,7 @@ const CharacterRoute = ({ render, component, children, profile, ...rest }) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile
+    member: state.member
   };
 }
 

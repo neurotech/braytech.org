@@ -36,7 +36,7 @@ class Vendors extends React.Component {
 
       if (vendors[vendorHash].ErrorCode !== 1) {
         return (
-          <div className={cx('view', this.props.theme.selected, { 'profile-route': isProfileRoute('/vendors', this.props.profile.data) })} id='vendors'>
+          <div className={cx('view', this.props.theme.selected, { 'profile-route': isProfileRoute('/vendors', this.props.member.data) })} id='vendors'>
             <div className='pane'>
               <div className='header'>
                 <div className='sub-header sub'>
@@ -109,7 +109,7 @@ class Vendors extends React.Component {
       });
 
       return (
-        <div className={cx('view', this.props.theme.selected, { 'profile-route': isProfileRoute('/vendors', this.props.profile.data) })} id='vendors'>
+        <div className={cx('view', this.props.theme.selected, { 'profile-route': isProfileRoute('/vendors', this.props.member.data) })} id='vendors'>
           <div className='pane'>
             <div className='header'>
               <div className='sub-header sub'>
@@ -117,7 +117,7 @@ class Vendors extends React.Component {
               </div>
               <div className='description'>
                 <p>{t("The data driving this content is based on the developers' own character's progression and may result in visual discrepancies. It's updated every 4 hours daily and for the most part is accurate.")}</p>
-                {this.props.profile.data ? <p>{t("API limitations determine whether an item's acqusition state can be determined. For example, ornaments can't be reliably tracked at this time. Where possible, item's states are reflected as per other views.")}</p> : null}
+                {this.props.member.data ? <p>{t("API limitations determine whether an item's acqusition state can be determined. For example, ornaments can't be reliably tracked at this time. Where possible, item's states are reflected as per other views.")}</p> : null}
               </div>
             </div>
             <div className='display'>
@@ -157,7 +157,7 @@ class Vendors extends React.Component {
       );
     } else {
       return (
-        <div className={cx('view', this.props.theme.selected, { 'profile-route': isProfileRoute('/vendors', this.props.profile.data) })} id='vendors'>
+        <div className={cx('view', this.props.theme.selected, { 'profile-route': isProfileRoute('/vendors', this.props.member.data) })} id='vendors'>
           <div className='pane'>
             <div className='header'>
               <div className='sub-header sub'>
@@ -181,7 +181,7 @@ class Vendors extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     vendors: state.vendors,
-    profile: state.profile,
+    member: state.member,
     theme: state.theme
   };
 }

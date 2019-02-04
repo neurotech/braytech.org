@@ -82,10 +82,10 @@ class App extends React.Component {
       bungieSettings: timed('getSettings', bungie.settings())
     };
 
-    const profile = props.profile;
+    const member = props.member;
 
-    if (profile && profile.membershipId && profile.membershipType) {
-      this.startupRequests.profile = timed('getProfile', getProfile(profile.membershipType, profile.membershipId));
+    if (member && member.membershipId && member.membershipType) {
+      this.startupRequests.member = timed('getProfile', getProfile(member.membershipType, member.membershipId));
     }
   }
 
@@ -131,17 +131,17 @@ class App extends React.Component {
     tmpManifest.settings = await this.startupRequests.bungieSettings;
     this.availableLanguages = Object.keys(manifestIndex.jsonWorldContentPaths);
 
-    if (this.startupRequests.profile) {
+    if (this.startupRequests.member) {
       try {
         this.setState({ status: { code: 'fetchProfile' } });
-        const data = await this.startupRequests.profile;
+        const data = await this.startupRequests.member;
         store.dispatch({
           type: 'PROFILE_LOADED',
           payload: data
         });
       } catch (error) {
-        // Ignore it if we can't load the profile on app boot - the user will just
-        // need to select a new profile
+        // Ignore it if we can't load the member on app boot - the user will just
+        // need to select a new member
         console.log(error);
       }
     }
@@ -195,7 +195,7 @@ class App extends React.Component {
               <NotificationProgress />
 
               {/* Don't run the refresh service if we're currently selecting
-                a character,as the refresh will cause the profile to
+                a character, as the refresh will cause the member to
                 continually reload itself */}
               <Route path='/character-select' children={({ match, ...rest }) => !match && <RefreshService {...this.props} />} />
 
@@ -233,7 +233,7 @@ class App extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     theme: state.theme
   };
 }

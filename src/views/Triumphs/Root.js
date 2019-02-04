@@ -14,12 +14,12 @@ import RecordsTracked from '../../components/RecordsTracked';
 class Root extends React.Component {
   render() {
     const { t } = this.props;
-    const characterId = this.props.profile.characterId;
+    const characterId = this.props.member.characterId;
 
-    const characters = this.props.profile.data.profile.characters.data;
+    const characters = this.props.member.data.profile.characters.data;
     const genderHash = characters.find(character => character.characterId === characterId).genderHash;
-    const profileRecords = this.props.profile.data.profile.profileRecords.data.records;
-    const characterRecords = this.props.profile.data.profile.characterRecords.data;
+    const profileRecords = this.props.member.data.profile.profileRecords.data.records;
+    const characterRecords = this.props.member.data.profile.characterRecords.data;
 
     const sealBars = {
       2588182977: {
@@ -189,7 +189,7 @@ class Root extends React.Component {
           <div className='sub-header sub'>
             <div>{t('Total score')}</div>
           </div>
-          <div className='total-score'>{this.props.profile.data.profile.profileRecords.data.score}</div>
+          <div className='total-score'>{this.props.member.data.profile.profileRecords.data.score}</div>
           <div className='sub-header sub'>
             <div>{t('Triumphs')}</div>
             <div>
@@ -225,7 +225,7 @@ class Root extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: state.profile,
+    member: state.member,
     theme: state.theme
   };
 }
