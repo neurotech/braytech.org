@@ -40,9 +40,9 @@ class RosterView extends React.Component {
                 <li className='linked'>
                   <NavLink to='/clan/roster'>{t('Roster')}</NavLink>
                 </li>
-                <li className='linked'>
+                {/* <li className='linked'>
                   <NavLink to='/clan/stats'>{t('Stats')}</NavLink>
-                </li>
+                </li> */}
               </ul>
             </div>
             <div className='info'>

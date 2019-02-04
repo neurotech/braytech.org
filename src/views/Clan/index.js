@@ -62,8 +62,6 @@ class Clan extends React.Component {
     if (group) {
       if (this.props.view === 'roster') {
         return <RosterView {...this.props} group={group} />;
-      } else if (this.props.view === 'stats') {
-        return <StatsView {...this.props} group={group} />;
       } else {
         return <AboutView {...this.props} group={group} />;
       }

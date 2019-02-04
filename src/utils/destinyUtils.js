@@ -1,4 +1,6 @@
 import React from 'react';
+import orderBy from 'lodash/orderBy';
+
 import manifest from './manifest';
 
 // TODO: we can just use itemCategoryHashes for this now?
@@ -231,4 +233,50 @@ export function isWellRested(characterProgression) {
 function xpRequiredForLevel(level, progressDef) {
   const stepIndex = Math.min(Math.max(0, level), progressDef.steps.length - 1);
   return progressDef.steps[stepIndex].progressTotal;
+}
+
+export function lastPlayerActivity(member) {
+  let lastActivity = false;
+  let lastCharacter = false;
+  let display = false;
+
+  if (member.profile.characterActivities.data) {
+    let lastCharacterActivity = Object.entries(member.profile.characterActivities.data);
+    lastCharacterActivity = orderBy(lastCharacterActivity, [character => character[1].dateActivityStarted], ['desc']);
+    lastCharacterActivity = lastCharacterActivity.length > 0 ? lastCharacterActivity[0] : false;
+
+    let lastCharacterTime = Object.entries(member.profile.characterActivities.data);
+    lastCharacterTime = orderBy(lastCharacterTime, [character => character[1].dateActivityStarted], ['desc']);
+
+    let lastCharacterId = lastCharacterActivity ? lastCharacterActivity[0] : lastCharacterTime[0];
+    lastActivity = lastCharacterActivity ? lastCharacterActivity[1] : false;
+
+    lastCharacter = member.profile.characters.data.find(character => character.characterId === lastCharacterId);
+
+    if (lastActivity && member.isOnline) {
+      let activity = manifest.DestinyActivityDefinition[lastActivity.currentActivityHash];
+      let mode = activity ? (activity.placeHash === 2961497387 ? false : manifest.DestinyActivityModeDefinition[lastActivity.currentActivityModeHash]) : false;
+
+      if (mode) {
+        display = `${mode.displayProperties.name}: ${activity.displayProperties.name}`;
+      } else if (activity) {
+        if (activity.placeHash === 2961497387) {
+          display = `Orbit`;
+        } else {
+          display = activity.displayProperties.name;
+        }
+      } else {
+        display = false;
+      }
+    }
+  } else {
+
+  }
+
+  return {
+    lastPlayed: lastActivity ? lastActivity.dateActivityStarted : member.profile.profile.data.dateLastPlayed,
+    lastCharacter,
+    lastActivity,
+    display
+  };
 }
