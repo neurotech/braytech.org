@@ -48,8 +48,6 @@ class GodRolls extends React.Component {
   componentWillUnmount() {}
 
   render() {
-    const { t, manifest } = this.props;
-
     return <div className={cx('view', this.props.theme.selected)} id='god-rolls' />;
   }
 }

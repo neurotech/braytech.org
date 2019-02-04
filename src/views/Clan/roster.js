@@ -2,12 +2,9 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
 import cx from 'classnames';
-import Moment from 'react-moment';
 import Globals from '../../utils/globals';
 import assign from 'lodash/assign';
-import ClanBanner from '../../components/ClanBanner';
 import Roster from '../../components/Roster';
 import Spinner from '../../components/Spinner';
 import { withNamespaces } from 'react-i18next';
@@ -88,7 +85,6 @@ class RosterView extends React.Component {
   }
 
   render() {
-    const manifest = this.props.manifest;
     const { t } = this.props;
     const groups = this.props.profile.data.groups;
     const clan = groups.results.length > 0 ? groups.results[0].group : false;

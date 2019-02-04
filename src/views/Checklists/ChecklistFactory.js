@@ -8,11 +8,10 @@ import ChecklistFactoryHelpers from './ChecklistFactoryHelpers';
 import ReactMarkdown from 'react-markdown';
 
 class ChecklistFactory {
-  constructor(t, profile, manifest, characterId, hideCompletedItems) {
+  constructor(t, profile, characterId, hideCompletedItems) {
     this.t = t;
-    this.manifest = manifest;
     this.profile = profile;
-    this.m = new ChecklistFactoryHelpers(t, profile, manifest, characterId, hideCompletedItems);
+    this.m = new ChecklistFactoryHelpers(t, profile, characterId, hideCompletedItems);
   }
 
   adventures() {

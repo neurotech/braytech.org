@@ -163,9 +163,9 @@ class Tooltip extends React.Component {
   }
 
   render() {
-    const { manifest, profile } = this.props;
+    const { profile } = this.props;
     if (this.state.hash) {
-      let render = itemTypes(profile, manifest, { hash: this.state.hash, itemInstanceId: this.state.itemInstanceId, itemState: this.state.itemState, table: this.state.table });
+      let render = itemTypes(profile, { hash: this.state.hash, itemInstanceId: this.state.itemInstanceId, itemState: this.state.itemState, table: this.state.table });
 
       return (
         <div id='tooltip' ref={this.tooltip} style={{ top: `${this.mouseMoveXY.y}px`, left: `${this.mouseMoveXY.x}px` }}>

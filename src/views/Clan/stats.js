@@ -7,9 +7,9 @@ import moment from 'moment';
 import Globals from '../../utils/globals';
 import assign from 'lodash/assign';
 import orderBy from 'lodash/orderBy';
-import merge from 'lodash/merge';
 import ObservedImage from '../../components/ObservedImage';
 import Spinner from '../../components/Spinner';
+import manifest from '../../utils/manifest';
 
 import './stats.css';
 import { withNamespaces } from 'react-i18next';
@@ -166,7 +166,6 @@ class StatsView extends React.Component {
   }
 
   render() {
-    const manifest = this.props.manifest;
     const { t } = this.props;
     const groups = this.props.profile.data.groups;
     const clan = groups.results.length > 0 ? groups.results[0].group : false;

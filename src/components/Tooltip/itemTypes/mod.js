@@ -2,8 +2,9 @@ import React from 'react';
 import cx from 'classnames';
 
 import ObservedImage from '../../ObservedImage';
+import manifest from '../../../utils/manifest';
 
-const mod = (manifest, item) => {
+const mod = item => {
   let plugs = [];
   item.perks.forEach(perk => {
     let plug = manifest.DestinySandboxPerkDefinition[perk.perkHash];

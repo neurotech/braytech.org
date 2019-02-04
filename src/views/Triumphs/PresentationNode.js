@@ -4,19 +4,12 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
+import manifest from '../../utils/manifest';
 import ObservedImage from '../../components/ObservedImage';
 import Records from '../../components/Records';
 
 class PresentationNode extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
-
   render() {
-    const manifest = this.props.manifest;
-
     let primaryHash = this.props.primaryHash;
 
     let primaryDefinition = manifest.DestinyPresentationNodeDefinition[primaryHash];

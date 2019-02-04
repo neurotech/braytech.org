@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import { withNamespaces } from 'react-i18next';
+import manifest from '../../utils/manifest';
 
 import ObservedImage from '../../components/ObservedImage';
 import Collectibles from '../../components/Collectibles';
@@ -10,7 +10,6 @@ import { enumerateCollectibleState } from '../../utils/destinyEnums';
 class BadgeNode extends React.Component {
   render() {
     const { t } = this.props;
-    const manifest = this.props.manifest;
     const characterId = this.props.profile.characterId;
 
     const characterCollectibles = this.props.profile.data.profile.characterCollectibles.data;

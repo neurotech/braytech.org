@@ -3,8 +3,9 @@ import cx from 'classnames';
 
 import ObservedImage from '../../ObservedImage';
 import ProgressBar from '../../ProgressBar';
+import manifest from '../../../utils/manifest';
 
-const bounty = (manifest, item) => {
+const bounty = item => {
   let description = item.displaySource !== '' ? item.displaySource : false;
 
   let objective = item.displayProperties.description;

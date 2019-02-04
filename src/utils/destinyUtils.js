@@ -1,4 +1,5 @@
 import React from 'react';
+import manifest from './manifest';
 
 // TODO: we can just use itemCategoryHashes for this now?
 export const isOrnament = item => item.inventory && item.inventory.stackUniqueLabel && item.plug && item.plug.plugCategoryIdentifier && item.plug.plugCategoryIdentifier.includes('skins');
@@ -46,7 +47,7 @@ export function raceTypeToString(str) {
   return string;
 }
 
-export function classHashToString(hash, manifest, gender) {
+export function classHashToString(hash, gender) {
   let classDef = manifest.DestinyClassDefinition[hash];
   if (!classDef) return 'uh oh';
   if (classDef.genderedClassNames) {
@@ -55,7 +56,7 @@ export function classHashToString(hash, manifest, gender) {
   return classDef.displayProperties.name;
 }
 
-export function raceHashToString(hash, manifest, gender) {
+export function raceHashToString(hash, gender) {
   let raceDef = manifest.DestinyRaceDefinition[hash];
   if (!raceDef) return 'uh oh';
   if (raceDef.genderedRaceNames) {
@@ -64,7 +65,7 @@ export function raceHashToString(hash, manifest, gender) {
   return raceDef.displayProperties.name;
 }
 
-export function getDefName(hash, manifest, defType = 'DestinyInventoryItemDefinition') {
+export function getDefName(hash, defType = 'DestinyInventoryItemDefinition') {
   try {
     return manifest[defType][hash].displayProperties.name;
   } catch (e) {}
@@ -197,7 +198,7 @@ export function stringToIcons(string) {
 }
 
 // thank you DIM (https://github.com/DestinyItemManager/DIM/blob/master/src/app/inventory/store/well-rested.ts)
-export function isWellRested(characterProgression, manifest) {
+export function isWellRested(characterProgression) {
   // We have to look at both the regular progress and the "legend" levels you gain after hitting the cap.
   // Thanks to expansions that raise the level cap, you may go back to earning regular XP after getting legend levels.
   const levelProgress = characterProgression.progressions[1716568313];

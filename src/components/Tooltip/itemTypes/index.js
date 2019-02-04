@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import Globals from '../../../utils/globals';
+import manifest from '../../../utils/manifest';
 import ObservedImage from '../../ObservedImage';
 import { enumerateItemState } from '../../../utils/destinyEnums';
 import fallback from './fallback';
@@ -16,7 +16,7 @@ import subclass from './subclass';
 import ui from './ui';
 import sandboxPerk from './sandboxPerk';
 
-export default (profile, manifest, props) => {
+export default (profile, props) => {
   const itemComponents = profile.data ? profile.data.profile.itemComponents : false;
 
   if (!props.table) {
@@ -50,53 +50,53 @@ export default (profile, manifest, props) => {
     switch (item.itemType) {
       case 1:
         kind = 'ui';
-        black = ui(manifest, item);
+        black = ui(item);
         break;
       case 3:
         kind = 'weapon';
-        black = weapon(manifest, item);
+        black = weapon(item);
         break;
       case 2:
         kind = 'armour';
-        black = armour(manifest, item);
+        black = armour(item);
         break;
       case 14:
         kind = 'emblem';
-        black = emblem(manifest, item);
+        black = emblem(item);
         break;
       case 16:
         kind = 'ui sandbox-perk';
-        black = subclass(manifest, item);
+        black = subclass(item);
         break;
       case 19:
         kind = 'mod';
-        black = mod(manifest, item);
+        black = mod(item);
         break;
       case 20:
         kind = 'bounty';
-        black = ui(manifest, item);
+        black = ui(item);
         break;
       case 22:
         kind = 'sparrow';
-        black = sparrow(manifest, item);
+        black = sparrow(item);
         break;
       case 24:
         kind = 'ghost';
-        black = ghost(manifest, item);
+        black = ghost(item);
         break;
       case 26:
         kind = 'bounty';
-        black = bounty(manifest, item);
+        black = bounty(item);
         break;
       default:
         kind = '';
-        black = fallback(manifest, item);
+        black = fallback(item);
     }
   }
 
   if (props.table === 'DestinySandboxPerkDefinition') {
     kind = 'ui name-only sandbox-perk';
-    black = sandboxPerk(manifest, item);
+    black = sandboxPerk(item);
   }
 
   if (item.inventory) {

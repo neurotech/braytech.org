@@ -68,7 +68,7 @@ class CharacterSelect extends React.Component {
   };
 
   render() {
-    const { profile, theme, viewport, manifest } = this.props;
+    const { profile, theme, viewport } = this.props;
     const { error, loading } = profile;
 
     const { from } = this.props.location.state || { from: { pathname: '/' } };
@@ -77,7 +77,7 @@ class CharacterSelect extends React.Component {
     const profileCharacterSelect = (
       <div className='profile'>
         {loading && <Spinner />}
-        {profile.data && <Profile profile={profile} manifest={manifest} onCharacterClick={this.characterClick} from={from} />}
+        {profile.data && <Profile profile={profile} onCharacterClick={this.characterClick} from={from} />}
       </div>
     );
 

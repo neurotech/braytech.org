@@ -5,6 +5,7 @@ import { withNamespaces } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
+import manifest from '../../utils/manifest';
 import ObservedImage from '../../components/ObservedImage';
 import { enumerateRecordState } from '../../utils/destinyEnums';
 
@@ -61,7 +62,7 @@ class Read extends React.Component {
   };
 
   render() {
-    const { t, manifest } = this.props;
+    const { t } = this.props;
     const kind = this.props.match.params.kind ? this.props.match.params.kind : false;
     const hash = this.props.match.params.hash ? this.props.match.params.hash : false;
     const bookCovers = {

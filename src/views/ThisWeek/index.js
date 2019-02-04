@@ -6,6 +6,7 @@ import cx from 'classnames';
 
 import Records from '../../components/Records';
 import Collectibles from '../../components/Collectibles';
+import manifest from '../../utils/manifest';
 
 import './styles.css';
 
@@ -18,7 +19,6 @@ class ThisWeek extends React.Component {
 
   render() {
     const { t } = this.props;
-    const manifest = this.props.manifest;
     const milestones = this.props.profile.data.milestones;
 
     const resetTime = '17:00:00Z';

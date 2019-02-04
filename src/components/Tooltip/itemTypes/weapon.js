@@ -3,10 +3,11 @@ import cx from 'classnames';
 
 import ObservedImage from '../../ObservedImage';
 import { damageTypeToString, ammoTypeToString } from '../../../utils/destinyUtils';
-import { getSockets, getOrnaments } from '../../../utils/destinyItems';
+import { getSockets } from '../../../utils/destinyItems';
+import manifest from '../../../utils/manifest';
 
-const weapon = (manifest, item) => {
-  let { stats, sockets, killTracker } = getSockets(manifest, item, false, false, true);
+const weapon = item => {
+  let { stats, sockets, killTracker } = getSockets(item, false, false, true);
   // let ornaments = getOrnaments(manifest, item.hash);
 
   let sourceString = item.collectibleHash ? (manifest.DestinyCollectibleDefinition[item.collectibleHash] ? manifest.DestinyCollectibleDefinition[item.collectibleHash].sourceString : false) : false;

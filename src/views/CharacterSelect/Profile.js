@@ -8,7 +8,7 @@ import './styles.css';
 
 class Profile extends React.Component {
   render() {
-    const { t, profile, manifest, from } = this.props;
+    const { t, profile, from } = this.props;
 
     const groups = profile.data.groups.results;
 
@@ -27,7 +27,7 @@ class Profile extends React.Component {
             {timePlayed} {t('days on the grind')}
           </div>{' '}
         </div>
-        <Characters data={profile.data} manifest={manifest} location={{ ...from }} characterClick={this.props.onCharacterClick} />
+        <Characters data={profile.data} location={{ ...from }} characterClick={this.props.onCharacterClick} />
       </div>
     );
   }
@@ -36,8 +36,7 @@ class Profile extends React.Component {
 Profile.propTypes = {
   onCharacterClick: PropTypes.func.isRequired,
   from: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired,
-  manifest: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired
 };
 
 export default withNamespaces()(Profile);

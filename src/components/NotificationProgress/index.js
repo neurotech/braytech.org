@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { withNamespaces } from 'react-i18next';
 import cx from 'classnames';
 
+import manifest from '../../utils/manifest';
 import ObservedImage from '../ObservedImage';
 import { enumerateRecordState } from '../../utils/destinyEnums';
 
@@ -123,7 +124,7 @@ class NotificationProgress extends React.Component {
   }
 
   render() {
-    const { t, manifest } = this.props;
+    const { t } = this.props;
 
     if (this.state.progress.type === 'record') {
       let record = manifest.DestinyRecordDefinition[this.state.progress.hash];

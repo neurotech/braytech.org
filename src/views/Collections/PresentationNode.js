@@ -1,9 +1,10 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
 import ObservedImage from '../../components/ObservedImage';
 import * as ls from '../../utils/localStorage';
+import manifest from '../../utils/manifest';
 
 import Collectibles from '../../components/Collectibles';
 
@@ -29,8 +30,6 @@ class PresentationNode extends React.Component {
   };
 
   render() {
-    const manifest = this.props.manifest;
-
     let primaryHash = this.props.primaryHash;
 
     let primaryDefinition = manifest.DestinyPresentationNodeDefinition[primaryHash];
