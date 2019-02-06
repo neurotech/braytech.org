@@ -6,12 +6,16 @@
   height: unset;
 }
 
+.list.roster li.linked {
+  cursor: pointer;
+}
+
 .list.roster li .basic {
   flex-basis: 100%;
   height: 38px;
   display: grid;
   align-items: center;
-  grid-template-columns: calc(38px + 16px) 1fr 120px 1.4fr 2fr;
+  grid-template-columns: calc(38px + 16px) 220px 180px auto;
 }
 
 .list.roster.mini li .basic {
@@ -29,7 +33,7 @@
   grid-column: 3/5;
 }
 
-.list.roster li.thisIsYou::before {
+.list.roster li.thisIsYou .emblem::before {
   content: '\e9e0';
   position: absolute;
   top: 12px;
@@ -47,7 +51,7 @@
   pointer-events: none;
 }
 
-.list.roster li .basic .icon {
+.list.roster li .basic .emblem {
   position: relative;
   height: 38px;
   width: 38px;
@@ -55,7 +59,7 @@
   background-color: rgba(255, 255, 255, 0.05);
 }
 
-.list.roster li.grid-header .basic .icon {
+.list.roster li.grid-header .basic .emblem {
   background-color: rgba(255, 255, 255, 0);
 }
 
@@ -69,10 +73,15 @@
   line-height: 16px;
 }
 
-.list.roster li .basic .character .stamp {
+.list.roster > li:not(.isExpanded) .stamp.clan-xp {
+  opacity: 0;
+}
+
+.list.roster li .stamp {
   display: inline-flex;
   align-content: center;
   font-size: 12px;
+  line-height: 16px;
   padding: 1px 4px;
   margin: 0 7px 0 0;
   border-radius: 3px;
@@ -80,30 +89,38 @@
   color: white;
 }
 
-.list.roster li .basic .character .stamp.light {
+.list.roster li .stamp:last-child {
+  margin: 0;
+}
+
+.list.roster li .stamp.light {
   width: 29px;
 }
 
-.list.roster li .basic .character .stamp.light.max {
+.list.roster li .stamp.light.max {
   background-color: #2ed1c9;
   background-color: rgba(229, 214, 97, 0.8);
 }
 
-.list.roster li .basic .character .stamp.level {
+.list.roster li .stamp.level {
   width: 21px;
 }
 
-.list.roster li .basic .character .stamp.class.titan {
+.list.roster li .stamp.clan-xp.complete {
+  background-color: #da2e0b;
+}
+
+.list.roster li .stamp.class.titan {
   background-color: #c94436;
   background-color: rgb(75, 127, 149);
 }
 
-.list.roster li .basic .character .stamp.class.hunter {
+.list.roster li .stamp.class.hunter {
   background-color: #5e93a0;
   background-color: rgb(127, 98, 76);
 }
 
-.list.roster li .basic .character .stamp.class.warlock {
+.list.roster li .stamp.class.warlock {
   background-color: #d5a52a;
   background-color: rgb(42, 120, 99);
 }
@@ -112,22 +129,15 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
+.list.roster li .basic .activity .mode {
+  display: none;
+  margin: 0 10px 0 0;
+}
+
 .list.roster li .basic .activity .name {
   display: inline-block;
   margin: 0 10px 0 0;
 }
-
-.list.roster li .detail {
-  flex-basis: 100%;
-  /* display: grid;
-  grid-template-columns: calc(36px + 16px) 1fr 120px 1.4fr 2fr; */
-}
-
-
-
-
-
-
 
 .list.roster li.view-all {
   padding: 0 16px 0 calc(38px + 16px);
@@ -136,6 +146,7 @@
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.4);
   background-color: rgba(255, 255, 255, 0);
+  height: 38px;
 }
 
 .list.roster li.view-all::before {
@@ -173,15 +184,19 @@
 }
 
 .list.roster li.isExpanded {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.list li.linked.isExpanded:hover {
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
 .list.roster li .detail {
   flex-basis: 100%;
   position: relative;
-  padding: 12px 0;
+  padding: 12px 0 12px calc(38px + 16px);
   display: grid;
-  grid-template-columns: calc(38px + 16px) 1fr 120px 1.4fr 2fr;
+  grid-template-columns: 220px 180px 1fr 1fr 1fr;
 }
 
 .list.roster li .detail::before {
@@ -198,6 +213,80 @@
   font-size: 14px;
   line-height: 20px;
   white-space: pre-wrap;
+  align-items: start;
+}
+
+.list.roster li .detail .stamp.pve {
+  background-color: #6cb3b6;
+}
+
+.list.roster li .detail .stamp.pvp {
+  background-color: #b52422;
+}
+
+.list.roster li .detail .characters .isLast {
+  display: none;
+}
+
+.list.roster li .detail .pair li ul {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 150px auto;
+}
+
+.list.roster li .detail .pair li ul li:first-child {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.list.roster li .detail .pair li ul li:last-child {
+  color: rgba(255, 255, 255, 1);
+}
+
+.list.roster li .detail .pair.pvp {
+  padding: 0 16px 0 0;
+}
+
+.list.roster li .detail .pair .medals ul {
+  grid-template-columns: auto;
+}
+
+.list.roster li .detail .pair li ul.medals {
+  display: grid;
+  grid-gap: 7px;
+  grid-template-columns: repeat(7, 26px);
+  margin: 3px 0 0;
+}
+
+.list.roster li .detail .pair li ul.medals li {
+  width: 26px;
+  display: grid;
+  grid-template-columns: max-content;
+  grid-template-rows: max-content min-content;
+  justify-content: center;
+  text-align: center;
+}
+
+.list.roster li .detail .pair li ul.medals li .image {
+  position: relative;
+  width: 26px;
+  height: 32px;
+  margin: 0 0 3px;
+  background-size: cover;
+}
+
+.list.roster li .detail .pair.gambit li ul.medals {
+  display: grid;
+  grid-template-columns: repeat(5, 21px);
+  margin: 3px 0 0;
+}
+
+.list.roster li .detail .pair.gambit li ul.medals li {
+  width: 21px;
+}
+
+.list.roster li .detail .pair.gambit li ul.medals li .image {
+  width: 21px;
+  height: 32px;
 }
 
 
@@ -207,31 +296,68 @@
 
 
 
-@media screen and (max-width: 1200px) {
-}
 
-@media screen and (max-width: 600px) {
-  .list.roster:not(.mini) li {
-    grid-template-columns: calc(36px + 16px) 1fr;
-    height: unset;
+
+
+
+
+
+@media screen and (max-width: 1700px) {
+  .list.roster li .basic {
+    grid-template-columns: calc(38px + 16px) 1fr 1fr 1fr;
   }
+
+  .list.roster li .detail {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 16px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
   .list.roster:not(.mini) li.grid-header {
     display: none;
   }
-  .list.roster:not(.mini) li .triumphScore,
-  .list.roster li .clanXp,
-  .list.roster li .character,
-  .list.roster li .historicalStats {
+  
+  .list.roster li .detail {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .list.roster:not(.mini) li.grid-header {
     display: none;
   }
-  .list.roster:not(.mini) li .activity {
-    grid-column: 2/3;
+  
+  .list.roster:not(.mini) li .basic {
+    grid-template-columns: calc(36px + 16px) auto auto;
   }
-  .list.roster:not(.mini) li .activity time {
-    display: block;
-    margin: 0 0 4px;
+
+  .list.roster:not(.mini) li .basic .character {
+    display: none;
   }
-  .list.roster:not(.mini) li.isOnline .activity time {
-    margin: 7px 0 4px;
+
+  .list.roster:not(.mini) li .basic .activity {
+    text-align: right;
+    padding: 0 16px 0 0;
+  }
+
+  .list.roster:not(.mini) li .basic .activity .mode {
+    display: inline-block;
+  }
+
+  .list.roster:not(.mini) li .basic .activity .name {
+    display: none;
+  }
+
+  /* .list.roster:not(.mini) li .basic .activity time {
+    display: none;
+  } */
+
+  .list.roster li .detail {
+    grid-template-columns: 1fr;
+  }
+
+  .list.roster li .detail .characters .isLast {
+    display: flex;
   }
 }

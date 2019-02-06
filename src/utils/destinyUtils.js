@@ -205,7 +205,8 @@ export function stringToIcons(string) {
     '[Trace Rifle]': 'beam_weapon',
     '[Rocker Launcher]': 'rocket_launcher',
     '[Sword]': 'sword_heavy',
-    '[Grenade Launcher]': 'grenade_launcher'
+    '[Grenade Launcher]': 'grenade_launcher',
+    '[Bow]': 'bow'
   };
 
   array = string.split(/(\[.*?\])/g);
@@ -264,6 +265,7 @@ function xpRequiredForLevel(level, progressDef) {
 export function lastPlayerActivity(member) {
   let lastActivity = false;
   let lastCharacter = false;
+  let lastMode = false
   let display = false;
 
   if (member.profile.characterActivities.data) {
@@ -294,6 +296,14 @@ export function lastPlayerActivity(member) {
       } else {
         display = false;
       }
+
+      if ((mode && mode.parentHashes.length) || (activity && activity.placeHash === 2961497387)) {
+        lastMode = activity.placeHash === 2961497387 ? {
+          displayProperties: {
+            name: 'Orbit'
+          }
+        } : manifest.DestinyActivityModeDefinition[mode.parentHashes[0]];
+      }
     }
   } else {
   }
@@ -302,6 +312,7 @@ export function lastPlayerActivity(member) {
     lastPlayed: lastActivity ? lastActivity.dateActivityStarted : member.profile.profile.data.dateLastPlayed,
     lastCharacter,
     lastActivity,
+    lastMode,
     display
   };
 }

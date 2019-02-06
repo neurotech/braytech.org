@@ -24,7 +24,7 @@ class Clan extends React.Component {
     return await Promise.all(
       members.map(async member => {
         try {
-          const [profile, historicalStats] = await Promise.all([bungie.memberProfile(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '100,200,202,204,205,900'), bungie.getHistoricalStats(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '1,3', '3,4,5,6,7,16,19,63', '0')]);
+          const [profile, historicalStats] = await Promise.all([bungie.memberProfile(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '100,200,202,204,900'), bungie.getHistoricalStats(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '1,3', '3,4,5,6,7,16,19,63', '0')]);
           member.profile = profile;
           member.historicalStats = historicalStats;
           
@@ -43,11 +43,66 @@ class Clan extends React.Component {
     );
   }
 
+  async liteRefreshPromise(members) {
+    return await Promise.all(
+      members.map(async member => {
+        let profileUpdate = false;
+        try {
+          profileUpdate = await bungie.memberProfile(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '100,200,202,204,900');
+          
+          if (!member.profile.characterProgressions.data) {
+            return member;
+          }
+          member.profile = responseUtils.profileScrubber(member.profile);
+        } catch (e) {
+          profileUpdate = false;
+        }
+
+        if (profileUpdate) {
+          member.profile = profileUpdate;
+        }
+
+        return member;
+      })
+    );
+  }
+
+  refreshActive = false;
+
+  liteRefresh = async () => {
+    if (this.refreshActive) {
+      return;
+    }
+    this.refreshActive = true;
+
+    store.dispatch({
+      type: 'GROUP_MEMBERS_LOADING'
+    });
+
+    let memberResponses = await this.getMembers(this.props.groupMembers.responses);
+
+    let payload = {
+      groupId: this.props.groupMembers.groupId,
+      responses: memberResponses,
+    }
+
+    store.dispatch({
+      type: 'GROUP_MEMBERS_LOADED',
+      payload
+    });
+    this.refreshActive = false;
+  }
+
   async componentDidMount() {
     const { member, groupMembers } = this.props;
     const group = member.data.groups.results.length > 0 ? member.data.groups.results[0].group : false;
 
-    if (group.groupId && groupMembers.responses.length === 0) {
+    if ((group.groupId && groupMembers.responses.length === 0) || group.groupId !== groupMembers.groupId) {
+      if (this.refreshActive) {
+        return;
+      }
+      this.refreshActive = true;
+
       store.dispatch({
         type: 'GROUP_MEMBERS_LOADING'
       });
@@ -55,11 +110,31 @@ class Clan extends React.Component {
       const groupMembersResponse = await bungie.groupMembers(group.groupId);
       let memberResponses = await this.getMembers(groupMembersResponse.results);
 
+      let payload = {
+        groupId: group.groupId,
+        responses: memberResponses,
+      }
+
       store.dispatch({
         type: 'GROUP_MEMBERS_LOADED',
-        payload: memberResponses
+        payload
       });
+      this.refreshActive = false;
+
+      this.startInterval();
     }
+  }
+
+  startInterval() {
+    this.refreshClanDataInterval = window.setInterval(this.liteRefresh, 60000);
+  }
+
+  clearInterval() {
+    window.clearInterval(this.refreshClanDataInterval);
+  }
+
+  componentWillUnmount() {
+    this.clearInterval();
   }
 
   render() {

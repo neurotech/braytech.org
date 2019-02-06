@@ -1,4 +1,5 @@
 const defaultState = {
+  groupId: false,
   responses: [],
   loading: false
 };
@@ -13,7 +14,7 @@ export default function groupMembersReducer(state = defaultState, action) {
     case 'GROUP_MEMBERS_LOADED':
       return {
         ...state,
-        responses: action.payload,
+        ...action.payload,
         loading: false
       };
     default:

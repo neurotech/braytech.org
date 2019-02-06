@@ -7,6 +7,8 @@ import cx from 'classnames';
 import Moment from 'react-moment';
 import orderBy from 'lodash/orderBy';
 
+import Globals from '../../utils/globals';
+import manifest from '../../utils/manifest';
 import ObservedImage from '../../components/ObservedImage';
 import * as utils from '../../utils/destinyUtils';
 
@@ -57,11 +59,13 @@ class Roster extends React.Component {
             element: (
               <li key={member.destinyUserInfo.membershipId} className={cx({ isOnline: member.isOnline }, 'no-character', 'error')}>
                 <div className='basic'>
-                  <div className='icon black' />
+                  <div className='icon'>
+                    <div className='emblem' />
+                  </div>
                   <div className='displayName'>{member.destinyUserInfo.displayName}</div>
                   <div className='error'>{t("Couldn't retrieve this profile")}</div>
                   <div className='activity'>
-                    <Moment fromNow>{member.joinDate}</Moment>
+                    <Moment fromNow ago>{member.joinDate}</Moment>
                   </div>
                 </div>
               </li>
@@ -81,11 +85,13 @@ class Roster extends React.Component {
             element: (
               <li key={member.destinyUserInfo.membershipId} className={cx({ isOnline: member.isOnline }, 'no-character', 'error')}>
                 <div className='basic'>
-                  <div className='icon black' />
+                  <div className='icon'>
+                    <div className='emblem' />
+                  </div>
                   <div className='displayName'>{member.destinyUserInfo.displayName}</div>
                   <div className='error'>{t('Private profile')}</div>
                   <div className='activity'>
-                    <Moment fromNow>{member.profile.profile.data.dateLastPlayed}</Moment>
+                    <Moment fromNow ago>{member.profile.profile.data.dateLastPlayed}</Moment>
                   </div>
                 </div>
               </li>
@@ -95,9 +101,11 @@ class Roster extends React.Component {
         return;
       }
 
-      const { lastPlayed, lastActivity, lastCharacter, display } = utils.lastPlayerActivity(member);
+      const { lastPlayed, lastActivity, lastCharacter, lastMode, display } = utils.lastPlayerActivity(member);
 
-      console.log(member);
+      if (member.destinyUserInfo.membershipId === this.props.member.membershipId.toString()) {
+        console.log(member, lastMode);
+      }
 
       if (mini) {
         list.push({
@@ -108,7 +116,9 @@ class Roster extends React.Component {
           element: (
             <li key={member.destinyUserInfo.membershipId} className={cx({ linked: linked, isOnline: member.isOnline })}>
               <div className='basic'>
-                <ObservedImage className={cx('image', 'icon')} src={`https://www.bungie.net${lastCharacter.emblemPath}`} />
+                <div className='icon'>
+                  <ObservedImage className={cx('image', 'emblem')} src={`https://www.bungie.net${lastCharacter.emblemPath}`} />
+                </div>
                 <div className='displayName'>{member.destinyUserInfo.displayName}</div>
               </div>
             </li>
@@ -117,16 +127,17 @@ class Roster extends React.Component {
       } else {
         let displayName = (
           <>
-            <div className='icon'>{member.isOnline ? <ObservedImage className={cx('image')} src={`https://www.bungie.net${lastCharacter.emblemPath}`} /> : null}</div>
+            <div className='icon'>{member.isOnline ? <ObservedImage className={cx('image', 'emblem')} src={`https://www.bungie.net${lastCharacter.emblemPath}`} /> : <div className='emblem' />}</div>
             <div className='displayName'>{member.destinyUserInfo.displayName}</div>
           </>
         );
 
-        let character = (
+        const characterStamps = character => (
           <>
-            <span className={cx('stamp', 'light', { max: lastCharacter.light === 650 })}>{lastCharacter.light}</span>
-            <span className={cx('stamp', 'level')}>{lastCharacter.baseCharacterLevel}</span>
-            <span className={cx('stamp', 'class', utils.classTypeToString(lastCharacter.classType).toLowerCase())}>{utils.classTypeToString(lastCharacter.classType)}</span>
+            <span className={cx('stamp', 'light', { max: character.light === 650 })}>{character.light}</span>
+            <span className={cx('stamp', 'level')}>{character.baseCharacterLevel}</span>
+            <span className={cx('stamp', 'class', utils.classTypeToString(character.classType).toLowerCase())}>{utils.classTypeToString(character.classType)}</span>
+            <span className={cx('stamp', 'clan-xp', { complete: member.profile.characterProgressions.data[character.characterId].progressions[540048094].weeklyProgress === 5000 })}>{member.profile.characterProgressions.data[character.characterId].progressions[540048094].weeklyProgress} XP</span>
           </>
         );
 
@@ -135,14 +146,17 @@ class Roster extends React.Component {
             return sum + parseInt(member.profile.characters.data[key].minutesPlayedTotal);
           }, 0) / 1440
         );
-        const timePlayedAllPvE = member.historicalStats.allPvE.allTime.secondsPlayed.basic.value / 60;
-        const timePlayedAllPvP = member.historicalStats.allPvP.allTime.secondsPlayed.basic.value / 60;
-        const timePlayedTotal = timePlayedAllPvE > timePlayedAllPvP ? Math.floor(timePlayedAllPvE / (timePlayedAllPvE + timePlayedAllPvP) * 100) : Math.floor(timePlayedAllPvP / (timePlayedAllPvE + timePlayedAllPvP) * 100);
+        const timePlayedAllPvE = member.historicalStats.allPvE.allTime ? member.historicalStats.allPvE.allTime.secondsPlayed.basic.value / 60 : 0;
+        const timePlayedAllPvP = member.historicalStats.allPvP.allTime ? member.historicalStats.allPvP.allTime.secondsPlayed.basic.value / 60 : 0;
+        const timePlayedTotal = timePlayedAllPvE > timePlayedAllPvP ? Math.floor((timePlayedAllPvE / (timePlayedAllPvE + timePlayedAllPvP)) * 100) : Math.floor((timePlayedAllPvP / (timePlayedAllPvE + timePlayedAllPvP)) * 100);
+
+        // recordHashes
+        const PvPMedals = [4230088036, 3324094091, 2857093873, 1271667367, 1413337742, 3882642308, 1371679603];
+        const GambitMedals = [2507615350, 1071663279, 1298112482, 2631726056, 3158297636];
 
         let isExpanded = this.state.expanded.includes(member.destinyUserInfo.membershipId);
         let expanded = (
           <div className='detail'>
-            <div />
             <ul className='times'>
               <li className='joinDate'>
                 <>Joined </>
@@ -151,10 +165,85 @@ class Roster extends React.Component {
               <li className='timePlayed'>
                 {timePlayedTotalCharacters} {timePlayedTotalCharacters === 1 ? t('day played') : t('days played')}
               </li>
-              <li>{timePlayedTotal}% {timePlayedAllPvE > timePlayedAllPvP ? `PvE` : `PvP`} player</li>
+              <li>
+                {timePlayedTotal}% {timePlayedAllPvE > timePlayedAllPvP ? <span className='stamp pve'>PvE</span> : <span className='stamp pvp'>PvP</span>} player
+              </li>
+            </ul>
+            <ul className='characters'>
+              {member.profile.characters.data.map(character => (
+                <li key={character.characterId} className={cx({ isLast: character.characterId === lastCharacter.characterId })}>
+                  {characterStamps(character)}
+                </li>
+              ))}
+            </ul>
+            <ul className='pair clears'>
+              <li className='triumphScore'>
+                <ul>
+                  <li>Triumph score</li>
+                  <li>{member.profile.profileRecords.data.score}</li>
+                </ul>
+              </li>
+              <li className='nightfalls'>
+                <ul>
+                  <li>Nigthfalls completed</li>
+                  <li>{member.historicalStats.nightfall.allTime ? member.historicalStats.nightfall.allTime.activitiesCleared.basic.value : `–`}</li>
+                </ul>
+              </li>
+              <li className='raids'>
+                <ul>
+                  <li>Raids completed</li>
+                  <li>{member.historicalStats.raid.allTime ? member.historicalStats.raid.allTime.activitiesCleared.basic.value : `–`}</li>
+                </ul>
+              </li>
+            </ul>
+            <ul className='pair pvp'>
+              <li className='efficieny'>
+                <ul>
+                  <li>PvP efficiency</li>
+                  <li>{member.historicalStats.allPvP.allTime ? member.historicalStats.allPvP.allTime.efficiency.basic.displayValue : `–`}</li>
+                </ul>
+              </li>
+              <li className='medals'>
+                <ul className='medals'>
+                  {PvPMedals.map(hash => {
+                    let quantity = member.profile.profileRecords.data.records[hash].objectives[0].progress === 0 ? `–` : member.profile.profileRecords.data.records[hash].objectives[0].progress;
+                    return (
+                      <li key={hash}>
+                        <ObservedImage className='image icon' src={`${Globals.url.bungie}${manifest.DestinyRecordDefinition[hash].displayProperties.icon}`} />
+                        <div className='quantity'>{quantity}</div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </ul>
+            <ul className='pair gambit'>
+              <li className='efficieny'>
+                <ul>
+                  <li>Motes deposited/lost</li>
+                  <li>
+                    {member.historicalStats.pvecomp_gambit.allTime ? member.historicalStats.pvecomp_gambit.allTime.motesDeposited.basic.value : `–`} / {member.historicalStats.pvecomp_gambit.allTime ? member.historicalStats.pvecomp_gambit.allTime.motesLost.basic.value : `–`}
+                  </li>
+                </ul>
+              </li>
+              <li className='medals'>
+                <ul className='medals'>
+                  {GambitMedals.map(hash => {
+                    let quantity = member.profile.profileRecords.data.records[hash].objectives[0].progress === 0 ? `–` : member.profile.profileRecords.data.records[hash].objectives[0].progress;
+                    return (
+                      <li key={hash}>
+                        <ObservedImage className='image icon' src={`${Globals.url.bungie}${manifest.DestinyRecordDefinition[hash].displayProperties.icon}`} />
+                        <div className='quantity'>{quantity}</div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
             </ul>
           </div>
         );
+
+        // <div className='rank'>{utils.groupMemberTypeToString(member.memberType)}</div>
 
         list.push({
           membershipId: member.destinyUserInfo.membershipId,
@@ -162,14 +251,14 @@ class Roster extends React.Component {
           lastPlayed: new Date(lastPlayed).getTime(),
           lastActivity: lastActivity && member.isOnline ? lastActivity.currentActivityHash : 0,
           element: (
-            <li key={member.destinyUserInfo.membershipId} className={cx({ isOnline: member.isOnline, isExpanded: isExpanded, thisIsYou: member.destinyUserInfo.membershipId === this.props.member.membershipId.toString() })} onClick={() => this.expandHandler(member.destinyUserInfo.membershipId, mini)}>
+            <li key={member.destinyUserInfo.membershipId} className={cx('linked', { isOnline: member.isOnline, isExpanded: isExpanded, thisIsYou: member.destinyUserInfo.membershipId === this.props.member.membershipId.toString() })} onClick={() => this.expandHandler(member.destinyUserInfo.membershipId, mini)}>
               <div className='basic'>
                 {displayName}
-                <div className='rank'>{utils.groupMemberTypeToString(member.memberType)}</div>
-                <div className='character'>{character}</div>
+                <div className='character'>{characterStamps(lastCharacter)}</div>
                 <div className='activity'>
+                  {lastMode ? <div className='mode'>{lastMode.displayProperties.name}</div> : null}
                   {display ? <div className='name'>{display}</div> : null}
-                  <Moment fromNow>{lastPlayed}</Moment>
+                  <Moment fromNow ago>{lastPlayed}</Moment>
                 </div>
               </div>
               {isExpanded ? expanded : null}
@@ -202,9 +291,10 @@ class Roster extends React.Component {
         element: (
           <li key='i_am_unqiue' className='grid-header'>
             <div className='basic'>
-              <div className='icon' />
+              <div className='icon'>
+                <div className='emblem' />
+              </div>
               <div className='displayName' />
-              <div className='triumphScore'>{t('Rank')}</div>
               <div className='character'>{t('Last character')}</div>
               <div className='activity'>{t('Last activity')}</div>
             </div>

@@ -46,10 +46,15 @@ class RosterView extends React.Component {
               </ul>
             </div>
             <div className='info'>
-              <p>{t('Pulsing blueberries are freshly acquired members from the last 2 weeks.')}</p>
+              {/* <p>{t('Pulsing blueberries are freshly acquired members from the last 2 weeks.')}</p> */}
             </div>
           </div>
-          <div className='members'>{!groupMembers.loading ? <Roster linked /> : <Spinner />}</div>
+          <div className='members'>
+          <div className='liteRefresh'>
+            {groupMembers.loading && groupMembers.responses.length !== 0 ? <Spinner mini /> : null}
+          </div>
+            {groupMembers.loading && groupMembers.responses.length === 0 ? <Spinner /> : <Roster linked />}
+          </div>
         </div>
       </div>
     );
