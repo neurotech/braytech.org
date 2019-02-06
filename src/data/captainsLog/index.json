@@ -168,5 +168,10 @@
     "date": "2019-02-06T08:10:09.685Z",
     "version": "1.3.25",
     "content": "## Changes\n- Enormous changes behind the scenes\n- New clan roster\n- New icons for progress bars on triumph records"
+  },
+  {
+    "date": "2019-02-06T09:04:14.067Z",
+    "version": "1.3.26",
+    "content": "## Changes\n- bug spray"
   }
 ]

@@ -46,23 +46,21 @@ class Clan extends React.Component {
   async liteRefreshPromise(members) {
     return await Promise.all(
       members.map(async member => {
-        let profileUpdate = false;
+        let oldProfile = member.profile;
         try {
-          profileUpdate = await bungie.memberProfile(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '100,200,202,204,900');
-          
+          const profile = await bungie.memberProfile(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '100,200,202,204,900');
+          member.profile = profile;
+
           if (!member.profile.characterProgressions.data) {
             return member;
           }
           member.profile = responseUtils.profileScrubber(member.profile);
+
+          return member;
         } catch (e) {
-          profileUpdate = false;
+          member.profile = oldProfile;
+          return member;
         }
-
-        if (profileUpdate) {
-          member.profile = profileUpdate;
-        }
-
-        return member;
       })
     );
   }
@@ -79,7 +77,7 @@ class Clan extends React.Component {
       type: 'GROUP_MEMBERS_LOADING'
     });
 
-    let memberResponses = await this.getMembers(this.props.groupMembers.responses);
+    let memberResponses = await this.liteRefreshPromise(this.props.groupMembers.responses);
 
     let payload = {
       groupId: this.props.groupMembers.groupId,

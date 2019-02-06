@@ -29,10 +29,6 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-.list.roster li.error .error {
-  grid-column: 3/5;
-}
-
 .list.roster li.thisIsYou .emblem::before {
   content: '\e9e0';
   position: absolute;
@@ -359,5 +355,13 @@
 
   .list.roster li .detail .characters .isLast {
     display: flex;
+  }
+
+  .list.roster li.error .error {
+    text-align: right;
+  }
+
+  .list.roster:not(.mini) li.error .basic .activity {
+    display: none;
   }
 }
