@@ -103,9 +103,9 @@ class Roster extends React.Component {
 
       const { lastPlayed, lastActivity, lastCharacter, lastMode, display } = utils.lastPlayerActivity(member);
 
-      if (member.destinyUserInfo.membershipId === this.props.member.membershipId.toString()) {
-        console.log(member, lastMode);
-      }
+      // if (member.destinyUserInfo.membershipId === this.props.member.membershipId.toString()) {
+      //   console.log(member, lastMode);
+      // }
 
       if (mini) {
         list.push({
