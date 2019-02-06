@@ -1,8 +1,6 @@
 @font-face {
   font-family: 'destiny';
-  src:
-    url('destiny.ttf?kjgj3p') format('truetype'),
-    url('destiny.woff?kjgj3p') format('woff');
+  src: url('destiny.woff?96jyy') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -10,7 +8,6 @@
 [class^="destiny-"], [class*=" destiny-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'destiny' !important;
-  speak: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -22,6 +19,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.destiny-settings1:before {
+  content: "\e059";
+}
+.destiny-valkyrie1:before {
+  content: "\e066";
+}
+.destiny-bow1:before {
+  content: "\e099";
+}
+.destiny-arrow:before {
+  content: "\e9e0";
+}
 .destiny-tracked-triumph_lines:before {
   content: "\e9e6";
 }
@@ -47,7 +56,7 @@
   content: "\e9e2";
 }
 .destiny-settings:before {
-  content: "\e9e0";
+  content: "\e05a";
 }
 .destiny-A_Button:before {
   content: "\e905";
@@ -151,8 +160,14 @@
 .destiny-nova_bomb:before {
   content: "\e9c4";
 }
+.destiny-valkyrie:before {
+  content: "\e067";
+}
 .destiny-beam_weapon:before {
   content: "\e9c5";
+}
+.destiny-bow:before {
+  content: "\e09a";
 }
 .destiny-pulse_rifle:before {
   content: "\e9c6";

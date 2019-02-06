@@ -29,6 +29,32 @@ export function genderTypeToString(str) {
   return string;
 }
 
+export function groupMemberTypeToString(str) {
+  let string;
+
+  switch (str) {
+    case 1:
+      string = 'Beginner';
+      break;
+    case 2:
+      string = 'Member';
+      break;
+    case 3:
+      string = 'Admin';
+      break;
+    case 4:
+      string = 'Acting Founder';
+      break;
+    case 5:
+      string = 'Founder';
+      break;
+    default:
+      string = 'None';
+  }
+
+  return string;
+}
+
 export function raceTypeToString(str) {
   let string;
 
@@ -270,7 +296,6 @@ export function lastPlayerActivity(member) {
       }
     }
   } else {
-
   }
 
   return {

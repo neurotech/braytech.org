@@ -24,7 +24,7 @@ class Profile extends React.Component {
           <div className='displayName'>{member.data.profile.profile.data.userInfo.displayName}</div>
           {groups.length === 1 && <div className='clan'>{groups[0].group.name}</div>}
           <div className='timePlayed'>
-            {timePlayed} {t('days on the grind')}
+            {timePlayed} {timePlayed === 1 ? t('day played') : t('days played')}
           </div>{' '}
         </div>
         <Characters data={member.data} location={{ ...from }} characterClick={this.props.onCharacterClick} />

@@ -23,13 +23,22 @@ class Clan extends React.Component {
   async getMembers(members) {
     return await Promise.all(
       members.map(async member => {
-        member.profile = await bungie.memberProfile(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '100,200,202,204,900');
-        if (!member.profile.characterProgressions.data) {
+        try {
+          const [profile, historicalStats] = await Promise.all([bungie.memberProfile(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '100,200,202,204,205,900'), bungie.getHistoricalStats(member.destinyUserInfo.membershipType, member.destinyUserInfo.membershipId, '1,3', '3,4,5,6,7,16,19,63', '0')]);
+          member.profile = profile;
+          member.historicalStats = historicalStats;
+          
+          if (!member.profile.characterProgressions.data) {
+            return member;
+          }
+          member.profile = responseUtils.profileScrubber(member.profile);
+
+          return member;
+        } catch (e) {
+          member.profile = false;
+          member.historicalStats = false;
           return member;
         }
-        member.profile = responseUtils.profileScrubber(member.profile);
-
-        return member;
       })
     );
   }
@@ -93,4 +102,3 @@ export default compose(
   connect(mapStateToProps),
   withNamespaces()
 )(Clan);
-
